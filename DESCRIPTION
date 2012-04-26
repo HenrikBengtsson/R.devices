@@ -1,0 +1,12 @@
+Package: R.devices
+Version: 2.1.0
+Date: 2012-04-27
+Title: Enhanced methods for handling graphical devices
+Author: Henrik Bengtsson <henrikb@braju.com>
+Maintainer: Henrik Bengtsson <henrikb@braju.com>
+Depends: R (>= 2.5.0), R.utils (>= 1.12.1)
+Suggests: R.utils (>= 1.12.1), digest (>= 0.5.2)
+Description: This package provides methods that are useful for handling graphical devices.
+License: LGPL (>= 2.1)
+URL: http://www.braju.com/R/
+LazyLoad: TRUE

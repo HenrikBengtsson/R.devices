@@ -1,0 +1,121 @@
+
+Package: R.devices
+==================
+
+Version: 2.1.0 [2012-04-27]
+o Merged updates from the R.utils v1.13.1.
+
+
+Version: 2.0.0 [2011-11-05]
+o Created package by extracting all methods in R.utils v1.9.1 that
+  are related to graphical devices.
+o The below change log shows the changes to the device methods while
+  they were in R.utils.  For this reason, we choose to set the version
+  of this package such that it starts where we left R.utils.
+
+
+Version: 1.9.1 [2011-11-05]
+o Added devOptions().
+o Added default 'width' and 'height' values to eps().
+o Turned png2() and jpeg2() into plain functions without a generic.  
+  This is consistent with how eps() is defined.
+o GENERALIZATION: Now the default 'width' is inferred from 
+  devOptions() if needed.
+o DOCUMENTATION: Added an example to help(devEval).
+
+
+Version: 1.8.6 [2011-10-31]
+o Added argument 'field' to devEval().
+
+
+Version: 1.8.2 [2011-09-24]
+o devNew() no longer gives a warning about argument 'aspectRatio' is
+  specified when both or neither of 'width' and 'height' are given,
+  and 'aspectRatio' is 1.
+
+
+Version: 1.7.5 [2011-04-12]
+o Now devEval("jpg", ...) is recognized as devEval("jpeg", ...).
+
+
+Version: 1.7.3 [2011-04-02]
+o Now argument 'force' of devEval() defaults to 
+  getOption("devEval/args/force", TRUE).
+
+
+Version: 1.7.2 [2011-03-18]
+o Now argument 'path' of devEval() defaults to 
+  getOption("devEval/args/path", "figures/").
+o Now devEval() does a better job of "cleaning up" 'name' and 'tags'.
+
+
+Version: 1.7.1 [2011-03-18]
+o devNew() gained option 'devNew/args/par', which can be used to specify 
+  the default graphical parameters for devNew().  Any additional 
+  parameters passed via argument 'par' will override such default ones, 
+  if both specifies the same parameter.
+o The automatic archiving of devEval() is not considered unless
+  the R.archive package is loaded, regardless of option settings.
+o DOCUMENTATION: The title of help(devDone) was incorrect.
+
+
+Version: 1.7.0 [2011-03-10]
+o Now argument 'aspectRatio' of devNew() defaults to 1 (not NULL).
+o REPRODUCIBLE RESEARCH: Now devEval() archives any generated
+  image files if R.archive option 'devEval' is TRUE.
+
+
+Version: 1.6.3 [2011-02-20]
+o Added argument 'par' to devNew() for applying graphical parameters
+  at the same time as the device is opened, which is especially
+  useful when using devEval().
+o Changed argument 'force' of devEval() to default to TRUE.
+
+
+Version: 1.6.2 [2011-02-14]
+o Added trial version of devEval() for simple creation of images.
+o Added argument 'aspectRatio' to devNew(), which updates/sets
+  the 'height' or the 'width', if the one of the other is not given.
+
+
+Version: 1.5.5 [2010-10-26]
+o Now argument 'which' to devSet() can be any object.  If not a 
+  single numeric or a single character string, then a checksum 
+  character string is generated using digest::digest(which).
+
+
+Version: 1.0.8 [2008-10-16]
+o Now devDone(which=1) does nothing.  Before it gave an error.
+o BUG FIX: Argument 'type' of devNew() did not take function:s.
+
+
+Version: 1.0.6 [2008-09-08]
+o Now devNew() filters out arguments 'file' and 'filename' if the
+  device is interactive.
+
+
+Version: 1.0.4 [2008-08-01]
+o Added several functions for extending the current functions dealing
+  with devices.  All added functions can address a device by a label
+  in addition to the standard device index.  The devGetLabel() and
+  devSetLabel() gets and sets the label of a give device.  devList()
+  lists the indices of existing device named by their labels, cf.
+  dev.list().  The functions devSet() and devOff() work like 
+  dev.set() and dev.off() but accept labels as well.  Furthermore, 
+  devSet(idx) will open a device with index 'idx' if it does not 
+  exists, and devSet(label) a device with that label if not already
+  opened.  The devIsOpen() checks if a device is open or not. The 
+  devDone() function calls devOff() except for screen devices.
+
+
+Version: 1.0.0 [2008-02-26]
+o The default filename for eps() had extension *.ps not *.eps.
+
+
+Version: 0.7.6 [2006-02-15]
+o Since the png2() and jpeg2() devices are in this package, the eps() 
+  device from R.graphics has been moved here for consistency.
+	
+
+Version: 0.6.0 [2005-09-24]
+o Added trial versions of jpeg2() and png2().
