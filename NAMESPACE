@@ -2,7 +2,9 @@
 # IMPORTS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
 # Packages to be imported
-#import(R.oo)
+importFrom("R.methodsS3", "throw")
+import("R.oo")
+import("R.utils")
 
 # Object that must exported explicitly
 export(.conflicts.OK) 
@@ -14,4 +16,3 @@ export(.conflicts.OK)
 # Export all public methods, that is, those without a preceeding dot
 # in their names.
 exportPattern("^[^\\.]")
-
