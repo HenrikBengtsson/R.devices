@@ -7,7 +7,8 @@
 #
 # \section{To get started}{
 #   \itemize{
-#    \item @see "devEval" - write graphics to an image file.
+#    \item @see "toEPS", @see "toPDF", @see "toPNG", ... - evaluate 
+#     graphics code and atomically save plot to a figure file.
 #   }
 # }
 #

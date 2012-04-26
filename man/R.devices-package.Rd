@@ -20,7 +20,8 @@
 
 \section{To get started}{
   \itemize{
-   \item \code{\link{devEval}}() - write graphics to an image file.
+   \item \code{\link{toEPS}}(), \code{\link{toPDF}}(), \code{\link{toPNG}}(), ... - evaluate
+    graphics code and atomically save plot to a figure file.
   }
 }
 
