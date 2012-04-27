@@ -1,0 +1,129 @@
+<% t0 <- Sys.time() %>
+
+<%
+library("R.devices");
+pkg <- Package("R.devices");
+devOptions("png", width=840);
+options(width=85);
+options(digits=3);
+options(str=strOptions(strict.width="cut"));
+%>
+
+\documentclass[letter,12pt]{article}
+\usepackage{xspace}
+\usepackage{alltt}
+\usepackage{xcolor}
+\usepackage{natbib} % \citep{}, \citet{}
+
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+
+\usepackage{hyperref} % \url{}
+\hypersetup{hidelinks}
+
+% Page margins
+\addtolength{\oddsidemargin}{-0.5in}	
+\addtolength{\evensidemargin}{-0.5in}	
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-0.5in}	
+\addtolength{\textheight}{1in}
+
+% Placement of floats
+\setcounter{bottomnumber}{2}
+\renewcommand{\topfraction}{1.0}
+\renewcommand{\bottomfraction}{1.0}
+\renewcommand{\textfraction}{0.0}
+\renewcommand{\floatpagefraction}{1.0}
+
+% Macros
+\newcommand{\keywords}[1]{\footnotesize{\textbf{Keywords: }#1}\xspace}
+\newcommand{\pkg}[1]{\textsl{#1}\xspace}
+\newcommand{\file}[1]{\textsl{#1}\xspace}
+\newcommand{\code}[1]{\texttt{#1}\xspace}
+\newcommand{\bs}{$\backslash$}
+
+\newenvironment{rspVerbatim}{\vspace{-\parskip}\begin{alltt}\color{blue}}{\end{alltt}}
+\newenvironment{escapeRspVerbatim}{\vspace{-\parskip}\begin{alltt}}{\end{alltt}}
+
+
+\title{<%=getName(pkg)%>}
+\author{<%=getAuthor(pkg)%>}
+\date{April 27, 2012}
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+The \pkg{R.devices} package provides utility methods that enhance the existing graphical device functions already available in R for the purpose of simplify the creation of figure files of various image formats and much more.
+\end{abstract}
+
+\keywords{devices, graphics, plots, figures}
+
+\begin{center}
+\emph{This vignette is distributed as part of the \pkg{R.devices} package, which is available on CRAN (\url{http://cran.r-project.org/}).
+Feedback is very much appreciated.}
+\end{center}
+
+\clearpage
+\tableofcontents
+
+\clearpage
+
+<%-------------------------------------------------------------------
+  BACKGROUND
+  -------------------------------------------------------------------%>
+\section{Background}
+\label{secBackground}
+
+
+<%-------------------------------------------------------------------
+  CREATING IMAGE FILES
+  -------------------------------------------------------------------%>
+%% \subsection{Creating image files}
+The \code{toPDF()} and \code{toPNG()} functions are useful when creating image files.  For instance,
+\begin{verbatim}
+# Use greater objects by default
+setOption("devNew/args/par", list(lwd=2));
+
+toPDF("myFigure,yeah,cool", aspectRatio=0.6, { 
+  curve(dnorm, from=-5, to=+5)
+})
+\end{verbatim}
+creates a PDF image file named \code{myFigure,yeah,cool.png} whose height is 60\% of its width and displays the Guassian density distribution.
+  Moreover, by default all \code{toNNN()} functions writes the image file to the figures/ directory.  For more information, see \code{help("toPDF")}.\\
+
+\begin{figure}[htp]
+ \begin{center}
+ \resizebox{0.70\textwidth}{!}{%
+  \includegraphics{<%=toPDF("MyFigure,yeah,cool", aspectRatio=0.6, {
+   curve(dnorm, from=-5, to=+5);
+  })%>}
+ }%
+ \end{center}
+ \caption{This figure was generated and inserted into the LaTeX document by RSP-embedded markup.}
+ \label{fig:MyFigure}
+\end{figure}
+
+
+
+\section{Experimental}
+
+
+<%-------------------------------------------------------------------
+  REFERENCES
+  -------------------------------------------------------------------%>
+%\bibliographystyle{natbib}
+%\bibliography{PSCBS}
+
+
+<%-------------------------------------------------------------------
+  APPENDIX
+  -------------------------------------------------------------------%>
+\clearpage
+\section*{Appendix}
+\subsection*{Session information}
+<%=toLatex(sessionInfo())%>
+This report was automatically generated using \code{rsp()} of the R.rsp package.
+Total processing time after RSP-to-R translation was <%=dt <- round(Sys.time()-t0, digits=2)%> <%=attr(dt, "units")%>.
+
+\end{document}
