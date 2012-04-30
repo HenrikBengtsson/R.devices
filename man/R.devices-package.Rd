@@ -15,7 +15,7 @@
 
 
 \description{
-  This package provides methods that are useful for handling graphical devices.
+  This package provides utility methods that enhance the existing graphical device functions already available in R for the purpose of simplify the creation of figure files of various image formats and much more.
 }
 
 \section{To get started}{

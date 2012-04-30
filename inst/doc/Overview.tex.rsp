@@ -48,7 +48,7 @@ options(str=strOptions(strict.width="cut"));
 
 \title{<%=getName(pkg)%>}
 \author{<%=getAuthor(pkg)%>}
-\date{April 27, 2012}
+\date{April 30, 2012}
 
 \begin{document}
 
@@ -72,14 +72,18 @@ Feedback is very much appreciated.}
 <%-------------------------------------------------------------------
   BACKGROUND
   -------------------------------------------------------------------%>
-\section{Background}
-\label{secBackground}
+\section{Introduction}
+\label{secIntroduction}
 
+
+\section{Details}
+\label{secDetails}
 
 <%-------------------------------------------------------------------
   CREATING IMAGE FILES
   -------------------------------------------------------------------%>
-%% \subsection{Creating image files}
+\section{Creating image files}
+\subsection{toNnn(..., \{$<$expression$>$\})}
 The \code{toPDF()} and \code{toPNG()} functions are useful when creating image files.  For instance,
 \begin{verbatim}
 # Use greater objects by default
@@ -104,9 +108,57 @@ creates a PDF image file named \code{myFigure,yeah,cool.png} whose height is 60\
  \label{fig:MyFigure}
 \end{figure}
 
+\subsection{devEval(..., \{$<$expression$>$\})}
+The above \code{toNnn()} functions are wrappers that call \code{devEval(nnn, ...)}.
 
 
-\section{Experimental}
+\section{Setting graphical options}
+The \code{devOptions()} function provides a unified interface to getting and settings common options for the various graphical devices available in R.
+When using one of the \code{toNnn()} functions, \code{devEval()} or \code{devNew()}, the device options used are given by \code{devOptions()}.  For example, to see the current settings used by PNG device, do:
+\begin{verbatim}
+<% devOptions("png", reset=TRUE) %>
+<%=evalWithEcho({
+devOptions("png")
+})%>
+\end{verbatim}
+
+To change one or several options, do:
+\begin{verbatim}
+<%=evalWithEcho({
+devOptions("png", width=1024, bg="lightblue")
+})%>
+\end{verbatim}
+
+To reset the options back to the built-in defaults, do:
+\begin{verbatim}
+<%=evalWithEcho({
+devOptions("png", reset=TRUE)
+})%>
+\end{verbatim}
+
+To get an overview of a set of common options for the supported devices, do:
+\begin{verbatim}
+<%=evalWithEcho({
+knownDevices <- eval(formals(devOptions)$type)
+fields <- c("width", "height", "bg", "fg", "pointsize")
+opts <- sapply(knownDevices, FUN=function(type) {
+  devOptions(type)[fields]
+})
+rownames(opts) <- fields
+opts <- t(opts)
+print(opts)
+})%>
+\end{verbatim}
+
+
+\subsection{Under the hood (advanced)}
+The \code{devOptions()} function tries as far as possible to infer the default options from the default arguments of the device function and any additional options for that device, e.g. \code{formals(pdf)} and \code{pdf.options()}.  Likewise, when setting an option it uses the standard interfaces to do so, whenever possible.  This means that for instance \code{pdf()} will also be affected by \code{devOptions("pdf", width=5)}.  Note that this may not be the case for all devices, because their options cannot be set.  Instead they are all specified as arguments when opening the device, e.g. \code{png()} will \emph{not} be affected by \code{devOptions("png", width=1024)}.
+This is why we recommend to always use \code{devNew()} in place of \code{dev.new()}, or better, \code{devEval()} or the corresponding \code{toNnn()} function, which all respects the options set via \code{devOptions()}.
+
+
+
+
+
 
 
 <%-------------------------------------------------------------------

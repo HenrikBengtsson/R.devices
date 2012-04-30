@@ -1,8 +1,8 @@
 Package: R.devices
-Version: 2.1.0
-Date: 2012-04-27
+Version: 2.1.1
+Date: 2012-04-30
 Title: Enhanced methods for handling graphical devices
-Description: This package provides methods that are useful for handling graphical devices.
+Description: This package provides utility methods that enhance the existing graphical device functions already available in R for the purpose of simplify the creation of figure files of various image formats and much more.
 Author: Henrik Bengtsson
 Maintainer: Henrik Bengtsson <henrikb@braju.com>
 Depends: R (>= 2.10.0), R.utils (>= 1.12.1)

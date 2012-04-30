@@ -25,6 +25,8 @@
 #   Returns a named @list.
 #   If the requested device does not exists (certain devices are OS
 #   specific), then an empty @list is returned.
+#   If options were set, that is, if named options were specified via
+#   \code{...}, then the list is returned invisibly, otherwise not.
 # }
 #
 # \details{
@@ -380,12 +382,21 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     }
   }
 
-  opts;
+
+  # Return invisibly?
+  if (length(args) > 0) {
+    invisible(opts);
+  } else {
+    opts;
+  }
 } # devOptions()
 
 
 ############################################################################
 # HISTORY: 
+# 2012-04-30
+# o Now devOptions() returns options invisibly if some options were set,
+#   otherwise not, e.g. devOptions() versus devOptions("png", width=1024).
 # 2012-02-26
 # o GENERALIZATION: Now devOptions() accepts passing a device function
 #   in addition a sting, e.g. devOptions(png) and devOptions("png").

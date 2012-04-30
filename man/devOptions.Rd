@@ -34,6 +34,8 @@
    Returns a named \code{\link[base]{list}}.
    If the requested device does not exists (certain devices are OS
    specific), then an empty \code{\link[base]{list}} is returned.
+   If options were set, that is, if named options were specified via
+   \code{...}, then the list is returned invisibly, otherwise not.
  }
 
  \details{
