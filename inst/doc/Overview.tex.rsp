@@ -24,8 +24,7 @@ options(str=strOptions(strict.width="cut"));
 \usepackage{graphicx}
 \graphicspath{{figures/}}
 
-\usepackage{hyperref} % \url{}
-\hypersetup{hidelinks}
+\usepackage[hidelinks]{hyperref} % \url{}
 
 % Page margins
 \addtolength{\oddsidemargin}{-0.5in}	
