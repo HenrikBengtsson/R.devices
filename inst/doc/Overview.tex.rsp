@@ -132,7 +132,7 @@ The above \code{toNnn()} functions are wrappers that call \code{devEval(nnn, ...
 
 \subsection{Never again incomplete image files}
 The \code{devEval()} and the \code{toNnn()} functions creates image files atomically.
-When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{png(...); { ... }; dev.off()}), there is a great risk of the creating an incomplete file if an error or an interrupt occurs while plotting.
+When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{\{ png(...); { ... }; dev.off() \}}), there is a great risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
 By contrast, \code{devEval()} and the \code{toNnn()} functions guarantee that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
 \begin{rspVerbatim}
 toPDF("figure", \{
@@ -140,16 +140,16 @@ toPDF("figure", \{
   abline(v=log("a"))
 \})
 \end{rspVerbatim}
-because the last statement generates an error.
+because the last plot statement generates an error.
 To further lower the risk for incomplete image files, for instance due to abrupt power failures, all image files are first written to a temporary file which is renamed to the final file only when the plotting is complete.  This is useful in large non-interactive batch jobs creating hundreds or thousands of image files.
 
 
 
-\subsection{Including images in RSP-embedded LaTeX files}
-By using RSP-markup, image files can be included in for instance LaTeX, Sweave and knitr documents in a very clean fashion.  For instance, the plot in Figure~\ref{fig:MyFigure} was included as:
+\subsection{Including images in RSP-embedded LaTeX documents}
+By using RSP-markup, image files can be included in for instance LaTeX, Sweave and knitr documents in a very clean fashion, while keeping full control of all image formatting.  For instance, the plot in Figure~\ref{fig:MyFigure} was included as:
 \begin{rspVerbatim}
 {\bs}includegraphics\{<\%=toPDF("MyFigure", aspectRatio=0.6, \{
-  curve(dnorm, from=-5, to=+5);
+  curve(dnorm, from=-5, to=+5)
 \})\%>\}
 \end{rspVerbatim}
 \begin{figure}[htp]
