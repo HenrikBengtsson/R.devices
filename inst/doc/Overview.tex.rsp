@@ -66,7 +66,7 @@ The \pkg{R.devices} package provides utility methods that enhance the existing g
 \keywords{devices, graphics, plots, figures}
 
 \begin{center}
-\emph{This vignette is distributed as part of the \pkg{R.devices} package, which is available on CRAN (\url{http://cran.r-project.org/}).
+\emph{This vignette is distributed as part of the \pkg{R.devices} package, which is available on CRAN (\href{http://cran.r-project.org/}{http://cran.r-project.org/}).
 Feedback is very much appreciated.}
 \end{center}
 
