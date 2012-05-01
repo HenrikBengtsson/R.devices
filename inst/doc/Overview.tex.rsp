@@ -87,50 +87,69 @@ Feedback is very much appreciated.}
   CREATING IMAGE FILES
   -------------------------------------------------------------------%>
 \section{Creating image files}
-When creating image files using one of the built-in R device functions several device specific arguments needs to the specified.  This makes it tedious to change the output format.  For instance, when first creating a PDF file (\code{file="figure.pdf"}) with aspect ratio 0.6 (\code{width=7, height=0.6*7}), it is necessary to modify at least three of the arguments (\code{file="figure.png", width=840, height=0.68*840}).
-Instead, when using the \code{devEval()} function only one argument has to be modified.  For instance,
+When creating image files using one of the built-in R device functions (e.g. \code{pdf()}) several device specific arguments needs to the specified.  This makes it tedious to change the output format.  For instance, when first creating a PDF file (\code{file="figure.pdf"}) with aspect ratio 0.6 (\code{width=7, height=0.6*7}), it is necessary to modify at least three of the arguments (\code{file="figure.png", width=480, height=0.6*480}).
+
+\subsection{devEval()}
+To overcome these and other hurdles, the \code{devEval()} was created.  When using \code{devEval()} only one argument has to be modified.  For instance,
 \begin{rspVerbatim}
 devEval("pdf", name="figure", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-creates a PDF file named 'figure.pdf' that is 7.0 inches wide and 4.2 inches tall, whereas
+creates a PDF file named \file{figure.pdf} that is 7.0 inches wide and 4.2 inches tall, whereas
 \begin{rspVerbatim}
 devEval("png", name="figure", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-creates a PNG file named 'figure.png' that is 480 pixels wide and 288 pixels tall.  For default dimensions, see Section~\ref{secOptions}.
-By specifying the \code{scale} argument, it is possible to create an image file with a smaller or a large dimension that the default, e.g.
+creates a PNG file named \file{figure.png} that is 480 pixels wide and 288 pixels tall.  For default dimensions, see Section~\ref{secOptions}.
+By specifying the \code{scale} argument, it is possible to create an image file with a smaller or a large dimension relative to that of the default, e.g.
 \begin{rspVerbatim}
 devEval("png", name="figure,large", aspectRatio=0.6, scale=2, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-creates a PNG file named 'figure,large.png' that is 960 pixels wide and 576 pixels tall.
-
-\subsection{Names and tags}
-This example also illustrates how the final file name is composed by merging the \code{name} and \code{tags} arguments using comma separation and appending a filename extension that is specific to the device.
+creates a PNG file named \file{figure,large.png} that is 960 pixels wide and 576 pixels tall.
 
 
-\subsection{toNnn(..., \{$<$expression$>$\})}
-The \code{toPDF()} and \code{toPNG()} functions are useful when creating image files.  For instance,
+\subsection{toEPS(), toPDF(), toPNG() etc.}
+For conveniency, there exists a set of toNnn() functions that basically are wrappers for \code{devEval()}.  For instance, instead of calling \code{devEval("png", ...)} one can use \code{toPNG(...)} as
 \begin{rspVerbatim}
-# Use greater objects by default
-setOption("devNew/args/par", list(lwd=2));
-
-toPDF("myFigure,yeah,cool", aspectRatio=0.6, \{
+toPNG("figure,large", aspectRatio=0.6, scale=2, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-creates a PDF image file named \code{myFigure,yeah,cool.png} whose height is 60\% of its width and displays the Guassian density distribution.
-  Moreover, by default all \code{toNNN()} functions writes the image file to the figures/ directory.  For more information, see \code{help("toPDF")}.\\
+<%
+envir <- getNamespace("R.devices");
+tos <- ls(pattern="^to[A-Z][a-zA-Z]+", envir=envir);
+tos <- sprintf("%s()", tos);
+%>
+The following toNnn() functions are currently available: <%=hpaste(sprintf("\\code{%s}", tos), maxHead=Inf, lastCollapse=", and ")%>.
 
-\subsection{devEval(..., \{$<$expression$>$\})}
-The above \code{toNnn()} functions are wrappers that call \code{devEval(nnn, ...)}.
+\subsection{Output directory}
+All figures created by \code{devEval()} are by default written to the \file{figures/} directory (created if missing), which can be overridden by passing argument \code{path} to \code{devEval()}.  The default figure path can be change by setting option \code{"devEval/args/path"}, which will be created if needed, e.g.
+\begin{rspVerbatim}
+ options("devEval/args/path"="figures/col/")
+\end{rspVerbatim}
+
+\subsection{Names and comma-separated tags}
+The filename used by \code{devEval()}, is made up of argument \code{name}, followed by comma-separated argument \code{tags} (an optional character vector) and a filename extension (specified by the device type).  Argument \code{tags} is convenient way to adjust the filename, e.g.
+\begin{rspVerbatim}
+for (ar in c(0.6, 0.8)) \{
+  arTag <- sprintf("aspect=%g", ar)
+  for (sc in 2:4) \{
+    scaleTag <- sprintf("scale=%d", sc)
+    devEval("eps", name="figure", tags=c(arTag, scaleTag), aspectRatio=ar, scale=sc, \{
+      curve(dnorm, from=-5, to=+5)
+    \}
+  \}
+\})
+\end{rspVerbatim}
+which creates six images files (\file{figure,aspect=0.6,scale=2.eps}, \file{figure,aspect=0.6,scale=3.eps}, ..., and \file{figure,aspect=0.8,scale=4.eps}).
 
 
-\subsection{Never again incomplete image files}
+
+\subsection{No more incomplete image files}
 The \code{devEval()} and the \code{toNnn()} functions creates image files atomically.
 When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{\{ png(...); { ... }; dev.off() \}}), there is a great risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
 By contrast, \code{devEval()} and the \code{toNnn()} functions guarantee that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
@@ -160,7 +179,7 @@ By using RSP-markup, image files can be included in for instance LaTeX, Sweave a
   })%>}
  }%
  \end{center}
- \caption{This figure was generated using \code{toPDF()} and then include into the LaTeX document using RSP.}
+ \caption{This graph was generated using \code{toPDF()} and then include into the LaTeX document using RSP.}
  \label{fig:MyFigure}
 \end{figure}
 For more details on RSP, see the vignettes of the \pkg{R.rsp} package (available on \href{cran.r-project.org/package=R.rsp}{CRAN}).
