@@ -110,10 +110,11 @@ devEval("png", name="figure,large", aspectRatio=0.6, scale=2, \{
 \})
 \end{rspVerbatim}
 creates a PNG file named \file{figure,large.png} that is 960 pixels wide and 576 pixels tall.
+Note also how there is in none of the above examples a need for closing the device via \code{dev.new()}, which is sometimes forgotten by newcomers.  The graphical device opened by \code{devEval()} is also guaranteed to be closed by it.
 
 
 \subsection{toEPS(), toPDF(), toPNG() etc.}
-For conveniency, there exists a set of toNnn() functions that basically are wrappers for \code{devEval()}.  For instance, instead of calling \code{devEval("png", ...)} one can use \code{toPNG(...)} as
+For conveniency, there exists a set of \code{toNnn()} functions that basically are wrappers for \code{devEval()}.  For instance, instead of calling \code{devEval("png", ...)} one can use \code{toPNG(...)} as
 \begin{rspVerbatim}
 toPNG("figure,large", aspectRatio=0.6, scale=2, \{
   curve(dnorm, from=-5, to=+5)
@@ -124,22 +125,22 @@ envir <- getNamespace("R.devices");
 tos <- ls(pattern="^to[A-Z][a-zA-Z]+", envir=envir);
 tos <- sprintf("%s()", tos);
 %>
-The following toNnn() functions are currently available: <%=hpaste(sprintf("\\code{%s}", tos), maxHead=Inf, lastCollapse=", and ")%>.
+The following \code{toNnn()} functions are currently available: <%=hpaste(sprintf("\\code{%s}", tos), maxHead=Inf, lastCollapse=", and ")%>.
 
-\subsection{Output directory}
-All figures created by \code{devEval()} are by default written to the \file{figures/} directory (created if missing), which can be overridden by passing argument \code{path} to \code{devEval()}.  The default figure path can be change by setting option \code{"devEval/args/path"}, which will be created if needed, e.g.
+\subsection{Setting default output directory}
+All figures created by \code{devEval()} (and hence the \code{toNnn()} functions) are by default written to the \file{figures/} directory (created if missing), which can be overridden by passing argument \code{path} to \code{devEval()}.  The default figure path can be change by setting option \code{"devEval/args/path"}, which will be created if needed, e.g.
 \begin{rspVerbatim}
  options("devEval/args/path"="figures/col/")
 \end{rspVerbatim}
 
 \subsection{Names and comma-separated tags}
-The filename used by \code{devEval()}, is made up of argument \code{name}, followed by comma-separated argument \code{tags} (an optional character vector) and a filename extension (specified by the device type).  Argument \code{tags} is convenient way to adjust the filename, e.g.
+The filename used by \code{devEval()/toNnn()}, is made up of argument \code{name}, followed by comma-separated argument \code{tags} (an optional character vector) and a filename extension (specified by the device type).  Argument \code{tags} is convenient way to adjust the filename, e.g.
 \begin{rspVerbatim}
 for (ar in c(0.6, 0.8)) \{
   arTag <- sprintf("aspect=%g", ar)
   for (sc in 2:4) \{
     scaleTag <- sprintf("scale=%d", sc)
-    devEval("eps", name="figure", tags=c(arTag, scaleTag), aspectRatio=ar, scale=sc, \{
+    toEPS("figure", tags=c(arTag, scaleTag), aspectRatio=ar, scale=sc, \{
       curve(dnorm, from=-5, to=+5)
     \}
   \}
