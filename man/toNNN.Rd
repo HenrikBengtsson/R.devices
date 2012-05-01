@@ -1,17 +1,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Do not modify this file since it was automatically generated from:
 % 
-%  toPNG.R
+%  toNNN.R
 % 
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \name{toPNG}
-\alias{toPNG}
+ \name{toNNN}
+\alias{toNNN}
 
  \alias{toBMP}
  \alias{toEPS}
  \alias{toPDF}
+ \alias{toPNG}
  \alias{toSVG}
  \alias{toTIFF}
 
@@ -53,5 +54,6 @@
 
 
 
+\keyword{documentation}
 \keyword{device}
 \keyword{utilities}

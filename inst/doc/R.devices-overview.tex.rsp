@@ -113,7 +113,7 @@ Note also how there is in none of the above examples a need for closing the devi
 
 
 \subsection{toEPS(), toPDF(), toPNG() etc.}
-For conveniency, there exists a set of \code{toNnn()} functions that basically are wrappers for \code{devEval()}.  For instance, instead of calling \code{devEval("png", ...)} one can use \code{toPNG(...)} as
+For conveniency, there exists a set of \code{toNNN()} functions that basically are wrappers for \code{devEval()}.  For instance, instead of calling \code{devEval("png", ...)} one can use \code{toPNG(...)} as
 \begin{rspVerbatim}
 toPNG("figure,large", aspectRatio=0.6, scale=2, \{
   curve(dnorm, from=-5, to=+5)
@@ -124,16 +124,16 @@ envir <- getNamespace("R.devices");
 tos <- ls(pattern="^to[A-Z][a-zA-Z]+", envir=envir);
 tos <- sprintf("%s()", tos);
 %>
-The following \code{toNnn()} functions are currently available: <%=hpaste(sprintf("\\code{%s}", tos), maxHead=Inf, lastCollapse=", and ")%>.
+The following \code{toNNN()} functions are currently available: <%=hpaste(sprintf("\\code{%s}", tos), maxHead=Inf, lastCollapse=", and ")%>.
 
 \subsection{Setting default output directory}
-All figures created by \code{devEval()/toNnn()} are by default written to the \file{figures/} directory (created if missing), which can be overridden by passing argument \code{path} to \code{devEval()}.  The default figure path can be change by setting option \code{"devEval/args/path"}, which will be created if needed, e.g.
+All figures created by \code{devEval()/toNNN()} are by default written to the \file{figures/} directory (created if missing), which can be overridden by passing argument \code{path} to \code{devEval()}.  The default figure path can be change by setting option \code{"devEval/args/path"}, which will be created if needed, e.g.
 \begin{rspVerbatim}
  options("devEval/args/path"="figures/col/")
 \end{rspVerbatim}
 
 \subsection{Names and comma-separated tags}
-The filename used by \code{devEval()/toNnn()}, is made up of argument \code{name}, followed by comma-separated argument \code{tags} (an optional character vector) and a filename extension (specified by the device type).  Argument \code{tags} provides a convenient way to adjust the filename, e.g.
+The filename used by \code{devEval()/toNNN()}, is made up of argument \code{name}, followed by comma-separated argument \code{tags} (an optional character vector) and a filename extension (specified by the device type).  Argument \code{tags} provides a convenient way to adjust the filename, e.g.
 \begin{rspVerbatim}
 for (ar in c(0.6, 0.8)) \{
   arTag <- sprintf("aspect=%g", ar)
@@ -148,7 +148,7 @@ for (ar in c(0.6, 0.8)) \{
 which creates six images files (\file{figure,aspect=0.6,scale=2.eps}, \file{figure,aspect=0.6,scale=3.eps}, ..., and \file{figure,aspect=0.8,scale=4.eps}).
 
 \subsection{Overwriting existing figure files}
-By default, existing figure files created by \code{devEval()/toNnn()} are overwritten wihtout notice.  By passing argument \code{force=FALSE} to \code{devEval()}, existing figure files will be skipped.  To change the default, set option \code{"devEval/args/force"}, e.g.
+By default, existing figure files created by \code{devEval()/toNNN()} are overwritten wihtout notice.  By passing argument \code{force=FALSE} to \code{devEval()}, existing figure files will be skipped.  To change the default, set option \code{"devEval/args/force"}, e.g.
 \begin{rspVerbatim}
  options("devEval/args/force"=FALSE)
 \end{rspVerbatim}
@@ -156,9 +156,9 @@ Note that whenever a figure is skipped this way, it also means that none of the 
 
 
 \subsection{No more incomplete image files}
-The \code{devEval()/toNnn()} functions create image files atomically.
-When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{\{ png(...); { ... }; dev.off() \}}), there is a great risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
-By contrast, \code{devEval()/toNnn()} guarantees that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
+The \code{devEval()/toNNN()} functions create image files atomically.
+When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{png(...); \{...\}; dev.off()}), there is a great risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
+By contrast, \code{devEval()/toNNN()} guarantees that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
 \begin{rspVerbatim}
 toPDF("figure", \{
   curve(dnorm, from=-5, to=+5)
@@ -195,7 +195,7 @@ For more details on RSP, see the vignettes of the \pkg{R.rsp} package (available
 \section{Setting default device options}
 \label{secOptions}
 The \code{devOptions()} function provides a unified interface to getting and settings common options for the various graphical devices available in R.
-When using one of the \code{toNnn()} functions, \code{devEval()} or \code{devNew()}, the device options used are given by \code{devOptions()}.  For example, to see the current settings used by PNG device, do:
+When using one of the \code{toNNN()} functions, \code{devEval()} or \code{devNew()}, the device options used are given by \code{devOptions()}.  For example, to see the current settings used by PNG device, do:
 \begin{rspVerbatim}
 <% devOptions("png", reset=TRUE) %>
 <%=evalWithEcho({
@@ -232,7 +232,7 @@ print(opts)
 
 \subsection{Under the hood (advanced)}
 The \code{devOptions()} function tries as far as possible to infer the default options from the default arguments of the device function and any additional options for that device, e.g. \code{formals(pdf)} and \code{pdf.options()}.  Likewise, when setting an option it uses the standard interfaces to do so, whenever possible.  This means that for instance \code{pdf()} will also be affected by \code{devOptions("pdf", width=5)}.  Note that this may not be the case for all devices, because their options cannot be set.  Instead they are all specified as arguments when opening the device, e.g. \code{png()} will \emph{not} be affected by \code{devOptions("png", width=1024)}.
-This is why we recommend to always use \code{devNew()} in place of \code{dev.new()}, or better, \code{devEval()} or the corresponding \code{toNnn()} function, which all respects the options set via \code{devOptions()}.
+This is why we recommend to always use \code{devNew()} in place of \code{dev.new()}, or better, \code{devEval()} or the corresponding \code{toNNN()} function, which all respects the options set via \code{devOptions()}.
 
 
 

@@ -7,10 +7,10 @@
 % 2. Go to the help page of this package, and go to the subpage
 %    'Overview of user guides and package vignettes'
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-%\VignetteIndexEntry{Overview}
+%\VignetteIndexEntry{R.devices overview}
 %\VignetteKeyword{devices, graphics, plots, figures}
-%\VignetteSource{Overview.tex.rsp}
-%\VignetteBuild{R.rsp::rsp("Overview.tex.rsp")}
+%\VignetteSource{R.devices-overview.tex.rsp}
+%\VignetteBuild{R.rsp::rsp("R.devices-overview.tex.rsp")}
 \documentclass{article}
 \begin{document}
 \end{document}
