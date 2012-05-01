@@ -90,7 +90,7 @@ Feedback is very much appreciated.}
 When creating image files using one of the built-in R device functions (e.g. \code{pdf()}) several device specific arguments needs to the specified.  This makes it tedious to change the output format.  For instance, when first creating a PDF file (\code{file="figure.pdf"}) with aspect ratio 0.6 (\code{width=7, height=0.6*7}), it is necessary to modify at least three of the arguments (\code{file="figure.png", width=480, height=0.6*480}).
 
 \subsection{devEval()}
-To overcome these and other hurdles, the \code{devEval()} was created.  When using \code{devEval()} only one argument has to be modified.  For instance,
+To overcome the above and other hurdles, the \code{devEval()} function was created.  When using \code{devEval()} there is only one argument to modify.  For instance,
 \begin{rspVerbatim}
 devEval("pdf", name="figure", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
@@ -134,7 +134,7 @@ All figures created by \code{devEval()} (and hence the \code{toNnn()} functions)
 \end{rspVerbatim}
 
 \subsection{Names and comma-separated tags}
-The filename used by \code{devEval()/toNnn()}, is made up of argument \code{name}, followed by comma-separated argument \code{tags} (an optional character vector) and a filename extension (specified by the device type).  Argument \code{tags} is convenient way to adjust the filename, e.g.
+The filename used by \code{devEval()/toNnn()}, is made up of argument \code{name}, followed by comma-separated argument \code{tags} (an optional character vector) and a filename extension (specified by the device type).  Argument \code{tags} provides a convenient way to adjust the filename, e.g.
 \begin{rspVerbatim}
 for (ar in c(0.6, 0.8)) \{
   arTag <- sprintf("aspect=%g", ar)
@@ -151,9 +151,9 @@ which creates six images files (\file{figure,aspect=0.6,scale=2.eps}, \file{figu
 
 
 \subsection{No more incomplete image files}
-The \code{devEval()} and the \code{toNnn()} functions creates image files atomically.
+The \code{devEval()/toNnn()} functions create image files atomically.
 When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{\{ png(...); { ... }; dev.off() \}}), there is a great risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
-By contrast, \code{devEval()} and the \code{toNnn()} functions guarantee that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
+By contrast, \code{devEval()/toNnn()} guarantees that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
 \begin{rspVerbatim}
 toPDF("figure", \{
   curve(dnorm, from=-5, to=+5)
