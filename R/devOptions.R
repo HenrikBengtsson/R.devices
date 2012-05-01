@@ -267,6 +267,15 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     throw("Cannot query/modify device options. Unknown device: ", type);
   }
 
+  # Additional arguments
+  args <- list(...);
+  nargs <- length(args);
+  if (nargs > 0) {
+    if (is.null(names(args))) {
+      throw("Optional ('...') arguments must be named.");
+    }
+  }
+
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Locate the nnn.options() function for this type of device
@@ -298,9 +307,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Assign user arguments, iff possible
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # User arguments
-  args <- list(...);
-  if (length(args) > 0) {
+  if (nargs > 0) {
     do.call("setDevOptions", args=c(list(type), args));
   
     # Only for certain devices...
@@ -384,7 +391,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
 
   # Return invisibly?
-  if (length(args) > 0) {
+  if (nargs > 0) {
     invisible(opts);
   } else {
     opts;

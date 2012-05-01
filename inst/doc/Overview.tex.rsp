@@ -3,6 +3,12 @@
 <%
 library("R.devices");
 pkg <- Package("R.devices");
+
+# Workaround (to be removed when R.utils has been cleaned up)
+devOptions <- R.devices::devOptions;
+devEval <- R.devices::devEval;
+devNew <- R.devices::devNew;
+
 devOptions("png", width=840);
 options(width=85);
 options(digits=3);
@@ -27,6 +33,7 @@ options(str=strOptions(strict.width="cut"));
 \addtolength{\textwidth}{1in}
 \addtolength{\topmargin}{-0.5in}	
 \addtolength{\textheight}{1in}
+\setlength{\parindent}{0in}
 
 % Placement of floats
 \setcounter{bottomnumber}{2}
@@ -76,79 +83,126 @@ Feedback is very much appreciated.}
 \label{secIntroduction}
 
 
-\section{Details}
-\label{secDetails}
-
 <%-------------------------------------------------------------------
   CREATING IMAGE FILES
   -------------------------------------------------------------------%>
 \section{Creating image files}
+When creating image files using one of the built-in R device functions several device specific arguments needs to the specified.  This makes it tedious to change the output format.  For instance, when first creating a PDF file (\code{file="figure.pdf"}) with aspect ratio 0.6 (\code{width=7, height=0.6*7}), it is necessary to modify at least three of the arguments (\code{file="figure.png", width=840, height=0.68*840}).
+Instead, when using the \code{devEval()} function only one argument has to be modified.  For instance,
+\begin{rspVerbatim}
+devEval("pdf", name="figure", aspectRatio=0.6, \{
+  curve(dnorm, from=-5, to=+5)
+\})
+\end{rspVerbatim}
+creates a PDF file named 'figure.pdf' that is 7.0 inches wide and 4.2 inches tall, whereas
+\begin{rspVerbatim}
+devEval("png", name="figure", aspectRatio=0.6, \{
+  curve(dnorm, from=-5, to=+5)
+\})
+\end{rspVerbatim}
+creates a PNG file named 'figure.png' that is 480 pixels wide and 288 pixels tall.  For default dimensions, see Section~\ref{secOptions}.
+By specifying the \code{scale} argument, it is possible to create an image file with a smaller or a large dimension that the default, e.g.
+\begin{rspVerbatim}
+devEval("png", name="figure,large", aspectRatio=0.6, scale=2, \{
+  curve(dnorm, from=-5, to=+5)
+\})
+\end{rspVerbatim}
+creates a PNG file named 'figure,large.png' that is 960 pixels wide and 576 pixels tall.
+
+\subsection{Names and tags}
+This example also illustrates how the final file name is composed by merging the \code{name} and \code{tags} arguments using comma separation and appending a filename extension that is specific to the device.
+
+
 \subsection{toNnn(..., \{$<$expression$>$\})}
 The \code{toPDF()} and \code{toPNG()} functions are useful when creating image files.  For instance,
-\begin{verbatim}
+\begin{rspVerbatim}
 # Use greater objects by default
 setOption("devNew/args/par", list(lwd=2));
 
-toPDF("myFigure,yeah,cool", aspectRatio=0.6, { 
+toPDF("myFigure,yeah,cool", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
-})
-\end{verbatim}
+\})
+\end{rspVerbatim}
 creates a PDF image file named \code{myFigure,yeah,cool.png} whose height is 60\% of its width and displays the Guassian density distribution.
   Moreover, by default all \code{toNNN()} functions writes the image file to the figures/ directory.  For more information, see \code{help("toPDF")}.\\
-
-\begin{figure}[htp]
- \begin{center}
- \resizebox{0.70\textwidth}{!}{%
-  \includegraphics{<%=toPDF("MyFigure,yeah,cool", aspectRatio=0.6, {
-   curve(dnorm, from=-5, to=+5);
-  })%>}
- }%
- \end{center}
- \caption{This figure was generated and inserted into the LaTeX document by RSP-embedded markup.}
- \label{fig:MyFigure}
-\end{figure}
 
 \subsection{devEval(..., \{$<$expression$>$\})}
 The above \code{toNnn()} functions are wrappers that call \code{devEval(nnn, ...)}.
 
 
-\section{Setting graphical options}
+\subsection{Never again incomplete image files}
+The \code{devEval()} and the \code{toNnn()} functions creates image files atomically.
+When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{png(...); { ... }; dev.off()}), there is a great risk of the creating an incomplete file if an error or an interrupt occurs while plotting.
+By contrast, \code{devEval()} and the \code{toNnn()} functions guarantee that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
+\begin{rspVerbatim}
+toPDF("figure", \{
+  curve(dnorm, from=-5, to=+5)
+  abline(v=log("a"))
+\})
+\end{rspVerbatim}
+because the last statement generates an error.
+To further lower the risk for incomplete image files, for instance due to abrupt power failures, all image files are first written to a temporary file which is renamed to the final file only when the plotting is complete.  This is useful in large non-interactive batch jobs creating hundreds or thousands of image files.
+
+
+
+\subsection{Including images in RSP-embedded LaTeX files}
+By using RSP-markup, image files can be included in for instance LaTeX, Sweave and knitr documents in a very clean fashion.  For instance, the plot in Figure~\ref{fig:MyFigure} was included as:
+\begin{rspVerbatim}
+{\bs}includegraphics\{<\%=toPDF("MyFigure", aspectRatio=0.6, \{
+  curve(dnorm, from=-5, to=+5);
+\})\%>\}
+\end{rspVerbatim}
+\begin{figure}[htp]
+ \begin{center}
+ \resizebox{0.70\textwidth}{!}{%
+  \includegraphics{<%=toPDF("MyFigure", aspectRatio=0.6, {
+   curve(dnorm, from=-5, to=+5);
+  })%>}
+ }%
+ \end{center}
+ \caption{This figure was generated using \code{toPDF()} and then include into the LaTeX document using RSP.}
+ \label{fig:MyFigure}
+\end{figure}
+For more details on RSP, see the vignettes of the \pkg{R.rsp} package (available on \href{cran.r-project.org/package=R.rsp}{CRAN}).
+
+
+
+\section{Setting default device options}
+\label{secOptions}
 The \code{devOptions()} function provides a unified interface to getting and settings common options for the various graphical devices available in R.
 When using one of the \code{toNnn()} functions, \code{devEval()} or \code{devNew()}, the device options used are given by \code{devOptions()}.  For example, to see the current settings used by PNG device, do:
-\begin{verbatim}
+\begin{rspVerbatim}
 <% devOptions("png", reset=TRUE) %>
 <%=evalWithEcho({
 devOptions("png")
 })%>
-\end{verbatim}
+\end{rspVerbatim}
 
 To change one or several options, do:
-\begin{verbatim}
+\begin{rspVerbatim}
 <%=evalWithEcho({
 devOptions("png", width=1024, bg="lightblue")
 })%>
-\end{verbatim}
+\end{rspVerbatim}
 
 To reset the options back to the built-in defaults, do:
-\begin{verbatim}
+\begin{rspVerbatim}
 <%=evalWithEcho({
 devOptions("png", reset=TRUE)
 })%>
-\end{verbatim}
+\end{rspVerbatim}
 
 To get an overview of a set of common options for the supported devices, do:
-\begin{verbatim}
+\begin{rspVerbatim}
 <%=evalWithEcho({
 knownDevices <- eval(formals(devOptions)$type)
 fields <- c("width", "height", "bg", "fg", "pointsize")
-opts <- sapply(knownDevices, FUN=function(type) {
-  devOptions(type)[fields]
-})
+opts <- sapply(knownDevices, FUN=function(type) devOptions(type)[fields])
 rownames(opts) <- fields
 opts <- t(opts)
 print(opts)
 })%>
-\end{verbatim}
+\end{rspVerbatim}
 
 
 \subsection{Under the hood (advanced)}
