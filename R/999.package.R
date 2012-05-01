@@ -7,31 +7,24 @@
 #
 # \section{To get started}{
 #   \itemize{
+#    \item See the package vignettes.
 #    \item @see "toEPS", @see "toPDF", @see "toPNG", ... - evaluate 
-#     graphics code and atomically save plot to a figure file.
+#          graphics code and atomically save plot to a figure file.
 #   }
 # }
 #
 # \section{How to cite this package}{
-#   Whenever using this package, please cite [1] as
-#
-#   @howtocite "R.oo"
+#   To cite this package, please use:
+# \preformatted{
+# @eval "paste(capture.output(toBibtex(citation(package='R.devices'))), collapse='\n')"
+# }
 # }
 #
-#
-# @author
+# \author{
+#  @eval "packageDescription('R.devices')$Author".
+# }
 #
 # \section{License}{
-#   The releases of this package is licensed under 
-#   LGPL version 2.1 or newer.
-#
-#   The development code of the packages is under a private licence 
-#   (where applicable) and patches sent to the author fall under the
-#   latter license, but will be, if incorporated, released under the
-#   "release" license above.
-# }
-#
-# \section{References}{
-# [1] @include "../incl/BengtssonH_2003.bib.Rdoc" \cr
+#  @eval "packageDescription('R.devices')$License".
 # }
 #*/#########################################################################  

@@ -54,7 +54,7 @@ options(str=strOptions(strict.width="cut"));
 
 \title{<%=getName(pkg)%>}
 \author{<%=getAuthor(pkg)%>}
-\date{April 30, 2012}
+\date{May 1, 2012}
 
 \begin{document}
 
@@ -70,7 +70,7 @@ The \pkg{R.devices} package provides utility methods that enhance the existing g
 Feedback is very much appreciated.}
 \end{center}
 
-\clearpage
+%\clearpage
 \tableofcontents
 
 \clearpage
@@ -78,8 +78,8 @@ Feedback is very much appreciated.}
 <%-------------------------------------------------------------------
   BACKGROUND
   -------------------------------------------------------------------%>
-\section{Introduction}
-\label{secIntroduction}
+%\section{Introduction}
+%\label{secIntroduction}
 
 
 <%-------------------------------------------------------------------
@@ -127,7 +127,7 @@ tos <- sprintf("%s()", tos);
 The following \code{toNnn()} functions are currently available: <%=hpaste(sprintf("\\code{%s}", tos), maxHead=Inf, lastCollapse=", and ")%>.
 
 \subsection{Setting default output directory}
-All figures created by \code{devEval()} (and hence the \code{toNnn()} functions) are by default written to the \file{figures/} directory (created if missing), which can be overridden by passing argument \code{path} to \code{devEval()}.  The default figure path can be change by setting option \code{"devEval/args/path"}, which will be created if needed, e.g.
+All figures created by \code{devEval()/toNnn()} are by default written to the \file{figures/} directory (created if missing), which can be overridden by passing argument \code{path} to \code{devEval()}.  The default figure path can be change by setting option \code{"devEval/args/path"}, which will be created if needed, e.g.
 \begin{rspVerbatim}
  options("devEval/args/path"="figures/col/")
 \end{rspVerbatim}
@@ -147,6 +147,12 @@ for (ar in c(0.6, 0.8)) \{
 \end{rspVerbatim}
 which creates six images files (\file{figure,aspect=0.6,scale=2.eps}, \file{figure,aspect=0.6,scale=3.eps}, ..., and \file{figure,aspect=0.8,scale=4.eps}).
 
+\subsection{Overwriting existing figure files}
+By default, existing figure files created by \code{devEval()/toNnn()} are overwritten wihtout notice.  By passing argument \code{force=FALSE} to \code{devEval()}, existing figure files will be skipped.  To change the default, set option \code{"devEval/args/force"}, e.g.
+\begin{rspVerbatim}
+ options("devEval/args/force"=FALSE)
+\end{rspVerbatim}
+Note that whenever a figure is skipped this way, it also means that none of the expressions in \code{devEval(..., \{<exprs>\})} is executed.  This will speed up the processing, but it also means that the rest of your code must not rely on such code being executed.
 
 
 \subsection{No more incomplete image files}

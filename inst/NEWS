@@ -2,9 +2,10 @@
 Package: R.devices
 ==================
 
-Version: 2.1.1 [2012-04-30]
+Version: 2.1.1 [2012-05-01]
 o Now devOptions() returns options invisibly if some options were set,
   otherwise not, e.g. devOptions() versus devOptions("png", width=1024).
+o Added a first draft of a package vignette.
 
 
 Version: 2.1.0 [2012-04-27]
