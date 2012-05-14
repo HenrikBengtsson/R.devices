@@ -102,7 +102,7 @@ devEval("png", name="figure", aspectRatio=0.6, \{
 \})
 \end{rspVerbatim}
 creates a PNG file named \file{figure.png} that is 480 pixels wide and 288 pixels tall.  For default dimensions, see Section~\ref{secOptions}.
-By specifying the \code{scale} argument, it is possible to create an image file with a smaller or a large dimension relative to that of the default, e.g.
+By specifying the \code{scale} argument, it is possible to create an image file with a smaller or a larger dimension relative to that of the default, e.g.
 \begin{rspVerbatim}
 devEval("png", name="figure,large", aspectRatio=0.6, scale=2, \{
   curve(dnorm, from=-5, to=+5)
