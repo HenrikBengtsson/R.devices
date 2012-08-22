@@ -54,7 +54,7 @@ options(str=strOptions(strict.width="cut"));
 
 \title{<%=getName(pkg)%>}
 \author{<%=getAuthor(pkg)%>}
-\date{May 1, 2012}
+\date{August 21, 2012}
 
 \begin{document}
 
@@ -141,7 +141,7 @@ for (ar in c(0.6, 0.8)) \{
     scaleTag <- sprintf("scale=%d", sc)
     toEPS("figure", tags=c(arTag, scaleTag), aspectRatio=ar, scale=sc, \{
       curve(dnorm, from=-5, to=+5)
-    \}
+    \})
   \}
 \})
 \end{rspVerbatim}
@@ -157,7 +157,7 @@ Note that whenever a figure is skipped this way, it also means that none of the 
 
 \subsection{No more incomplete image files}
 The \code{devEval()/toNNN()} functions create image files atomically.
-When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{png(...); \{...\}; dev.off()}), there is a great risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
+When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{png(...); \{...\}; dev.off()}), there is a risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
 By contrast, \code{devEval()/toNNN()} guarantees that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
 \begin{rspVerbatim}
 toPDF("figure", \{

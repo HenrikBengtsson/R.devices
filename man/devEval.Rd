@@ -19,15 +19,14 @@
  \usage{devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, ..., ext=substitute(type), filename=sprintf("\%s.\%s", paste(c(name, tags), collapse = ","), ext), path=getOption("devEval/args/path", "figures/"), field=NULL, onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE))}
 
  \arguments{
-   \item{type}{Specifies the type of device to be used by
-     \code{\link[R.utils]{devNew}}.}
+   \item{type}{Specifies the type of device to be used by \code{\link{devNew}}().}
    \item{expr}{The \code{\link[base]{expression}} of graphing commands to be evaluated.}
    \item{envir}{The \code{\link[base]{environment}} where \code{expr} should be evaluated.}
    \item{name, tags}{The fullname name of the image is specified
      as the name with optional comma-separated tags appended.}
    \item{ext}{The filename extension of the image file generated, if any.
     By default, it is inferred from argument \code{type}.}
-   \item{...}{Additional arguments passed to \code{\link[R.utils]{devNew}}.}
+   \item{...}{Additional arguments passed to \code{\link{devNew}}().}
    \item{filename}{The filename of the image saved, if any.
      See also below.}
    \item{path}{The directory where then image should be saved, if any.}

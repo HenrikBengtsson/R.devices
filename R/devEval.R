@@ -10,15 +10,14 @@
 # @synopsis
 #
 # \arguments{
-#   \item{type}{Specifies the type of device to be used by
-#     @see "R.utils::devNew".}
+#   \item{type}{Specifies the type of device to be used by @see "devNew".}
 #   \item{expr}{The @expression of graphing commands to be evaluated.}
 #   \item{envir}{The @environment where \code{expr} should be evaluated.}
 #   \item{name, tags}{The fullname name of the image is specified
 #     as the name with optional comma-separated tags appended.}
 #   \item{ext}{The filename extension of the image file generated, if any.
 #    By default, it is inferred from argument \code{type}.}
-#   \item{...}{Additional arguments passed to @see "R.utils::devNew".}
+#   \item{...}{Additional arguments passed to @see "devNew".}
 #   \item{filename}{The filename of the image saved, if any.
 #     See also below.}
 #   \item{path}{The directory where then image should be saved, if any.}
@@ -172,6 +171,8 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
 ############################################################################
 # HISTORY: 
+# 2012-08-21
+# o DOCUMENTATION: Link to devNew() help was broken.
 # 2012-04-30
 # o Extracted devEval() to devEval.R.
 # 2012-04-05
