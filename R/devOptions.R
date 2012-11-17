@@ -110,7 +110,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     key <- optList[[type]];
 
     # Sanity check
-    stopifnot(length(key) == 1);
+    stopifnot(length(key) == 1L);
 
     # Does the nnn.function() already exists?
     envir <- getNamespace("grDevices");
@@ -169,7 +169,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
       dim <- paperSizes[[paper]];
 
       # Replace "special" 0:s with NA:s, to indicate they are missing
-      dim[dim == 0] <- as.double(NA);
+      dim[dim == 0L] <- as.double(NA);
     } else {
       dim <- c(options$width, options$height);
     }
@@ -195,7 +195,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
       opts <- NULL;
     } else {
       args <- list(...);
-      if (length(args) > 0) {
+      if (length(args) > 0L) {
         for (key in names(args)) {
           opts[[key]] <- args[[key]];
         }
@@ -213,15 +213,15 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
     parts <- strsplit(devs, split="::", fixed=TRUE);
     devs <- lapply(parts, FUN=function(s) {
-      if (length(s) > 1) {
-        envir <- getNamespace(s[1]);
-        s <- s[-1];
+      if (length(s) > 1L) {
+        envir <- getNamespace(s[1L]);
+        s <- s[-1L];
       } else {
-        envir <- as.environment(-1);
+        envir <- as.environment(-1L);
       }
 
-      if (exists(s[1], envir=envir, mode="function")) {
-        get(s[1], envir=envir, mode="function");
+      if (exists(s[1L], envir=envir, mode="function")) {
+        get(s[1L], envir=envir, mode="function");
       } else {
         default;
       }
@@ -270,7 +270,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # Additional arguments
   args <- list(...);
   nargs <- length(args);
-  if (nargs > 0) {
+  if (nargs > 0L) {
     if (is.null(names(args))) {
       throw("Optional ('...') arguments must be named.");
     }
@@ -307,7 +307,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Assign user arguments, iff possible
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (nargs > 0) {
+  if (nargs > 0L) {
     do.call("setDevOptions", args=c(list(type), args));
   
     # Only for certain devices...
@@ -384,14 +384,14 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     }
 
     if (!is.null(dim)) {
-      opts$width <- dim[1];
-      opts$height <- dim[2];
+      opts$width <- dim[1L];
+      opts$height <- dim[2L];
     }
   }
 
 
   # Return invisibly?
-  if (nargs > 0) {
+  if (nargs > 0L) {
     invisible(opts);
   } else {
     opts;

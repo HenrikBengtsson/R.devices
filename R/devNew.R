@@ -152,7 +152,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   # Rescale 'width' & 'height' by argument 'scale'?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-  if (!is.null(scale) && scale != 1) {
+  if (!is.null(scale) && scale != 1.0) {
     width <- args$width;
 
     # Infer 'width' from the settings
@@ -222,7 +222,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # Default and user-specific parameters
   parT <- getOption("devNew/args/par", list());
   parT <- c(parT, par);
-  if (length(parT) > 0) {
+  if (length(parT) > 0L) {
     par(parT);
   }
 

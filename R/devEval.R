@@ -79,7 +79,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
   fullname <- paste(c(name, tags), collapse=",");
   fullname <- unlist(strsplit(fullname, split=",", fixed=TRUE));
   fullname <- trim(fullname);
-  fullname <- fullname[nchar(fullname) > 0];
+  fullname <- fullname[nchar(fullname) > 0L];
   fullname <- paste(fullname, collapse=",");
 
   # Argument 'field':
@@ -128,7 +128,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
           # Rename incomplete image file to denote that
           # it is incomplete.
           pattern <- "^(.*)[.]([^.]*)$";
-          if (regexpr(pattern, pathname) != -1) {
+          if (regexpr(pattern, pathname) != -1L) {
             fullname <- gsub(pattern, "\\1", pathname);
             ext <- gsub(pattern, "\\2", pathname);
             fmtstr <- sprintf("%s,INCOMPLETE_%%03d.%s", fullname, ext);
@@ -137,7 +137,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
           }
 
           # Try to rename
-          for (kk in 1:999) {
+          for (kk in seq_len(999)) {
             pathnameN <- sprintf(fmtstr, kk);
             if (isFile(pathnameN)) next;
             res <- file.rename(pathname, pathnameN);
