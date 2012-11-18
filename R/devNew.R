@@ -102,7 +102,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # Argument 'label':
   if (!is.null(label)) {
     if (any(label == names(devList())))
-      stop("Cannot open device. Label is already used: ", label);
+      throw("Cannot open device. Label is already used: ", label);
   }
 
 
@@ -232,6 +232,8 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 
 ############################################################################
 # HISTORY: 
+# 2012-11-18
+# o Replaced all stop() with throw().
 # 2012-04-30
 # o Moved devNew() to devNew.R.
 # 2012-02-26

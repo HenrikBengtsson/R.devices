@@ -117,7 +117,7 @@ devGetLabel <- function(which=dev.cur(), ...) {
   dev <- devList[which];
   label <- names(dev);
   if (is.na(label) || dev[[1L]] == "")
-    stop("No such device: ", which);
+    throw("No such device: ", which);
   label;
 } # devGetLabel()
 
@@ -158,7 +158,7 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
     which <- .devIndexOf(which);
   devList <- .devList();
   if (devList[[which]] == "")
-    stop("No such device: ", which);
+    throw("No such device: ", which);
 
   # Update the label
   if (is.null(label))
@@ -224,7 +224,7 @@ devSet <- function(which=dev.next(), ...) {
   }
 
   if (which < 2L) {
-    stop("Cannot set device: ", which);
+    throw("Cannot set device: ", which);
   }
 
 
@@ -397,7 +397,7 @@ devDone <- function(which=dev.cur(), ...) {
   idx <- match(label, names(devList));
   if (is.na(idx) || devList[[idx]] == "") {
     if (error)
-      stop("No such device: ", label);
+      throw("No such device: ", label);
   }
   idx;
 } # .devIndexOf()
@@ -422,6 +422,8 @@ devDone <- function(which=dev.cur(), ...) {
 
 ############################################################################
 # HISTORY: 
+# 2012-11-18
+# o Replaced all stop() with throw().
 # 2012-04-30
 # o Moved devNew() to devNew.R.
 # o Moved devEval() to devEval.R.

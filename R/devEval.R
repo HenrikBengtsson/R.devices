@@ -78,8 +78,9 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
   # Argument 'name' and 'tags':
   fullname <- paste(c(name, tags), collapse=",");
   fullname <- unlist(strsplit(fullname, split=",", fixed=TRUE));
-  fullname <- trim(fullname);
-  fullname <- fullname[nchar(fullname) > 0L];
+  fullname <- sub("^[\t\n\f\r ]*", "", fullname); # trim tags
+  fullname <- sub("[\t\n\f\r ]*$", "", fullname); #
+  fullname <- fullname[nchar(fullname) > 0L];     # drop empty tags
   fullname <- paste(fullname, collapse=",");
 
   # Argument 'field':
