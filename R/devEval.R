@@ -138,7 +138,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
           }
 
           # Try to rename
-          for (kk in seq_len(999)) {
+          for (kk in seq_len(999L)) {
             pathnameN <- sprintf(fmtstr, kk);
             if (isFile(pathnameN)) next;
             res <- file.rename(pathname, pathnameN);
