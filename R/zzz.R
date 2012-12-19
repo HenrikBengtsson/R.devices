@@ -8,9 +8,7 @@
   pkg <- Package(pkgname);
   pos <- getPosition(pkg);
   assign(pkgname, pkg, pos=pos);
-
-  packageStartupMessage(getName(pkg), " v", getVersion(pkg), " (", 
-    getDate(pkg), ") successfully loaded. See ?", pkgname, " for help.");
+  startupMessage(pkg);
 }
 
 ############################################################################

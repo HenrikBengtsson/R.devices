@@ -2,6 +2,10 @@
 Package: R.devices
 ==================
 
+Version: 2.1.4 [2012-12-19]
+o Utilizing new startupMessage() of R.oo.
+
+
 Version: 2.1.3 [2012-11-19]
 o DOCUMENTATION: Minor corrections and clarifications in the vignette.
 o CONSISTENCY: Now using throw() instead of stop() everywhere.
