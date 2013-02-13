@@ -2,6 +2,10 @@
 Package: R.devices
 ==================
 
+Version: 2.1.5 [2013-02-13]
+o Specifying new DESCRIPTION field 'VignetteBuilder'.
+
+
 Version: 2.1.4 [2012-12-19]
 o Utilizing new startupMessage() of R.oo.
 
