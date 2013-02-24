@@ -23,12 +23,12 @@
  }
 
  \usage{
-   toBMP(name, ..., field="fullname")
-   toEPS(name, ..., field="fullname")
-   toPDF(name, ..., field="fullname")
-   toPNG(name, ..., field="fullname")
-   toSVG(name, ..., field="fullname")
-   toTIFF(name, ..., field="fullname")
+   toBMP(name, ..., field=getOption("devEval/args/field", "fullname"))
+   toEPS(name, ..., field=getOption("devEval/args/field", "fullname"))
+   toPDF(name, ..., field=getOption("devEval/args/field", "fullname"))
+   toPNG(name, ..., field=getOption("devEval/args/field", "fullname"))
+   toSVG(name, ..., field=getOption("devEval/args/field", "fullname"))
+   toTIFF(name, ..., field=getOption("devEval/args/field", "fullname"))
  }
 
  \arguments{

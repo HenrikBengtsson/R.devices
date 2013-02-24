@@ -2,6 +2,13 @@
 Package: R.devices
 ==================
 
+Version: 2.1.6 [2013-02-13]
+o Changed default argument 'field' for devEval() from NULL to
+  getOption("devEval/args/field", NULL).
+o Changed default argument 'field' for toNNN() from "fullname"
+  to getOption("devEval/args/field", "fullname").
+
+
 Version: 2.1.5 [2013-02-13]
 o Specifying new DESCRIPTION field 'VignetteBuilder'.
 

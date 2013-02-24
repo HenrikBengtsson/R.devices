@@ -10,7 +10,7 @@
 %\VignetteIndexEntry{R.devices overview}
 %\VignetteKeyword{devices, graphics, plots, figures}
 %\VignetteSource{R.devices-overview.tex.rsp}
-%\VignetteBuild{R.rsp::rsp("R.devices-overview.tex.rsp")}
+%\VignetteBuild{R.rsp::rfile}
 \documentclass{article}
 \begin{document}
 \end{document}

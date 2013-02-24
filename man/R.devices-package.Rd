@@ -32,8 +32,8 @@
 @Manual{,
   title = {R.devices: Enhanced methods for handling graphical devices},
   author = {Henrik Bengtsson},
-  year = {2012},
-  note = {R package version 2.1.2},
+  year = {2013},
+  note = {R package version 2.1.6},
 }
 }
 }
