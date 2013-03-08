@@ -1,3 +1,11 @@
+<%-------------------------------------------------------------------
+  DIRECTIVES FOR R:
+
+  %\VignetteIndexEntry{R.devices overview}
+  %\VignetteKeyword{devices, graphics, plots, figures}
+  %\VignetteEngine{R.rsp::rsp}
+  -------------------------------------------------------------------%>
+
 <% t0 <- Sys.time() %>
 
 <%
@@ -234,17 +242,6 @@ print(opts)
 The \code{devOptions()} function tries as far as possible to infer the default options from the default arguments of the device function and any additional options for that device, e.g. \code{formals(pdf)} and \code{pdf.options()}.  Likewise, when setting an option it uses the standard interfaces to do so, whenever possible.  This means that for instance \code{pdf()} will also be affected by \code{devOptions("pdf", width=5)}.  Note that this may not be the case for all devices, because their options cannot be set.  Instead they are all specified as arguments when opening the device, e.g. \code{png()} will \emph{not} be affected by \code{devOptions("png", width=1024)}.
 This is why we recommend to always use \code{devNew()} in place of \code{dev.new()}, or better, \code{devEval()} or the corresponding \code{toNNN()} function, which all respects the options set via \code{devOptions()}.
 
-
-
-
-
-
-
-<%-------------------------------------------------------------------
-  REFERENCES
-  -------------------------------------------------------------------%>
-%\bibliographystyle{natbib}
-%\bibliography{PSCBS}
 
 
 <%-------------------------------------------------------------------

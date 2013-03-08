@@ -2,6 +2,12 @@
 Package: R.devices
 ==================
 
+Version: 2.2.0 [2013-03-07]
+o DOCUMENTATION: Preparing package vignettes for the upcoming 
+  R 3.0.0 support for non-Sweave vignettes.
+o Bumped up package dependencies.
+
+
 Version: 2.1.6 [2013-02-13]
 o Changed default argument 'field' for devEval() from NULL to
   getOption("devEval/args/field", NULL).
