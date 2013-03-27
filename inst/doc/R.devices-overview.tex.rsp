@@ -12,11 +12,6 @@
 library("R.devices");
 pkg <- Package("R.devices");
 
-# Workaround (to be removed when R.utils has been cleaned up)
-devOptions <- R.devices::devOptions;
-devEval <- R.devices::devEval;
-devNew <- R.devices::devNew;
-
 devOptions("png", width=840);
 options(width=85);
 options(digits=3);

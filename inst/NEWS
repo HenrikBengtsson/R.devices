@@ -2,6 +2,11 @@
 Package: R.devices
 ==================
 
+Version: 2.2.1 [2013-03-28]
+o Bumped up package dependencies.
+o Cleaned up the NAMESPACE file.
+
+
 Version: 2.2.0 [2013-03-07]
 o DOCUMENTATION: Preparing package vignettes for the upcoming 
   R 3.0.0 support for non-Sweave vignettes.

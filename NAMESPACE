@@ -1,6 +1,6 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # IMPORTS
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 importFrom("R.methodsS3", "throw")
 
 importFrom("R.oo", "Package")
@@ -8,17 +8,8 @@ importFrom("R.oo", "getPosition")
 importFrom("R.oo", "getName")
 importFrom("R.oo", "getVersion")
 importFrom("R.oo", "getDate")
-# To be removed, when R.oo declares S3 methods in namespace
-importFrom("R.oo", "getPosition.Package")
-importFrom("R.oo", "getName.Package")
-importFrom("R.oo", "getVersion.Package")
-importFrom("R.oo", "getDate.Package")
 
 import("R.utils")
-
-# Object that must exported explicitly
-## export(.conflicts.OK) 
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # EXPORTS
