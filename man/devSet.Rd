@@ -16,7 +16,9 @@
   Activates a device.
  }
 
- \usage{devSet(which=dev.next(), ...)}
+ \usage{
+devSet(which=dev.next(), ...)
+}
 
  \arguments{
    \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).
@@ -29,7 +31,7 @@
    Returns what \code{\link[grDevices:dev]{dev.set}()} returns.
  }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
  \seealso{
    \code{\link{devOff}}() and \code{\link{devDone}}().

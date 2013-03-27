@@ -17,7 +17,9 @@
   the postscript driver where some arguments have different default values.
  }
 
- \usage{eps(file="Rplot\%03d.eps", width=7, height=7, horizontal=FALSE, paper="special", ...)}
+ \usage{
+eps(file="Rplot\%03d.eps", width=7, height=7, horizontal=FALSE, paper="special", ...)
+}
 
  \arguments{
    \item{file}{Default file name (pattern).}
@@ -55,5 +57,5 @@
    \code{\link[grDevices]{postscript}}.
  }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 

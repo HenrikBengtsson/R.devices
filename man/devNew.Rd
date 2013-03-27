@@ -16,7 +16,9 @@
   Opens a new device.
  }
 
- \usage{devNew(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NULL, label=NULL)}
+ \usage{
+devNew(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NULL, label=NULL)
+}
 
  \arguments{
    \item{type}{A \code{\link[base]{character}} string specifying the type of device to be
@@ -59,7 +61,7 @@
    \code{aspectRatio} is ignored.
  }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
  \seealso{
    \code{\link{devDone}}() and \code{\link{devOff}}().

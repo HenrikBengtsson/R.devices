@@ -16,7 +16,9 @@
   Checks if a device is open or not.
  }
 
- \usage{devIsOpen(which=dev.cur(), ...)}
+ \usage{
+devIsOpen(which=dev.cur(), ...)
+}
 
  \arguments{
    \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
@@ -72,7 +74,7 @@ cat("Currently opened device:\n")
 print(devList())
 }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
 
 

@@ -44,7 +44,7 @@
    extension.
  }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
  \seealso{
    These functions are wrappers for \code{\link{devEval}}().

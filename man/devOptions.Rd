@@ -17,7 +17,9 @@
   the default arguments of the device function.
  }
 
- \usage{devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "windows", "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE)}
+ \usage{
+devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "windows", "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE)
+}
 
  \arguments{
    \item{type}{A \code{\link[base]{character}} string or a device \code{\link[base]{function}} specifying
@@ -67,7 +69,7 @@ opts <- t(opts)
 print(opts)
 }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
 
 

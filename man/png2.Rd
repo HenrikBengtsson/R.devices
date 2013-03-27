@@ -16,7 +16,9 @@
   A PNG device for Bitmap Files via GhostScript.
 }
 
-\usage{png2(filename, width=480, height=480, res=144, type="png256", ...)}
+\usage{
+png2(filename, width=480, height=480, res=144, type="png256", ...)
+}
 
 \arguments{
  \item{filename}{The name of the file to be produced.}
@@ -30,7 +32,7 @@
   Returns nothing.
 }
 
-\author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+\author{Henrik Bengtsson}
 
 
 \keyword{device}

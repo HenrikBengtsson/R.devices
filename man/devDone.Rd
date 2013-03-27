@@ -16,7 +16,9 @@
   Closes an open device unless it is a on-screen (interactive) device.
  }
 
- \usage{devDone(which=dev.cur(), ...)}
+ \usage{
+devDone(which=dev.cur(), ...)
+}
 
  \arguments{
    \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
@@ -27,7 +29,7 @@
    Returns nothing.
  }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
  \seealso{
    \code{\link{devOff}}().

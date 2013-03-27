@@ -16,7 +16,9 @@
   Opens a new device, evaluate (graphing) code, and closes device.
  }
 
- \usage{devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, ..., ext=substitute(type), filename=sprintf("\%s.\%s", paste(c(name, tags), collapse = ","), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE))}
+ \usage{
+devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, ..., ext=substitute(type), filename=sprintf("\%s.\%s", paste(c(name, tags), collapse = ","), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE))
+}
 
  \arguments{
    \item{type}{Specifies the type of device to be used by \code{\link{devNew}}().}
@@ -80,7 +82,7 @@ print(res$pathname)
 # [1] "figures/MyPlot,10,rnd.eps"
 }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
  \seealso{
    To change default device parameters such as the width or the height,

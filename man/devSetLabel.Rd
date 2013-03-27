@@ -16,7 +16,9 @@
   Sets the label of a device.
  }
 
- \usage{devSetLabel(which=dev.cur(), label, ...)}
+ \usage{
+devSetLabel(which=dev.cur(), label, ...)
+}
 
  \arguments{
    \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
@@ -28,7 +30,7 @@
    Returns nothing.
  }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
  \seealso{
    \code{\link{devGetLabel}}() and \code{\link{devList}}().

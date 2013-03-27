@@ -16,7 +16,9 @@
   Closes a device.
  }
 
- \usage{devOff(which=dev.cur(), ...)}
+ \usage{
+devOff(which=dev.cur(), ...)
+}
 
  \arguments{
    \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
@@ -27,7 +29,7 @@
    Returns what \code{\link[grDevices:dev]{dev.off}()} returns.
  }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
  \seealso{
    \code{\link{devDone}}().

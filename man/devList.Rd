@@ -16,7 +16,9 @@
   Lists the indices of the open devices named by their labels.
  }
 
- \usage{devList(...)}
+ \usage{
+devList(...)
+}
 
  \arguments{
    \item{...}{Not used.}
@@ -26,7 +28,7 @@
    Returns a named \code{\link[base]{integer}} \code{\link[base]{vector}}.
  }
 
- \author{Henrik Bengtsson (\url{http://www.braju.com/R/})}
+ \author{Henrik Bengtsson}
 
  \seealso{
    \code{\link[grDevices:dev]{dev.list}()}.
