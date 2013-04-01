@@ -2,6 +2,10 @@
 Package: R.devices
 ==================
 
+Version: 2.2.2 [2013-04-01]
+o Now package builds with both R.rsp (< 0.9.1) and R.rsp (>= 0.9.1).
+
+
 Version: 2.2.1 [2013-03-28]
 o Bumped up package dependencies.
 o Cleaned up the NAMESPACE file.
