@@ -2,6 +2,13 @@
 Package: R.devices
 ==================
 
+Version: 2.2.3 [2013-04-04]
+o ROBUSTNESS: Now devEval() does a better job of making sure to close
+  the same device as it opened.  Previously it would close the current
+  active device, which would not be the correct one if for instance
+  other devices had been open in the meanwhile/in parallel.
+
+
 Version: 2.2.2 [2013-04-01]
 o Now package builds with both R.rsp (< 0.9.1) and R.rsp (>= 0.9.1).
 
@@ -12,7 +19,7 @@ o Cleaned up the NAMESPACE file.
 
 
 Version: 2.2.0 [2013-03-07]
-o DOCUMENTATION: Preparing package vignettes for the upcoming 
+o DOCUMENTATION: Preparing package vignettes for the upcoming
   R 3.0.0 support for non-Sweave vignettes.
 o Bumped up package dependencies.
 
@@ -66,9 +73,9 @@ o The below change log shows the changes to the device methods while
 Version: 1.9.1 [2011-11-05]
 o Added devOptions().
 o Added default 'width' and 'height' values to eps().
-o Turned png2() and jpeg2() into plain functions without a generic.  
+o Turned png2() and jpeg2() into plain functions without a generic.
   This is consistent with how eps() is defined.
-o GENERALIZATION: Now the default 'width' is inferred from 
+o GENERALIZATION: Now the default 'width' is inferred from
   devOptions() if needed.
 o DOCUMENTATION: Added an example to help(devEval).
 
@@ -88,20 +95,20 @@ o Now devEval("jpg", ...) is recognized as devEval("jpeg", ...).
 
 
 Version: 1.7.3 [2011-04-02]
-o Now argument 'force' of devEval() defaults to 
+o Now argument 'force' of devEval() defaults to
   getOption("devEval/args/force", TRUE).
 
 
 Version: 1.7.2 [2011-03-18]
-o Now argument 'path' of devEval() defaults to 
+o Now argument 'path' of devEval() defaults to
   getOption("devEval/args/path", "figures/").
 o Now devEval() does a better job of "cleaning up" 'name' and 'tags'.
 
 
 Version: 1.7.1 [2011-03-18]
-o devNew() gained option 'devNew/args/par', which can be used to specify 
-  the default graphical parameters for devNew().  Any additional 
-  parameters passed via argument 'par' will override such default ones, 
+o devNew() gained option 'devNew/args/par', which can be used to specify
+  the default graphical parameters for devNew().  Any additional
+  parameters passed via argument 'par' will override such default ones,
   if both specifies the same parameter.
 o The automatic archiving of devEval() is not considered unless
   the R.archive package is loaded, regardless of option settings.
@@ -128,8 +135,8 @@ o Added argument 'aspectRatio' to devNew(), which updates/sets
 
 
 Version: 1.5.5 [2010-10-26]
-o Now argument 'which' to devSet() can be any object.  If not a 
-  single numeric or a single character string, then a checksum 
+o Now argument 'which' to devSet() can be any object.  If not a
+  single numeric or a single character string, then a checksum
   character string is generated using digest::digest(which).
 
 
@@ -149,11 +156,11 @@ o Added several functions for extending the current functions dealing
   in addition to the standard device index.  The devGetLabel() and
   devSetLabel() gets and sets the label of a give device.  devList()
   lists the indices of existing device named by their labels, cf.
-  dev.list().  The functions devSet() and devOff() work like 
-  dev.set() and dev.off() but accept labels as well.  Furthermore, 
-  devSet(idx) will open a device with index 'idx' if it does not 
+  dev.list().  The functions devSet() and devOff() work like
+  dev.set() and dev.off() but accept labels as well.  Furthermore,
+  devSet(idx) will open a device with index 'idx' if it does not
   exists, and devSet(label) a device with that label if not already
-  opened.  The devIsOpen() checks if a device is open or not. The 
+  opened.  The devIsOpen() checks if a device is open or not. The
   devDone() function calls devOff() except for screen devices.
 
 
@@ -162,9 +169,9 @@ o The default filename for eps() had extension *.ps not *.eps.
 
 
 Version: 0.7.6 [2006-02-15]
-o Since the png2() and jpeg2() devices are in this package, the eps() 
+o Since the png2() and jpeg2() devices are in this package, the eps()
   device from R.graphics has been moved here for consistency.
-	
+
 
 Version: 0.6.0 [2005-09-24]
 o Added trial versions of jpeg2() and png2().

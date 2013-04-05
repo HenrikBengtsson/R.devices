@@ -6,7 +6,7 @@
 # \description{
 #  @get "title".
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
@@ -63,15 +63,15 @@
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, ..., ext=substitute(type), filename=sprintf("%s.%s", paste(c(name, tags), collapse=","), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local functions
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'filename' & 'path':
   pathname <- Arguments$getWritablePathname(filename, path=path);
 
@@ -111,8 +111,10 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
     done <- FALSE;
 
     devNew(type, pathname, ...);
+    devIdx <- dev.cur();
     on.exit({
-      devDone();
+      # Make sure to close the device (the same that was opened)
+      devDone(devIdx);
 
       # Archive file?
       if (isPackageLoaded("R.archive")) {
@@ -156,7 +158,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
         } # if (onIncomplete == ...)
       } # if (!done && isFile(...))
     }, add=TRUE);
-  
+
     eval(expr, envir=envir);
     done <- TRUE;
   }
@@ -172,6 +174,11 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
 ############################################################################
 # HISTORY:
+# 2013-04-04
+# o ROBUSTNESS: Now devEval() does a better job of making sure to close
+#   the same device as it opened.  Previously it would close the current
+#   active device, which would not be the correct one if for instance
+#   other devices had been open in the meanwhile/in parallel.
 # 2013-02-23
 # o Now argument 'field' for devEval() defaults to
 #   getOption("devEval/args/field", NULL).
@@ -195,11 +202,11 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 # 2011-04-12
 # o Now devEval("jpg", ...) is recognized as devEval("jpeg", ...).
 # 2011-03-29
-# o Now argument 'force' of devEval() defaults to 
+# o Now argument 'force' of devEval() defaults to
 #   getOption("devEval/args/force", TRUE).
 # 2011-03-18
 # o Now devEval() does a better job of "cleaning up" 'name' and 'tags'.
-# o Now argument 'path' of devEval() defaults to 
+# o Now argument 'path' of devEval() defaults to
 #   getOption("devEval/args/path", "figures/").
 # 2011-03-16
 # o Now R.archive:ing is only done if the R.archive package is loaded.
