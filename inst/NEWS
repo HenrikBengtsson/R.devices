@@ -3,7 +3,7 @@ Package: R.devices
 ==================
 
 Version: 2.2.4 [2013-05-20]
-o Now all Rd \usage{} lines are at most 90 characters long.
+o CRAN POLICY: Now all Rd \usage{} lines are at most 90 characters long.
 
 
 Version: 2.2.3 [2013-04-04]
