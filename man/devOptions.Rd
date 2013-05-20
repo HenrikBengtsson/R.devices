@@ -18,7 +18,9 @@
  }
 
  \usage{
-devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "windows", "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE)
+devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
+  "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "windows",
+  "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE)
 }
 
  \arguments{

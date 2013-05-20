@@ -15,7 +15,7 @@
 
 
 \description{
-  This package provides utility methods that enhance the existing graphical device functions already available in R for the purpose of simplifying the creation of figure files of various image formats and much more.
+  This package provides utility methods that enhance the         existing graphical device functions already available in R for         the purpose of simplifying the creation of figure files of         various image formats and much more.
 }
 
 \section{To get started}{
@@ -33,7 +33,8 @@
   title = {R.devices: Enhanced methods for handling graphical devices},
   author = {Henrik Bengtsson},
   year = {2013},
-  note = {R package version 2.2.3},
+  note = {R package version 2.2.2},
+  url = {http://CRAN.R-project.org/package=R.devices},
 }
 }
 }

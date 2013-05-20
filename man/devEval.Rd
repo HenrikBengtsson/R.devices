@@ -17,7 +17,11 @@
 }
 
 \usage{
-devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, ..., ext=substitute(type), filename=sprintf("\%s.\%s", paste(c(name, tags), collapse = ","), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE))
+devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL,
+  ..., ext=substitute(type), filename=sprintf("\%s.\%s", paste(c(name,
+  tags), collapse = ","), ext), path=getOption("devEval/args/path", "figures/"),
+  field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename",
+  "keep"), force=getOption("devEval/args/force", TRUE))
 }
 
 \arguments{
