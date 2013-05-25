@@ -4,14 +4,14 @@
 # @title "Gets the default device options"
 #
 # \description{
-#  @get "title" as given by predefined devices options adjusted for 
+#  @get "title" as given by predefined devices options adjusted for
 #  the default arguments of the device function.
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
-#   \item{type}{A @character string or a device @function specifying 
+#   \item{type}{A @character string or a device @function specifying
 #      the device to be queried.}
 #   \item{custom}{If @TRUE, also the default settings specific to this
 #      function is returned. For more details, see below.}
@@ -42,7 +42,7 @@
 #  any device function needs to query also such options, which for instance
 #  is done by @see "devNew".
 #
-#  Also, for certain devices (eps, pdf, postscript, quartz, windows and x11), 
+#  Also, for certain devices (eps, pdf, postscript, quartz, windows and x11),
 #  builtin R device options are set.
 # }
 #
@@ -52,7 +52,7 @@
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "windows", "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
@@ -83,7 +83,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (.Platform$OS.type == "windows") {
     # To please R CMD check
-    windows.options <- NULL; rm("windows.options");
+    windows.options <- NULL; rm(list="windows.options");
     x11.options <- windows.options;
   }
 
@@ -158,7 +158,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
       letter    = c( 8.5 , 11   ),
       USr       = c(11   , 8.5  )
     );
-  
+
     paper <- tolower(options$paper);
     if (paper == "default") {
       paper <- getOption("papersize", "a4");
@@ -309,7 +309,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nargs > 0L) {
     do.call("setDevOptions", args=c(list(type), args));
-  
+
     # Only for certain devices...
     do.call("nnn.options", args=args);
   }
@@ -400,7 +400,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
 
 ############################################################################
-# HISTORY: 
+# HISTORY:
 # 2012-04-30
 # o Now devOptions() returns options invisibly if some options were set,
 #   otherwise not, e.g. devOptions() versus devOptions("png", width=1024).
