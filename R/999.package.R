@@ -7,8 +7,8 @@
 #
 # \section{To get started}{
 #   \itemize{
-#    \item See the package vignettes.
-#    \item @see "toEPS", @see "toPDF", @see "toPNG", ... - evaluate 
+#    \item Vignette '\href{../doc/index.html}{R.devices overview}'
+#    \item @see "toEPS", @see "toPDF", @see "toPNG", ... - evaluate
 #          graphics code and atomically save plot to a figure file.
 #   }
 # }
@@ -27,4 +27,4 @@
 # \section{License}{
 #  @eval "packageDescription('R.devices')$License".
 # }
-#*/#########################################################################  
+#*/#########################################################################

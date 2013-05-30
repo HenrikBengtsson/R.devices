@@ -3,7 +3,8 @@ Package: R.devices
 ==================
 
 Version: 2.3.0 [2013-05-30]
-o Now the package vignette is built via the R (>= 3.0.0) vignette engines.
+o Now the package vignette is built via the R (>= 3.0.0) vignette engines,
+  if available.
 
 
 Version: 2.2.4 [2013-05-20]
