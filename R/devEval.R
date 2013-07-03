@@ -65,6 +65,11 @@
 # @keyword utilities
 #*/###########################################################################
 devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, ..., ext=substitute(type), filename=sprintf("%s.%s", paste(c(name, tags), collapse=","), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
+  # WORKAROUND: Until Arguments$...() can be called without
+  # attaching R.utils. /HB 2013-07-03
+  pkgName <- "R.utils";
+  require(pkgName, character.only=TRUE) || throw("Package not loaded: R.utils");
+
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local functions
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -110,8 +115,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
   if (force || !isFile(pathname)) {
     done <- FALSE;
 
-    devNew(type, pathname, ...);
-    devIdx <- dev.cur();
+    devIdx <- devNew(type, pathname, ...);
     on.exit({
       # Make sure to close the device (the same that was opened)
       devDone(devIdx);

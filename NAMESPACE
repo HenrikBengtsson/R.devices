@@ -8,6 +8,7 @@ importFrom("R.oo", "getPosition")
 importFrom("R.oo", "getName")
 importFrom("R.oo", "getVersion")
 importFrom("R.oo", "getDate")
+importFrom("R.oo", "startupMessage")
 
 import("R.utils")
 

@@ -6,12 +6,12 @@
 # \description{
 #  @get "title".
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
-#   \item{type}{A @character string specifying the type of device to be 
-#     opened. This string should match the name of an existing device 
+#   \item{type}{A @character string specifying the type of device to be
+#     opened. This string should match the name of an existing device
 #     @function.}
 #   \item{...}{Additional arguments passed to the device @function, e.g.
 #     \code{width} and \code{height}.  If not given, the are inferred
@@ -28,7 +28,7 @@
 # }
 #
 # \value{
-#   Returns what the device @function returns.
+#   Returns the device index of the opened device.
 # }
 #
 # \section{Width and heights}{
@@ -40,13 +40,13 @@
 #
 # \section{Aspect ratio}{
 #   The aspect ratio of an image is the height relative to the width.
-#   If argument \code{height} is not given (or @NULL), it is 
+#   If argument \code{height} is not given (or @NULL), it is
 #   calculated as \code{aspectRatio*width} as long as they are given.
 #   Likewise, if argument \code{width} is not given (or @NULL), it is
 #   calculated as \code{width/aspectRatio} as long as they are given.
 #   If neither \code{width} nor \code{height} is given, then \code{width}
 #   defaults to \code{devOptions(type)$width}.
-#   If both \code{width} and \code{height} are given, then 
+#   If both \code{width} and \code{height} are given, then
 #   \code{aspectRatio} is ignored.
 # }
 #
@@ -59,11 +59,16 @@
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NULL, label=NULL) {
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # WORKAROUND: Until Arguments$...() can be called without
+  # attaching R.utils. /HB 2013-07-03
+  pkgName <- "R.utils";
+  require(pkgName, character.only=TRUE) || throw("Package not loaded: R.utils");
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local functions
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   cleanLength <- function(x, ...) {
     name <- substitute(x);
     if (is.null(x) || !is.numeric(x) || !is.finite(x)) {
@@ -73,9 +78,9 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
     x;
   } # cleanLength()
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'type':
   if (is.function(type)) {
   } else {
@@ -114,9 +119,9 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   args$height <- args$height;
 
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Update the 'height' by argument 'aspectRatio'?
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (!is.null(aspectRatio)) {
     width <- args$width;
     height <- args$height;
@@ -149,9 +154,9 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   } # if (!is.null(aspectRatio))
 
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Rescale 'width' & 'height' by argument 'scale'?
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (!is.null(scale) && scale != 1.0) {
     width <- args$width;
 
@@ -190,9 +195,9 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   }
 
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Device type aliases?
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (is.character(type)) {
     if (type == "jpg") {
       type <- "jpeg";
@@ -200,9 +205,9 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   }
 
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Exclude 'file' and 'filename' arguments?
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (is.character(type)) {
     knownInteractive <- grDevices:::.known_interactive.devices;
     if (is.element(tolower(type), tolower(knownInteractive))) {
@@ -212,12 +217,16 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   }
 
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Open device by calling device function
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   res <- do.call(type, args=args);
 
-  devSetLabel(label=label);
+  # Retrieve the index of the recently opened device
+  devIdx <- dev.cur();
+
+  # Set the label of the recently opened device
+  devSetLabel(which=devIdx, label=label);
 
   # Default and user-specific parameters
   parT <- getOption("devNew/args/par", list());
@@ -226,12 +235,14 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
     par(parT);
   }
 
-  invisible(res);
+  invisible(devIdx);
 } # devNew()
 
 
 ############################################################################
-# HISTORY: 
+# HISTORY:
+# 2013-07-03
+# o Now devNew() returns the index of the opened device.
 # 2012-11-18
 # o Replaced all stop() with throw().
 # 2012-04-30
@@ -249,8 +260,8 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 #   specified when both or neither of 'width' and 'height' are given,
 #   and 'aspectRatio' is 1.
 # 2011-03-18
-# o devNew() gained option 'devNew/args/par', which can be used to specify 
-#   the default graphical parameters for devNew().  Any additional 
+# o devNew() gained option 'devNew/args/par', which can be used to specify
+#   the default graphical parameters for devNew().  Any additional
 #   parameters passed via argument 'par' will override such default ones,
 #   if both specifies the same parameter.
 # 2011-03-16
@@ -265,7 +276,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 # o GENERALIZED: Argument 'aspectRatio' to devNew() can now updated
 #   either 'height' or 'width', depending on which is given.
 # 2011-02-13
-# o Added argument 'aspectRatio' to devNew(), which updates/set the 
+# o Added argument 'aspectRatio' to devNew(), which updates/set the
 #   'height', if argument 'width' is given, otherwise ignored.
 # 2008-09-08
 # o Now devNew() filters out arguments 'file' and 'filename' if the device

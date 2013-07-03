@@ -2,6 +2,15 @@
 Package: R.devices
 ==================
 
+Version: 2.4.0 [2013-07-03]
+o Now devNew() returns the index of the opened device.
+o Now devEval() and devNew(), and hence toPNG() and so on, can be 
+  called without attaching the package, e.g. R.devices::toPNG().
+o Now package only imports the R.utils package.  However, it will
+  attach ("load") R.utils as soon as devEval() or devNew() is called.
+o Bumped up package dependencies.
+
+
 Version: 2.3.0 [2013-05-30]
 o Now the package vignette is built via the R (>= 3.0.0) vignette engines,
   if available.
