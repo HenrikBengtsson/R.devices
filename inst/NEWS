@@ -6,7 +6,7 @@ Version: 2.4.0 [2013-07-03]
 o Now devNew() returns the index of the opened device.
 o Now devEval() and devNew(), and hence toPNG() and so on, can be 
   called without attaching the package, e.g. R.devices::toPNG().
-o Now package only imports the R.utils package.  However, it will
+o CLEANUP: Now package only imports the R.utils.  However, it will
   attach ("load") R.utils as soon as devEval() or devNew() is called.
 o Bumped up package dependencies.
 
