@@ -2,9 +2,18 @@
 Package: R.devices
 ==================
 
+Version: 2.4.2 [2013-07-15]
+o Added argument 'sep' to devEval() together with an option to set
+  its default value.
+
+
+Version: 2.4.1 [2013-07-12]
+o Updated how vignettes are built and included.
+
+
 Version: 2.4.0 [2013-07-03]
 o Now devNew() returns the index of the opened device.
-o Now devEval() and devNew(), and hence toPNG() and so on, can be 
+o Now devEval() and devNew(), and hence toPNG() and so on, can be
   called without attaching the package, e.g. R.devices::toPNG().
 o CLEANUP: Now package only imports the R.utils.  However, it will
   attach ("load") R.utils as soon as devEval() or devNew() is called.

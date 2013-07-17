@@ -33,7 +33,7 @@
   title = {R.devices: Enhanced methods for handling graphical devices},
   author = {Henrik Bengtsson},
   year = {2013},
-  note = {R package version 2.3.0},
+  note = {R package version 2.4.2},
 }
 }
 }

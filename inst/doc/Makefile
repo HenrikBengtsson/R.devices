@@ -7,7 +7,7 @@ all: vignettes tex index.html
 
 # Build all vignettes that has a %\VignetteBuild{} markup
 vignettes:
-	"$(R)" -e "if (getRversion() < 3) R.rsp::buildNonSweaveVignettes()"
+	"$(R)" -e "if (getRversion() < 3 || packageVersion('R.rsp') < '0.9.1') R.rsp::buildNonSweaveVignettes()"
 
 # Compile any TeX files for which a PDF is missing
 tex:
@@ -15,15 +15,17 @@ tex:
 
 # Create an HTML vignette index page
 index.html:
-	"$(R)" -e "if (getRversion() < 3) R.rsp::buildPkgIndexHtml()"
+	"$(R)" -e "if (getRversion() < 3 || packageVersion('R.rsp') < '0.9.1') R.rsp::buildPkgIndexHtml()"
 
+# Certain LaTeX files (e.g. bib, bst, sty) must be part of the build 
+# such that they are available for R CMD check.  These are excluded
+# from the install using .Rinstignore in the top-level directory.
 clean:
 	$(RM) enginesMap.R
 	$(RM) dummy.Rnw
 	$(RM) index.html.rsp
-	$(RM) *.aux *.bbl *.blg *.bst *.log *.out *.sty *.toc
-	$(RM) *.tex
 	$(RM) *.rsp.R
+	$(RM) *.tex *.aux *.bbl *.blg *.log *.out *.sty *.toc
 	$(RM) -r figures/
 	$(RM) Makefile
 

@@ -13,8 +13,8 @@
 #   \item{type}{Specifies the type of device to be used by @see "devNew".}
 #   \item{expr}{The @expression of graphing commands to be evaluated.}
 #   \item{envir}{The @environment where \code{expr} should be evaluated.}
-#   \item{name, tags}{The fullname name of the image is specified
-#     as the name with optional comma-separated tags appended.}
+#   \item{name, tags, sep}{The fullname name of the image is specified
+#     as the name with optional \code{sep}-separated tags appended.}
 #   \item{ext}{The filename extension of the image file generated, if any.
 #    By default, it is inferred from argument \code{type}.}
 #   \item{...}{Additional arguments passed to @see "devNew".}
@@ -64,7 +64,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, ..., ext=substitute(type), filename=sprintf("%s.%s", paste(c(name, tags), collapse=","), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
+devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=substitute(type), filename=sprintf("%s.%s", paste(c(name, tags), collapse=sep), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
   # WORKAROUND: Until Arguments$...() can be called without
   # attaching R.utils. /HB 2013-07-03
   pkgName <- "R.utils";
@@ -81,12 +81,12 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
   pathname <- Arguments$getWritablePathname(filename, path=path);
 
   # Argument 'name' and 'tags':
-  fullname <- paste(c(name, tags), collapse=",");
-  fullname <- unlist(strsplit(fullname, split=",", fixed=TRUE));
+  fullname <- paste(c(name, tags), collapse=sep);
+  fullname <- unlist(strsplit(fullname, split=sep, fixed=TRUE));
   fullname <- sub("^[\t\n\f\r ]*", "", fullname); # trim tags
   fullname <- sub("[\t\n\f\r ]*$", "", fullname); #
   fullname <- fullname[nchar(fullname) > 0L];     # drop empty tags
-  fullname <- paste(fullname, collapse=",");
+  fullname <- paste(fullname, collapse=sep);
 
   # Argument 'field':
   if (!is.null(field)) {
@@ -178,6 +178,9 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
 ############################################################################
 # HISTORY:
+# 2013-07-15
+# o Added argument 'sep' to devEval() together with an option to set
+#   its default value.
 # 2013-04-04
 # o ROBUSTNESS: Now devEval() does a better job of making sure to close
 #   the same device as it opened.  Previously it would close the current
