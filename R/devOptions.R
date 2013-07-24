@@ -53,7 +53,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "windows", "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -72,6 +72,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     quartz=c("grDevices::quartz"),
     svg=c("grDevices::svg"),
     tiff=c("grDevices::tiff"),
+    win.metafile=c("grDevices::win.metafile"),
     windows=c("grDevices::windows"),
     x11=c("grDevices::x11"),
     xfig=c("grDevices::xfig")
@@ -251,6 +252,22 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'type':
+  if (missing(type) || length(type) == 0L) {
+    knownTypes <- eval(formals(devOptions)$type);
+    return(devOptions(type=knownTypes, ...));
+  }
+  if (length(type) > 1L) {
+    # Support vector of 'type':s
+    res <- lapply(type, FUN=devOptions);
+    names(res) <- type;
+    fields <- lapply(res, FUN=function(opts) names(opts));
+    fields <- unique(unlist(fields, use.names=FALSE));
+    res <- lapply(res, FUN=function(opts) opts[fields]);
+    res <- Reduce(rbind, res);
+    rownames(res) <- type;
+    colnames(res) <- fields;
+    return(res);
+  }
   if (is.function(type)) {
     # Try to find name of device function
     type <- findDeviceFunction(fcn=type);
@@ -401,6 +418,13 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
 ############################################################################
 # HISTORY:
+# 2012-07-24
+# o Now devOptions() supports a vector of devices types.  If so, then
+#   a data frame where each row specifies a device type.  The union of
+#   all possible fields are returned as columns.  Non-existing fields
+#   are returned as NULL.  If no device type is specified (or NULL), then
+#   all are returned.
+# o Now devOptions() also supports "win.metafile".
 # 2012-04-30
 # o Now devOptions() returns options invisibly if some options were set,
 #   otherwise not, e.g. devOptions() versus devOptions("png", width=1024).

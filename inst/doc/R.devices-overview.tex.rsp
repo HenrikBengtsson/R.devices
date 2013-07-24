@@ -57,7 +57,7 @@ options(str=strOptions(strict.width="cut"));
 
 \title{<%=getName(pkg)%>}
 \author{<%=getAuthor(pkg)%>}
-\date{November 19, 2012}
+\date{July 24, 2013}
 
 \begin{document}
 
@@ -195,8 +195,9 @@ For more details on RSP, see the vignettes of the \pkg{R.rsp} package (available
 
 
 
-\section{Setting default device options}
+\section{Default device options}
 \label{secOptions}
+\subsection{devOptions()}
 The \code{devOptions()} function provides a unified interface to getting and settings common options for the various graphical devices available in R.
 When using one of the \code{toNNN()} functions, \code{devEval()} or \code{devNew()}, the device options used are given by \code{devOptions()}.  For example, to see the current settings used by PNG device, do:
 \begin{rspVerbatim}
@@ -220,15 +221,10 @@ devOptions("png", reset=TRUE)
 })%>
 \end{rspVerbatim}
 
-To get an overview of a set of common options for the supported devices, do:
+To get an overview of a set of common options for all supported devices, do:
 \begin{rspVerbatim}
 <%=evalWithEcho({
-knownDevices <- eval(formals(devOptions)$type)
-fields <- c("width", "height", "bg", "fg", "pointsize")
-opts <- sapply(knownDevices, FUN=function(type) devOptions(type)[fields])
-rownames(opts) <- fields
-opts <- t(opts)
-print(opts)
+devOptions()[,c("width", "height", "bg", "fg", "pointsize")]
 })%>
 \end{rspVerbatim}
 

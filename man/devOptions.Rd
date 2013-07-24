@@ -19,8 +19,8 @@
 
 \usage{
 devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
-  "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "windows",
-  "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE)
+  "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile",
+  "windows", "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE)
 }
 
 \arguments{
@@ -61,14 +61,7 @@ devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
 
 \examples{
 # Tabulate some of the default settings for known devices
-knownDevices <- eval(formals(devOptions)$type)
-fields <- c("width", "height", "bg", "fg", "pointsize")
-opts <- sapply(knownDevices, FUN=function(type) {
-  devOptions(type)[fields]
-})
-rownames(opts) <- fields
-opts <- t(opts)
-print(opts)
+print(devOptions()[,c("width", "height", "bg", "fg", "pointsize")])
 }
 
 \author{Henrik Bengtsson}
