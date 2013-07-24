@@ -6,56 +6,63 @@
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \name{eps}
+\name{eps}
 \alias{eps}
 
 
- \title{EPS graphics device}
+\title{EPS graphics device}
 
- \description{
-  Device driver for Encapsulated Postscript. This driver is the same as
-  the postscript driver where some arguments have different default values.
- }
+\description{
+ Device driver for Encapsulated Postscript. This driver is the same as
+ the postscript driver where some arguments have different default values.
+}
 
- \usage{
+\usage{
 eps(file="Rplot\%03d.eps", width=7, height=7, horizontal=FALSE, paper="special", ...)
 }
 
- \arguments{
-   \item{file}{Default file name (pattern).}
-   \item{width, height}{The width and height of the figure.}
-   \item{horizontal}{If \code{\link[base:logical]{FALSE}}, an horizontal EPS file is created,
-         otherwise a portrait file is created.}
-   \item{paper}{A \code{\link[base]{character}} string specifying the paper type. Overrides
-         the default of \code{postscript()}.}
-   \item{...}{Other arguments accepted by \code{postscript()}.}
- }
+\arguments{
+  \item{file}{Default file name (pattern).}
+  \item{width, height}{The width and height of the figure.}
+  \item{horizontal}{If \code{\link[base:logical]{FALSE}}, an horizontal EPS file is created,
+        otherwise a portrait file is created.}
+  \item{paper}{A \code{\link[base]{character}} string specifying the paper type. Overrides
+        the default of \code{postscript()}.}
+  \item{...}{Other arguments accepted by \code{postscript()}.}
+}
 
- \value{
-   A plot device is opened; nothing is returned.
- }
+\value{
+  A plot device is opened; nothing is returned.
+}
 
- \examples{\dontrun{
-   eps("foo.eps", width=7, height=7)
+\examples{\dontrun{
+  eps("foo.eps", width=7, height=7)
 
-   # is identical to
+  # is identical to
 
-   postscript("foo.eps", width=7, height=7, onefile=TRUE, horizontal=FALSE)
+  postscript("foo.eps", width=7, height=7, onefile=TRUE, horizontal=FALSE)
 
-   # and
+  # and
 
-   dev.print(eps, "foo.eps", ...)
+  dev.print(eps, "foo.eps", ...)
 
-   # is identical to
+  # is identical to
 
-   dev.print(postscript, "foo.eps", onefile=TRUE, horizontal=FALSE, paper="special", ...)
- }}
+  dev.print(postscript, "foo.eps", onefile=TRUE, horizontal=FALSE, paper="special", ...)
+}}
 
- \keyword{device}
+\keyword{device}
 
- \seealso{
-   \code{\link[grDevices]{postscript}}.
- }
+\seealso{
+  This is just a convenient wrapper for \code{\link[grDevices]{postscript}}
+  with the proper arguments set to generate an EPS file.
 
- \author{Henrik Bengtsson}
+  It is recommended to use \code{\link{toEPS}}() instead.
+}
 
+\author{Henrik Bengtsson}
+
+
+
+\keyword{device}
+\keyword{internal}

@@ -35,4 +35,6 @@ png2(filename, width=480, height=480, res=144, type="png256", ...)
 \author{Henrik Bengtsson}
 
 
+
 \keyword{device}
+\keyword{internal}

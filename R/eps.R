@@ -1,13 +1,13 @@
 #########################################################################/**
 # @RdocFunction eps
-# 
+#
 # @title "EPS graphics device"
-# 
+#
 # \description{
 #  Device driver for Encapsulated Postscript. This driver is the same as
 #  the postscript driver where some arguments have different default values.
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
@@ -23,7 +23,7 @@
 # \value{
 #   A plot device is opened; nothing is returned.
 # }
-# 
+#
 # \examples{\dontrun{
 #   eps("foo.eps", width=7, height=7)
 #
@@ -43,10 +43,16 @@
 # \keyword{device}
 #
 # \seealso{
-#   @see "grDevices::postscript".
+#   This is just a convenient wrapper for @see "grDevices::postscript"
+#   with the proper arguments set to generate an EPS file.
+#
+#   It is recommended to use @see "toEPS" instead.
 # }
 #
 # @author
+#
+# @keyword device
+# @keyword internal
 #*/#########################################################################
 eps <- function(file="Rplot%03d.eps", width=7, height=7, horizontal=FALSE, paper="special", ...) {
   postscript(file=file, width=width, height=height, horizontal=horizontal, paper=paper, onefile=FALSE, ...);

@@ -8,6 +8,10 @@ importFrom("R.oo", "getPosition")
 importFrom("R.oo", "startupMessage")
 
 import("R.utils")
+## Arguments$... methods:
+##  getWritablePathname(), getCharacter(), getLogical(), getDouble()
+## importFrom("R.utils", "Arguments")
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # EXPORTS

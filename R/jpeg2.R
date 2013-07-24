@@ -24,7 +24,8 @@
 # @author
 #
 # @keyword device
-#*/########################################################################### 
+# @keyword internal
+#*/###########################################################################
 jpeg2 <- function(filename, width=480, height=480, res=144, type="jpeg", ...) {
   bitmap(file=filename, type=type, width=width/res, height=height/res, res=res, ...);
 }
@@ -34,7 +35,7 @@ jpeg2 <- function(filename, width=480, height=480, res=144, type="jpeg", ...) {
 # HISTORY:
 # 2011-10-05
 # o Turned jpeg2() into a plain function without a generic.  This is
-#   consistent with how eps() is defined. 
+#   consistent with how eps() is defined.
 # 2005-09-18
 # o Created.
 ############################################################################

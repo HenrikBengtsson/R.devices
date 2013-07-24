@@ -12,7 +12,8 @@
 #
 # \arguments{
 #   \item{type}{A @character string or a device @function specifying
-#      the device to be queried.}
+#      the device to be queried.  May also be a @vector, for querying
+#      device options for multiple devices.}
 #   \item{custom}{If @TRUE, also the default settings specific to this
 #      function is returned. For more details, see below.}
 #   \item{special}{A @logical.  For more details, see below.}
@@ -22,7 +23,8 @@
 # }
 #
 # \value{
-#   Returns a named @list.
+#   Returns a named @list if one device is specified and a @data.frame
+#   if more than one is specified.
 #   If the requested device does not exists (certain devices are OS
 #   specific), then an empty @list is returned.
 #   If options were set, that is, if named options were specified via
@@ -251,12 +253,35 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Additional arguments
+  args <- list(...);
+  nargs <- length(args);
+  if (nargs > 0L) {
+    if (is.null(names(args))) {
+      throw("Optional ('...') arguments must be named.");
+    }
+  }
+
   # Argument 'type':
   if (missing(type) || length(type) == 0L) {
     knownTypes <- eval(formals(devOptions)$type);
-    return(devOptions(type=knownTypes, ...));
+    if (nargs > 0L) {
+      throw("Cannot set device options. Argument 'type' is missing or NULL. Should be one of: ", paste(sprintf("'%s'", knownTypes), collapse=", "));
+    }
+
+    res <- devOptions(type=knownTypes, custom=custom, special=special, reset=reset);
+    if (reset) {
+      return(invisible(res));
+    } else {
+      return(res);
+    }
   }
+
   if (length(type) > 1L) {
+    if (nargs > 0L) {
+      throw("Cannot set device options for more than one devices at the time: ", hpaste(sprintf("'%s'", type), collapse=", "));
+    }
+
     # Support vector of 'type':s
     res <- lapply(type, FUN=devOptions);
     names(res) <- type;
@@ -282,15 +307,6 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
   if (!is.element(type, names(devList))) {
     throw("Cannot query/modify device options. Unknown device: ", type);
-  }
-
-  # Additional arguments
-  args <- list(...);
-  nargs <- length(args);
-  if (nargs > 0L) {
-    if (is.null(names(args))) {
-      throw("Optional ('...') arguments must be named.");
-    }
   }
 
 

@@ -25,7 +25,8 @@ devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
 
 \arguments{
   \item{type}{A \code{\link[base]{character}} string or a device \code{\link[base]{function}} specifying
-     the device to be queried.}
+     the device to be queried.  May also be a \code{\link[base]{vector}}, for querying
+     device options for multiple devices.}
   \item{custom}{If \code{\link[base:logical]{TRUE}}, also the default settings specific to this
      function is returned. For more details, see below.}
   \item{special}{A \code{\link[base]{logical}}.  For more details, see below.}
@@ -35,7 +36,8 @@ devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
 }
 
 \value{
-  Returns a named \code{\link[base]{list}}.
+  Returns a named \code{\link[base]{list}} if one device is specified and a \code{\link[base]{data.frame}}
+  if more than one is specified.
   If the requested device does not exists (certain devices are OS
   specific), then an empty \code{\link[base]{list}} is returned.
   If options were set, that is, if named options were specified via
