@@ -32,7 +32,7 @@ devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
      function is returned. For more details, see below.}
   \item{special}{A \code{\link[base]{logical}}.  For more details, see below.}
   \item{drop}{If \code{\link[base:logical]{TRUE}} and only one device type is queried, then
-     a \code{\link[base]{list}} is returned, otherwise a \code{\link[base]{data.frame}}.}
+     a \code{\link[base]{list}} is returned, otherwise a \code{\link[base]{matrix}}.}
   \item{options}{Optional named \code{\link[base]{list}} of settings.}
   \item{...}{Optional named arguments for setting new defaults.
      For more details, see below.}
@@ -41,7 +41,7 @@ devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
 
 \value{
   If \code{drop=TRUE} and a single device is queries, a named \code{\link[base]{list}} is
-  returned, otherwise a \code{\link[base]{data.frame}} of class 'DeviceOptions' is returned.
+  returned, otherwise a \code{\link[base]{matrix}} is returned.
   If a requested device is not implemented/supported on the current system,
   then "empty" results are returned.
   If options were set, that is, if named options were specified via

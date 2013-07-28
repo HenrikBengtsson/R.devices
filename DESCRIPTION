@@ -8,7 +8,7 @@ Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
 Author: Henrik Bengtsson
 Maintainer: Henrik Bengtsson <henrikb@braju.com>
-Date: 2013-07-26
+Date: 2013-07-28
 Title: Enhanced methods for handling graphical devices
 Description: This package provides utility methods that enhance the existing graphical device functions already available in R for the purpose of simplifying the creation of figure files of various image formats and much more.
 License: LGPL (>= 2.1)

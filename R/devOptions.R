@@ -18,7 +18,7 @@
 #      function is returned. For more details, see below.}
 #   \item{special}{A @logical.  For more details, see below.}
 #   \item{drop}{If @TRUE and only one device type is queried, then
-#      a @list is returned, otherwise a @data.frame.}
+#      a @list is returned, otherwise a @matrix.}
 #   \item{options}{Optional named @list of settings.}
 #   \item{...}{Optional named arguments for setting new defaults.
 #      For more details, see below.}
@@ -27,7 +27,7 @@
 #
 # \value{
 #   If \code{drop=TRUE} and a single device is queries, a named @list is
-#   returned, otherwise a @data.frame of class 'DeviceOptions' is returned.
+#   returned, otherwise a @matrix is returned.
 #   If a requested device is not implemented/supported on the current system,
 #   then "empty" results are returned.
 #   If options were set, that is, if named options were specified via
@@ -308,13 +308,14 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
     # Support vector of 'type':s
     types <- type;
-    res <- sapply(types, FUN=devOptions, drop=FALSE);
-    fields <- lapply(res, FUN=function(opts) colnames(opts));
+    res <- sapply(types, FUN=devOptions, drop=TRUE);
+    fields <- lapply(res, FUN=function(opts) names(opts));
     fields <- unique(unlist(fields, use.names=FALSE));
-    res <- lapply(res, FUN=function(opts) drop(opts)[fields]);
-    opts <- Reduce(rbind, res);
-    rownames(opts) <- types;
-    colnames(opts) <- fields;
+    opts <- lapply(res, FUN=function(x) x[fields]);
+    opts <- unlist(opts, use.names=FALSE, recursive=FALSE);
+    dim(opts) <- c(length(fields), length(types));
+    dimnames(opts) <- list(fields, types);
+    opts <- t(opts);
     ##class(opts) <- c("DeviceOptions", class(opts));
     return(opts);
   }
@@ -449,9 +450,10 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
   # Return a list?
   if (!drop) {
-    opts <- rbind(opts);
-    rownames(opts) <- type;
-    ##class(opts) <- c("DeviceOptions", class(opts));
+    names <- names(opts);
+    dim(opts) <- c(1L, length(opts));
+    dimnames(opts) <- list(type, names);
+    ## Possibly, class(opts) <- c("DeviceOptions", class(opts))
   }
 
   # Return invisibly?
@@ -469,7 +471,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 # o Added arguments 'options' and 'drop' to devOptions().
 # 2012-07-24
 # o Now devOptions() supports a vector of devices types.  If so, then
-#   a data frame where each row specifies a device type.  The union of
+#   a matrix where each row specifies a device type.  The union of
 #   all possible fields are returned as columns.  Non-existing fields
 #   are returned as NULL.  If no device type is specified (or NULL), then
 #   all are returned.
