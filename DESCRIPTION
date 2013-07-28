@@ -1,14 +1,14 @@
 Package: R.devices
 Version: 2.5.0
 Depends: R (>= 2.10.0)
-Imports: R.methodsS3 (>= 1.4.4), R.oo (>= 1.13.9), R.utils (>= 1.25.2)
+Imports: R.methodsS3 (>= 1.4.4), R.oo (>= 1.13.9), R.utils (>= 1.26.0)
 Suggests: digest (>= 0.6.3), R.rsp (>= 0.8.2)
 VignetteBuilder: R.rsp
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
 Author: Henrik Bengtsson
 Maintainer: Henrik Bengtsson <henrikb@braju.com>
-Date: 2013-07-24
+Date: 2013-07-26
 Title: Enhanced methods for handling graphical devices
 Description: This package provides utility methods that enhance the existing graphical device functions already available in R for the purpose of simplifying the creation of figure files of various image formats and much more.
 License: LGPL (>= 2.1)

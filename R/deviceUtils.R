@@ -6,7 +6,7 @@
 # \description{
 #  @get "title".
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
@@ -24,7 +24,7 @@
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devIsOpen <- function(which=dev.cur(), ...) {
   devList <- .devList();
   dev <- devList[which];
@@ -44,7 +44,7 @@ devIsOpen <- function(which=dev.cur(), ...) {
 # \description{
 #  @get "title".
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
@@ -63,7 +63,7 @@ devIsOpen <- function(which=dev.cur(), ...) {
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devList <- function(...) {
   devList <- .devList();
 
@@ -91,7 +91,7 @@ devList <- function(...) {
 # \description{
 #  @get "title".
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
@@ -111,7 +111,7 @@ devList <- function(...) {
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devGetLabel <- function(which=dev.cur(), ...) {
   devList <- .devList();
   dev <- devList[which];
@@ -131,7 +131,7 @@ devGetLabel <- function(which=dev.cur(), ...) {
 # \description{
 #  @get "title".
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
@@ -152,7 +152,7 @@ devGetLabel <- function(which=dev.cur(), ...) {
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devSetLabel <- function(which=dev.cur(), label, ...) {
   if (is.character(which))
     which <- .devIndexOf(which);
@@ -180,7 +180,7 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
 # \description{
 #  @get "title".
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
@@ -203,7 +203,7 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devSet <- function(which=dev.next(), ...) {
   args <- list(...);
 
@@ -279,7 +279,7 @@ devSet <- function(which=dev.next(), ...) {
 # \description{
 #  @get "title".
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
@@ -300,7 +300,7 @@ devSet <- function(which=dev.next(), ...) {
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devOff <- function(which=dev.cur(), ...) {
   # Identify device
   which <- devSet(which);
@@ -323,7 +323,7 @@ devOff <- function(which=dev.cur(), ...) {
 # \description{
 #  @get "title".
 # }
-# 
+#
 # @synopsis
 #
 # \arguments{
@@ -344,7 +344,7 @@ devOff <- function(which=dev.cur(), ...) {
 #
 # @keyword device
 # @keyword utilities
-#*/########################################################################### 
+#*/###########################################################################
 devDone <- function(which=dev.cur(), ...) {
   # Do nothing?
   if (is.numeric(which) && length(which) == 1L && which <= 1L) {
@@ -355,7 +355,7 @@ devDone <- function(which=dev.cur(), ...) {
   if (which != 1L) {
     type <- tolower(names(which));
     type <- gsub(":.*", "", type);
-    
+
     isOnScreen <- (type %in% deviceIsInteractive());
     if (!isOnScreen)
       devOff(which);
@@ -364,9 +364,9 @@ devDone <- function(which=dev.cur(), ...) {
 
 
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # BEGIN: Local functions
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 .devList <- function() {
   if (exists(".Devices")) {
     devList <- get(".Devices");
@@ -416,85 +416,29 @@ devDone <- function(which=dev.cur(), ...) {
   devFree[1L];
 } # .devNextAvailable()
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # END: Local functions
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ############################################################################
-# HISTORY: 
+# HISTORY:
 # 2012-11-18
 # o Replaced all stop() with throw().
 # 2012-04-30
 # o Moved devNew() to devNew.R.
 # o Moved devEval() to devEval.R.
-# 2012-04-05
-# o Now devEval() returns the correct pathname if onIncomplete="rename"
-#   and image file was incomplete.  Now it also gives an error, if it
-#   for some reason fails to rename the file in such cases.
-# 2012-04-04
-# o Now it is possible to have devEval() rename incompletely generated
-#   image files, by using argument onIncomplete="rename".
-# 2012-02-28
-# o Added argument 'onIncomplete' to devEval().  The default is now to
-#   remove any half-generated image files so that no incomplete/blank
-#   image files are left behind.
-# 2012-02-26
-# o BUG FIX: Before devNew(..., aspectRatio=1) would ignore
-#   devOptions(...)$width if neither argument 'width' nor 'height'
-#   was given.
-# o Added argument 'scale' to devNew().
 # 2011-11-05
 # o Now the default 'width' is inferred from devOptions() is 'height'
 #   is not given and aspectRatio != 1.
-# 2011-10-31
-# o Added argument 'field' to devEval().
-# 2011-09-24
-# o devNew() no longer gives a warning about argument 'aspectRatio' is
-#   specified when both or neither of 'width' and 'height' are given,
-#   and 'aspectRatio' is 1.
-# 2011-04-12
-# o Now devEval("jpg", ...) is recognized as devEval("jpeg", ...).
-# 2011-03-29
-# o Now argument 'force' of devEval() defaults to 
-#   getOption("devEval/args/force", TRUE).
-# 2011-03-18
-# o Now devEval() does a better job of "cleaning up" 'name' and 'tags'.
-# o Now argument 'path' of devEval() defaults to 
-#   getOption("devEval/args/path", "figures/").
-# o devNew() gained option 'devNew/args/par', which can be used to specify 
-#   the default graphical parameters for devNew().  Any additional 
-#   parameters passed via argument 'par' will override such default ones,
-#   if both specifies the same parameter.
 # 2011-03-16
 # o Now R.archive:ing is only done if the R.archive package is loaded.
 # o DOCUMENTATION: The title of devDone() was incorrect.
-# 2011-03-10
-# o Now argument 'aspectRatio' of devNew() defaults to 1 (instead of @NULL).
-# 2011-03-09
-# o Added support for automatic file archiving in devEval().
-# 2011-02-20
-# o Changed argument 'force' of devEval() to default to TRUE.
-# o Added argument 'par' to devNew() allowing for applying graphical
-#   settings at same time as the device is opened, which is especially
-#   useful when using devEval().
-# 2011-02-14
-# o Now devEval() returns a named list.
-# o GENERALIZED: Argument 'aspectRatio' to devNew() can now updated
-#   either 'height' or 'width', depending on which is given.
-# 2011-02-13
-# o Added devEval().
-# o Added argument 'aspectRatio' to devNew(), which updates/set the 
-#   'height', if argument 'width' is given, otherwise ignored.
 # 2008-10-26
 # o Now argument 'which' to devSet() can be any object.  If not a single
 #   numeric or a single character string, then a checksum character string
 #   is generated using digest::digest(which).
 # 2008-10-16
 # o Now devDone(which=1) does nothing.  Before it gave an error.
-# o BUG FIX: Argument 'type' of devNew() did not take function:s.
-# 2008-09-08
-# o Now devNew() filters out arguments 'file' and 'filename' if the device
-#   is interactive.
 # 2008-08-01
 # o Added devList() and removed devLabels().
 # o Added internal .devNextAvailable().
@@ -506,8 +450,6 @@ devDone <- function(which=dev.cur(), ...) {
 # o Using term 'label' instead of 'name' everywhere, e.g. devLabels().
 #   This was changed because the help pages on 'dev.list' etc. already
 #   use the term 'name' for a different purpose, e.g. 'windows'.
-# o Renamed devOpen() to devNew() to be consistent with dev.new().
-# o Added Rdoc comments.
 # 2008-07-18
 # o Created.
 ############################################################################

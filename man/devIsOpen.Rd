@@ -6,30 +6,30 @@
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \name{devIsOpen}
+\name{devIsOpen}
 \alias{devIsOpen}
 
 
- \title{Checks if a device is open or not}
+\title{Checks if a device is open or not}
 
- \description{
-  Checks if a device is open or not.
- }
+\description{
+ Checks if a device is open or not.
+}
 
- \usage{
+\usage{
 devIsOpen(which=dev.cur(), ...)
 }
 
- \arguments{
-   \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
-   \item{...}{Not used.}
- }
+\arguments{
+  \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
+  \item{...}{Not used.}
+}
 
- \value{
-   Returns \code{\link[base:logical]{TRUE}} if the device is open, otherwise \code{\link[base:logical]{FALSE}}.
- }
+\value{
+  Returns \code{\link[base:logical]{TRUE}} if the device is open, otherwise \code{\link[base:logical]{FALSE}}.
+}
 
- \examples{
+\examples{
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Use devices for conditional processing of code. 
 # Close devices to rerun code.
@@ -74,7 +74,7 @@ cat("Currently opened device:\n")
 print(devList())
 }
 
- \author{Henrik Bengtsson}
+\author{Henrik Bengtsson}
 
 
 

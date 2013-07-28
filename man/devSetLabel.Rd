@@ -6,35 +6,35 @@
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \name{devSetLabel}
+\name{devSetLabel}
 \alias{devSetLabel}
 
 
- \title{Sets the label of a device}
+\title{Sets the label of a device}
 
- \description{
-  Sets the label of a device.
- }
+\description{
+ Sets the label of a device.
+}
 
- \usage{
+\usage{
 devSetLabel(which=dev.cur(), label, ...)
 }
 
- \arguments{
-   \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
-   \item{label}{A \code{\link[base]{character}} string.}
-   \item{...}{Not used.}
- }
+\arguments{
+  \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
+  \item{label}{A \code{\link[base]{character}} string.}
+  \item{...}{Not used.}
+}
 
- \value{
-   Returns nothing.
- }
+\value{
+  Returns nothing.
+}
 
- \author{Henrik Bengtsson}
+\author{Henrik Bengtsson}
 
- \seealso{
-   \code{\link{devGetLabel}}() and \code{\link{devList}}().
- }
+\seealso{
+  \code{\link{devGetLabel}}() and \code{\link{devList}}().
+}
 
 
 

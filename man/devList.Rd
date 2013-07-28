@@ -6,33 +6,33 @@
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \name{devList}
+\name{devList}
 \alias{devList}
 
 
- \title{Lists the indices of the open devices named by their labels}
+\title{Lists the indices of the open devices named by their labels}
 
- \description{
-  Lists the indices of the open devices named by their labels.
- }
+\description{
+ Lists the indices of the open devices named by their labels.
+}
 
- \usage{
+\usage{
 devList(...)
 }
 
- \arguments{
-   \item{...}{Not used.}
- }
+\arguments{
+  \item{...}{Not used.}
+}
 
- \value{
-   Returns a named \code{\link[base]{integer}} \code{\link[base]{vector}}.
- }
+\value{
+  Returns a named \code{\link[base]{integer}} \code{\link[base]{vector}}.
+}
 
- \author{Henrik Bengtsson}
+\author{Henrik Bengtsson}
 
- \seealso{
-   \code{\link[grDevices:dev]{dev.list}()}.
- }
+\seealso{
+  \code{\link[grDevices:dev]{dev.list}()}.
+}
 
 
 

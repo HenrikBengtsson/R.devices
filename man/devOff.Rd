@@ -6,35 +6,35 @@
 % by the Rdoc compiler part of the R.oo package.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
- \name{devOff}
+\name{devOff}
 \alias{devOff}
 
 
- \title{Closes a device}
+\title{Closes a device}
 
- \description{
-  Closes a device.
- }
+\description{
+ Closes a device.
+}
 
- \usage{
+\usage{
 devOff(which=dev.cur(), ...)
 }
 
- \arguments{
-   \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
-   \item{...}{Not used.}
- }
+\arguments{
+  \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
+  \item{...}{Not used.}
+}
 
- \value{
-   Returns what \code{\link[grDevices:dev]{dev.off}()} returns.
- }
+\value{
+  Returns what \code{\link[grDevices:dev]{dev.off}()} returns.
+}
 
- \author{Henrik Bengtsson}
+\author{Henrik Bengtsson}
 
- \seealso{
-   \code{\link{devDone}}().
-   Internally, \code{\link[grDevices:dev]{dev.off}()} is used.
- }
+\seealso{
+  \code{\link{devDone}}().
+  Internally, \code{\link[grDevices:dev]{dev.off}()} is used.
+}
 
 
 

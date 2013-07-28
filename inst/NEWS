@@ -2,18 +2,14 @@
 Package: R.devices
 ==================
 
-Version: 2.5.0 [2013-07-24]
+Version: 2.5.0 [2013-07-26]
 o Added support the 'win.metafile' (WMF) device type and added toWMF()
   creating (extended) WMF files.  Since the file format is *extended*
   WMF, which often has file extension *.emf, toEMF() was also added.
   toEMF() uses the same device driver as toWMF() with the only
   difference that the file extension is *.emf instead of *.wmf.
-o Now devOptions() supports a vector of devices types.  If so, then
-  a data frame where each row specifies a device type is returned.  The
-  union of all possible fields are returned as columns.  Non-existing
-  fields are returned as NULL.  If no device type is specified (or NULL),
-  then all are returned.  It's only possible to set options for one
-  device at the time.
+o Now devOptions() can query the options of multiple device types.
+  Added arguments 'options' and 'drop' to devOptions().
 o DOCUMENTATION: Hiding internal/legacy functions from the help index.
 
 

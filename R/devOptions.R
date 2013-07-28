@@ -17,16 +17,19 @@
 #   \item{custom}{If @TRUE, also the default settings specific to this
 #      function is returned. For more details, see below.}
 #   \item{special}{A @logical.  For more details, see below.}
+#   \item{drop}{If @TRUE and only one device type is queried, then
+#      a @list is returned, otherwise a @data.frame.}
+#   \item{options}{Optional named @list of settings.}
 #   \item{...}{Optional named arguments for setting new defaults.
 #      For more details, see below.}
 #   \item{reset}{If @TRUE, the device options are reset to R defaults.}
 # }
 #
 # \value{
-#   Returns a named @list if one device is specified and a @data.frame
-#   if more than one is specified.
-#   If the requested device does not exists (certain devices are OS
-#   specific), then an empty @list is returned.
+#   If \code{drop=TRUE} and a single device is queries, a named @list is
+#   returned, otherwise a @data.frame of class 'DeviceOptions' is returned.
+#   If a requested device is not implemented/supported on the current system,
+#   then "empty" results are returned.
 #   If options were set, that is, if named options were specified via
 #   \code{...}, then the list is returned invisibly, otherwise not.
 # }
@@ -55,7 +58,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -191,20 +194,27 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   } # getDevOptions()
 
 
-  setDevOptions <- function(type, ..., reset=FALSE) {
+  setDevOptions <- function(.type, ..., reset=FALSE) {
     devOpts <- getOption("devOptions", list());
-    oopts <- opts <- devOpts[[type]];
+##    str(list(.type=.type, devOpts=devOpts));
+    oopts <- opts <- devOpts[[.type]];
+    if (is.null(opts)) opts <- list();
+    # Sanity check
+    stopifnot(is.list(opts));
+##    str(list(opts=opts));
     if (reset) {
       opts <- NULL;
     } else {
       args <- list(...);
       if (length(args) > 0L) {
         for (key in names(args)) {
-          opts[[key]] <- args[[key]];
+          value <- args[[key]];
+##          str(list(key=key, value=value))
+          opts[[key]] <- value;
         }
       }
     }
-    devOpts[[type]] <- opts;
+    devOpts[[.type]] <- opts;
     options(devOptions=devOpts);
     invisible(oopts);
   } # setDevOptions()
@@ -253,23 +263,37 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Argument 'options':
+  if (!is.list(options)) {
+    throw("Argument 'options' must be a list: ", class(options)[1L]);
+  }
+  nopts <- length(options);
+  if (nopts > 0L && is.null(names(options))) {
+    throw("Argument 'options' must be a named list.");
+  }
+
   # Additional arguments
   args <- list(...);
   nargs <- length(args);
-  if (nargs > 0L) {
-    if (is.null(names(args))) {
-      throw("Optional ('...') arguments must be named.");
-    }
+  if (nargs > 0L && is.null(names(args))) {
+    throw("Optional ('...') arguments must be named.");
   }
+
+  for (key in names(args)) {
+    options[[key]] <- args[[key]];
+  }
+  nopts <- length(options);
+  # Not needed anymore
+  args <- nargs <- NULL;
 
   # Argument 'type':
   if (missing(type) || length(type) == 0L) {
     knownTypes <- eval(formals(devOptions)$type);
-    if (nargs > 0L) {
+    if (nopts > 0L) {
       throw("Cannot set device options. Argument 'type' is missing or NULL. Should be one of: ", paste(sprintf("'%s'", knownTypes), collapse=", "));
     }
 
-    res <- devOptions(type=knownTypes, custom=custom, special=special, reset=reset);
+    res <- devOptions(type=knownTypes, custom=custom, special=special, drop=drop, reset=reset);
     if (reset) {
       return(invisible(res));
     } else {
@@ -278,20 +302,21 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   }
 
   if (length(type) > 1L) {
-    if (nargs > 0L) {
+    if (nopts > 0L) {
       throw("Cannot set device options for more than one devices at the time: ", hpaste(sprintf("'%s'", type), collapse=", "));
     }
 
     # Support vector of 'type':s
-    res <- lapply(type, FUN=devOptions);
-    names(res) <- type;
-    fields <- lapply(res, FUN=function(opts) names(opts));
+    types <- type;
+    res <- sapply(types, FUN=devOptions, drop=FALSE);
+    fields <- lapply(res, FUN=function(opts) colnames(opts));
     fields <- unique(unlist(fields, use.names=FALSE));
-    res <- lapply(res, FUN=function(opts) opts[fields]);
-    res <- Reduce(rbind, res);
-    rownames(res) <- type;
-    colnames(res) <- fields;
-    return(res);
+    res <- lapply(res, FUN=function(opts) drop(opts)[fields]);
+    opts <- Reduce(rbind, res);
+    rownames(opts) <- types;
+    colnames(opts) <- fields;
+    ##class(opts) <- c("DeviceOptions", class(opts));
+    return(opts);
   }
   if (is.function(type)) {
     # Try to find name of device function
@@ -327,7 +352,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # Reset?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (reset) {
-    res <- devOptions(type=type, special=special, reset=FALSE);
+    res <- devOptions(type=type, special=special, drop=drop, reset=FALSE);
     setDevOptions(type, reset=TRUE);
 
     # Only for certain devices...
@@ -340,11 +365,11 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Assign user arguments, iff possible
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (nargs > 0L) {
-    do.call("setDevOptions", args=c(list(type), args));
+  if (nopts > 0L) {
+    do.call("setDevOptions", args=c(list(.type=type), options));
 
     # Only for certain devices...
-    do.call("nnn.options", args=args);
+    do.call("nnn.options", args=options);
   }
 
 
@@ -422,9 +447,15 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     }
   }
 
+  # Return a list?
+  if (!drop) {
+    opts <- rbind(opts);
+    rownames(opts) <- type;
+    ##class(opts) <- c("DeviceOptions", class(opts));
+  }
 
   # Return invisibly?
-  if (nargs > 0L) {
+  if (nopts > 0L) {
     invisible(opts);
   } else {
     opts;
@@ -434,6 +465,8 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
 ############################################################################
 # HISTORY:
+# 2012-07-26
+# o Added arguments 'options' and 'drop' to devOptions().
 # 2012-07-24
 # o Now devOptions() supports a vector of devices types.  If so, then
 #   a data frame where each row specifies a device type.  The union of

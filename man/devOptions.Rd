@@ -20,7 +20,8 @@
 \usage{
 devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
   "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile",
-  "windows", "x11", "xfig"), custom=TRUE, special=TRUE, ..., reset=FALSE)
+  "windows", "x11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ...,
+  reset=FALSE)
 }
 
 \arguments{
@@ -30,16 +31,19 @@ devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
   \item{custom}{If \code{\link[base:logical]{TRUE}}, also the default settings specific to this
      function is returned. For more details, see below.}
   \item{special}{A \code{\link[base]{logical}}.  For more details, see below.}
+  \item{drop}{If \code{\link[base:logical]{TRUE}} and only one device type is queried, then
+     a \code{\link[base]{list}} is returned, otherwise a \code{\link[base]{data.frame}}.}
+  \item{options}{Optional named \code{\link[base]{list}} of settings.}
   \item{...}{Optional named arguments for setting new defaults.
      For more details, see below.}
   \item{reset}{If \code{\link[base:logical]{TRUE}}, the device options are reset to R defaults.}
 }
 
 \value{
-  Returns a named \code{\link[base]{list}} if one device is specified and a \code{\link[base]{data.frame}}
-  if more than one is specified.
-  If the requested device does not exists (certain devices are OS
-  specific), then an empty \code{\link[base]{list}} is returned.
+  If \code{drop=TRUE} and a single device is queries, a named \code{\link[base]{list}} is
+  returned, otherwise a \code{\link[base]{data.frame}} of class 'DeviceOptions' is returned.
+  If a requested device is not implemented/supported on the current system,
+  then "empty" results are returned.
   If options were set, that is, if named options were specified via
   \code{...}, then the list is returned invisibly, otherwise not.
 }
