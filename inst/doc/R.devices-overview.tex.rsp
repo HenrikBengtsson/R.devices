@@ -1,16 +1,16 @@
-<%-------------------------------------------------------------------
+<%@meta language="R-vignette" content="--------------------------------
   DIRECTIVES FOR R:
 
   %\VignetteIndexEntry{R.devices overview}
+  %\VignetteAuthor{Henrik Bengtsson}
   %\VignetteKeyword{devices, graphics, plots, figures}
   %\VignetteEngine{R.rsp::rsp}
-  -------------------------------------------------------------------%>
+--------------------------------------------------------------------"%>
 
 <% t0 <- Sys.time() %>
 
 <%
 library("R.devices");
-pkg <- Package("R.devices");
 
 devOptions("png", width=840);
 options(width=85);
@@ -27,7 +27,20 @@ options(str=strOptions(strict.width="cut"));
 \usepackage{graphicx}
 \graphicspath{{figures/}}
 
-\usepackage[hidelinks]{hyperref} % \url{}
+<%-------------------------------------------------------------------
+  Assign PDF metadata
+  -------------------------------------------------------------------%>
+% PDF metadata
+\usepackage{hyperref}
+% Ideally \hypersetup{hidelinks}, but for backward compatibility:
+\hypersetup{pdfborder={0 0 0}}
+\hypersetup{
+  pdfauthor={<%@meta name="author"%>},
+  pdftitle={<%@meta name="title"%>},
+  pdfsubject={},
+  pdfkeywords={<%@meta name="keywords"%>},
+  pdfproducer={R.rsp v<%=R.rsp$version%> by <%=R.rsp$author%>}
+}
 
 % Page margins
 \addtolength{\oddsidemargin}{-0.5in}	
@@ -55,18 +68,18 @@ options(str=strOptions(strict.width="cut"));
 \newenvironment{escapeRspVerbatim}{\vspace{-\parskip}\begin{alltt}}{\end{alltt}}
 
 
-\title{<%=getName(pkg)%>}
-\author{<%=getAuthor(pkg)%>}
-\date{July 30, 2013}
+\title{<%@meta name="title"%>}
+\author{<%@meta name="author"%>}
+\date{<%=format(as.Date(getDate(R.devices)), format="%B %d, %Y")%>}
 
 \begin{document}
 
 \maketitle
 \begin{abstract}
-The \pkg{R.devices} package provides utility methods that enhance the existing graphical device functions already available in R for the purpose of simplifying the creation of figure files of various image formats and much more.
+The \pkg{R.devices} package provides functions for creating plots and image files in a unified way regardless of output format (EPS, PDF, PNG, SVG, TIFF, WMF, etc.).  Default device options as well as scales and aspect ratios are controlled in a uniform way across all device types.  Switching output format requires minimal changes in code.  This package is ideal for large-scale batch processing, because it will never leave open graphics devices or incomplete image files behind, even on errors or user interrupts.
 \end{abstract}
 
-\keywords{devices, graphics, plots, figures}
+\keywords{<%@meta name="keywords"%>}
 
 \begin{center}
 \emph{This vignette is distributed as part of the \pkg{R.devices} package, which is available on CRAN (\href{http://cran.r-project.org/}{http://cran.r-project.org/}).
