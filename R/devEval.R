@@ -111,6 +111,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
     path = path,
     pathname = pathname
   );
+  class(res) <- c("DevEvalFile", class(res));
 
   if (force || !isFile(pathname)) {
     done <- FALSE;
@@ -147,9 +148,9 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
           for (kk in seq_len(999L)) {
             pathnameN <- sprintf(fmtstr, kk);
             if (isFile(pathnameN)) next;
-            res <- file.rename(pathname, pathnameN);
+            resT <- file.rename(pathname, pathnameN);
             # Done?
-            if (res && isFile(pathnameN)) {
+            if (resT && isFile(pathnameN)) {
               pathname <- pathnameN;
               break;
             }
@@ -178,6 +179,8 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
 ############################################################################
 # HISTORY:
+# 2013-07-29
+# o Now devEval() returns a list of class 'DevEvalFile'.
 # 2013-07-15
 # o Added argument 'sep' to devEval() together with an option to set
 #   its default value.

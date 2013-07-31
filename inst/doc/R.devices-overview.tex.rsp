@@ -57,7 +57,7 @@ options(str=strOptions(strict.width="cut"));
 
 \title{<%=getName(pkg)%>}
 \author{<%=getAuthor(pkg)%>}
-\date{July 24, 2013}
+\date{July 30, 2013}
 
 \begin{document}
 

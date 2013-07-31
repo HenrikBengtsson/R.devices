@@ -2,7 +2,7 @@
 Package: R.devices
 ==================
 
-Version: 2.5.0 [2013-07-28]
+Version: 2.5.0 [2013-07-30]
 o Added support the 'win.metafile' (WMF) device type and added toWMF()
   creating (extended) WMF files.  Since the file format is *extended*
   WMF, which often has file extension *.emf, toEMF() was also added.
@@ -10,6 +10,7 @@ o Added support the 'win.metafile' (WMF) device type and added toWMF()
   difference that the file extension is *.emf instead of *.wmf.
 o Now devOptions() can query the options of multiple device types.
   Added arguments 'options' and 'drop' to devOptions().
+o Now devEval() returns a list of class 'DevEvalFile'.
 o DOCUMENTATION: Hiding internal/legacy functions from the help index.
 
 
