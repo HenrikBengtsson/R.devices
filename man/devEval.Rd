@@ -18,7 +18,8 @@
 
 \usage{
 devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL,
-  sep=getOption("devEval/args/sep", ","), ..., ext=substitute(type),
+  sep=getOption("devEval/args/sep", ","), ...,
+  ext=if (is.character(type)) type else substitute(type),
   filename=sprintf("\%s.\%s", paste(c(name, tags), collapse = sep), ext),
   path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field",
   NULL), onIncomplete=c("remove", "rename", "keep"),
