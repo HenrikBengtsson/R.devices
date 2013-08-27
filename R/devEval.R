@@ -108,7 +108,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
 
   # An interactive/non-file device?
-  isInteractive <- .devIsInteractive(type);
+  isInteractive <- devIsInteractive(type);
 
   # Result object
   if (isInteractive) {
@@ -202,7 +202,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 ############################################################################
 # HISTORY:
 # 2013-08-27
-# o Now devEval() utilizes internal .devIsInteractive().
+# o Now devEval() utilizes devIsInteractive().
 # 2013-08-17
 # o BUG FIX/ROBUSTNESS: Argument 'ext' of devEval() can now be inferred
 #   from argument 'type' also when 'type' is passed via a string variable.

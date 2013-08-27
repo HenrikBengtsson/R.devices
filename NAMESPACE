@@ -18,6 +18,7 @@ import("R.utils")
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 export("devEval")
 export("devIsOpen")
+export("devIsInteractive")
 export("devList")
 export("devGetLabel")
 export("devSetLabel")

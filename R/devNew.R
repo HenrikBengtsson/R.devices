@@ -199,7 +199,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Exclude 'file' and 'filename' arguments?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (.devIsInteractive(type)) {
+  if (devIsInteractive(type)) {
     keep <- !is.element(names(args), c("file", "filename"));
     args <- args[keep];
   }
@@ -230,7 +230,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 ############################################################################
 # HISTORY:
 # 2013-08-27
-# o Now devNew() utilizes internal .devIsInteractive().
+# o Now devNew() utilizes devIsInteractive().
 # 2013-07-03
 # o Now devNew() returns the index of the opened device.
 # 2012-11-18
