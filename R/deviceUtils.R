@@ -416,12 +416,46 @@ devDone <- function(which=dev.cur(), ...) {
   devFree[1L];
 } # .devNextAvailable()
 
+.devIsInteractive <- function(type, ...) {
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Validate arguments
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Argument 'type':
+  if (is.function(type)) {
+  } else {
+    type <- as.character(type);
+  }
+
+
+  # Nothing to do?
+  if (!is.character(type)) {
+    return(FALSE);
+  }
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Device type aliases?
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (type == "jpg") {
+    type <- "jpeg";
+  }
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Is known interactive device?
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  knownInteractive <- grDevices:::.known_interactive.devices;
+  res <- is.element(tolower(type), tolower(knownInteractive));
+
+  res;
+} # .devIsInteractive()
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # END: Local functions
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ############################################################################
 # HISTORY:
+# 2013-08-27
+# o Added .devIsInteractive().
 # 2012-11-18
 # o Replaced all stop() with throw().
 # 2012-04-30

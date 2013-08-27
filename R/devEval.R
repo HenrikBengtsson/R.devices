@@ -100,23 +100,38 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
   force <- Arguments$getLogical(force);
 
 
+  # An interactive/non-file device?
+  isInteractive <- .devIsInteractive(type);
 
   # Result object
-  res <- list(
-    type = type,
-    name = name,
-    tags = tags,
-    fullname = fullname,
-    filename = filename,
-    path = path,
-    pathname = pathname
-  );
-  class(res) <- c("DevEvalFile", class(res));
+  if (isInteractive) {
+    res <- list(
+      type = type,
+      name = name,
+      tags = tags
+    );
+##    class(res) <- c("DevEvalFile", class(res));
+  } else {
+    res <- list(
+      type = type,
+      name = name,
+      tags = tags,
+      fullname = fullname,
+      filename = filename,
+      path = path,
+      pathname = pathname
+    );
+    class(res) <- c("DevEvalFile", class(res));
+  }
 
   if (force || !isFile(pathname)) {
     done <- FALSE;
 
-    devIdx <- devNew(type, pathname, ...);
+    if (isInteractive) {
+      devIdx <- devNew(type, ...);
+    } else {
+      devIdx <- devNew(type, pathname, ...);
+    }
     on.exit({
       # Make sure to close the device (the same that was opened)
       devDone(devIdx);
@@ -179,6 +194,8 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
 ############################################################################
 # HISTORY:
+# 2013-08-27
+# o Now devEval() utilizes internal .devIsInteractive().
 # 2013-08-17
 # o BUG FIX/ROBUSTNESS: Argument 'ext' of devEval() can now be inferred
 #   from argument 'type' also when 'type' is passed via a string variable.
