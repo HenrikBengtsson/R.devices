@@ -436,7 +436,7 @@ devDone <- function(which=dev.cur(), ...) {
   type <- .devTypeName(type);
 
   # A known interactive device?
-  knownInteractive <- grDevices:::.known_interactive.devices;
+  knownInteractive <- grDevices::deviceIsInteractive();
   res <- is.element(tolower(type), tolower(knownInteractive));
 
   res;
