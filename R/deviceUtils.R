@@ -432,21 +432,30 @@ devDone <- function(which=dev.cur(), ...) {
     return(FALSE);
   }
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Device type aliases?
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (type == "jpg") {
-    type <- "jpeg";
-  }
+  type <- .devTypeName(type);
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Is known interactive device?
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # A known interactive device?
   knownInteractive <- grDevices:::.known_interactive.devices;
   res <- is.element(tolower(type), tolower(knownInteractive));
 
   res;
 } # .devIsInteractive()
+
+.devTypeName <- function(type, ...) {
+  # Nothing todo?
+  if (!is.character(type) || length(type) == 0L) {
+    return(type);
+  }
+
+  type <- tolower(type);
+
+  # Common aliases
+  type[type == "jpg"] <- "jpeg";
+  type[type == "ps"] <- "postscript";
+
+  type;
+} # .devTypeName()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # END: Local functions
@@ -455,7 +464,7 @@ devDone <- function(which=dev.cur(), ...) {
 ############################################################################
 # HISTORY:
 # 2013-08-27
-# o Added .devIsInteractive().
+# o Added .devIsInteractive() and .devTypeName().
 # 2012-11-18
 # o Replaced all stop() with throw().
 # 2012-04-30

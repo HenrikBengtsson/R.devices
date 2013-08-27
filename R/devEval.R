@@ -77,6 +77,13 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Argument 'type':
+  if (is.function(type)) {
+  } else {
+    type <- as.character(type);
+    type <- .devTypeName(type);
+  }
+
   # Argument 'filename' & 'path':
   pathname <- Arguments$getWritablePathname(filename, path=path);
 

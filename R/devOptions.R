@@ -324,10 +324,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     type <- findDeviceFunction(fcn=type);
   }
   if (is.character(type)) {
-    type <- tolower(type);
-    # Aliases
-    type[type == "jpg"] <- "jpeg";
-    type[type == "ps"] <- "postscript";
+    type <- .devTypeName(type);
     type <- match.arg(type);
   }
 

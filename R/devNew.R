@@ -85,6 +85,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   if (is.function(type)) {
   } else {
     type <- as.character(type);
+    type <- .devTypeName(type);
   }
 
   # Argument 'scale':
@@ -191,16 +192,6 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
     if (!is.null(width) && !is.null(height)) {
       args$width <- scale * width;
       args$height <- scale * height;
-    }
-  }
-
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Device type aliases?
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (is.character(type)) {
-    if (type == "jpg") {
-      type <- "jpeg";
     }
   }
 
