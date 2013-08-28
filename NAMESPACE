@@ -10,6 +10,7 @@ importFrom("R.oo", "startupMessage")
 importFrom("R.oo", "setConstructorS3")
 importFrom("R.oo", "BasicObject")
 importFrom("R.oo", "extend")
+importFrom("R.oo", "[[.BasicObject")
 
 # Until R.oo::setConstructorS3() is updated to use R.oo::Class.
 importFrom("R.oo", "Class")
@@ -83,3 +84,6 @@ S3method("getMimeType", "DevEvalFileProduct")
 S3method("getMime", "DevEvalFileProduct")
 S3method("getFullname", "DevEvalFileProduct")
 S3method("getDataURI", "DevEvalFileProduct")
+
+## export("getDefault")
+## S3method("getDefault", "DevEvalProduct")
