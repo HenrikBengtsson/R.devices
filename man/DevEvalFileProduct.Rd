@@ -47,31 +47,17 @@ DevEvalFileProduct(filename=NULL, path=NULL, ...)
   \item{...}{Additional arguments passed to \code{\link{DevEvalProduct}}.}
 }
 
-\section{Fields and Methods}{
- \bold{Methods:}\cr
-\tabular{rll}{
- \tab \code{as.character} \tab  -\cr
- \tab \code{\link[R.devices:getDataURI.DevEvalFileProduct]{getDataURI}} \tab Gets a Base64-encoded data URI.\cr
- \tab \code{getExtension} \tab  -\cr
- \tab \code{getFilename} \tab  -\cr
- \tab \code{getFullname} \tab  -\cr
- \tab \code{getMime} \tab  -\cr
- \tab \code{\link[R.devices:getMimeType.DevEvalFileProduct]{getMimeType}} \tab Gets the MIME type.\cr
- \tab \code{getPath} \tab  -\cr
- \tab \code{\link[R.devices:getPathname.DevEvalFileProduct]{getPathname}} \tab Gets the pathname, filename and path.\cr
-}
-
-
- \bold{Methods inherited from DevEvalProduct}:\cr
-getFullname, getName, getTags, getType
-
- \bold{Methods inherited from BasicObject}:\cr
-$, $<-, [[, [[<-, as.character, attach, detach, equals, extend, getFields, getInstantiationTime, hasField, hashCode, isReferable, objectSize, print
-
- \bold{Methods inherited from character}:\cr
-all.equal, as.Date, as.POSIXlt, as.data.frame, as.raster, formula, getDLLRegisteredRoutines, isOpen, uses
-
-
+\section{Fields}{
+ The following (virtual; calculate on-the-fly) fields are available:
+ \itemize{
+  \item \code{pathname}, e.g. 'figures/foo,a,b.png'
+  \item \code{path}, e.g. 'figures/'
+  \item \code{filename}, e.g. 'foo,a,b.png'
+  \item \code{fullname}, e.g. 'foo,a,b'
+  \item \code{name}, e.g. 'foo'
+  \item \code{tags}, e.g. 'a,b'
+  \item \code{dataURI}, e.g. 'data:image/png;base64,iVBORw0KGgoAAAA...'
+ }
 }
 
 \author{Henrik Bengtsson}

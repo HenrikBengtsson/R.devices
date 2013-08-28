@@ -18,8 +18,13 @@
 #   \item{...}{Not used.}
 # }
 #
-# \section{Fields and Methods}{
-#  @allmethods
+# \section{Fields}{
+#  The following (virtual; calculate on-the-fly) fields are available:
+#  \itemize{
+#   \item \code{fullname}, e.g. 'foo,a,b'
+#   \item \code{name}, e.g. 'foo'
+#   \item \code{tags}, e.g. 'a,b'
+#  }
 # }
 #
 # @author
@@ -70,6 +75,28 @@ setConstructorS3("DevEvalProduct", function(name=NULL, tags=NULL, type=NULL, ...
 setMethodS3("as.character", "DevEvalProduct", function(x, ...) {
   getFullname(x, ...);
 }, private=TRUE)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# BEGIN: PATCH until `[[.BasicObject` finds methods in namespaces
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+setMethodS3("[[", "DevEvalProduct", function(x, name, ...) {
+  if (name == "*") return(x);
+  fcn <- sprintf("get%s", capitalize(name));
+  expr <- substitute(fcn(x), list(fcn=as.name(fcn)));
+  res <- try({ eval(expr, ...) }, silent=TRUE);
+  if (!inherits(res, "try-error")) return(res);
+  NextMethod("[[");
+}, private=TRUE)
+
+
+setMethodS3("$", "DevEvalProduct", function(x, name) {
+  name <- as.character(name);
+  x[[name]];
+}, private=TRUE)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# END: PATCH until `[[.BasicObject` finds methods in namespaces
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 ###########################################################################/**
@@ -183,8 +210,17 @@ setMethodS3("getType", "DevEvalProduct", function(this, ...) {
 #   \item{...}{Additional arguments passed to @see "DevEvalProduct".}
 # }
 #
-# \section{Fields and Methods}{
-#  @allmethods
+# \section{Fields}{
+#  The following (virtual; calculate on-the-fly) fields are available:
+#  \itemize{
+#   \item \code{pathname}, e.g. 'figures/foo,a,b.png'
+#   \item \code{path}, e.g. 'figures/'
+#   \item \code{filename}, e.g. 'foo,a,b.png'
+#   \item \code{fullname}, e.g. 'foo,a,b'
+#   \item \code{name}, e.g. 'foo'
+#   \item \code{tags}, e.g. 'a,b'
+#   \item \code{dataURI}, e.g. 'data:image/png;base64,iVBORw0KGgoAAAA...'
+#  }
 # }
 #
 # @author

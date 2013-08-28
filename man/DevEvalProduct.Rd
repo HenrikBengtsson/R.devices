@@ -45,24 +45,13 @@ DevEvalProduct(name=NULL, tags=NULL, type=NULL, ...)
   \item{...}{Not used.}
 }
 
-\section{Fields and Methods}{
- \bold{Methods:}\cr
-\tabular{rll}{
- \tab \code{\link[R.devices:as.character.DevEvalProduct]{as.character}} \tab Gets a character representation of the product.\cr
- \tab \code{\link[R.devices:getFullname.DevEvalProduct]{getFullname}} \tab Gets the full name, name and tags.\cr
- \tab \code{getName} \tab  -\cr
- \tab \code{getTags} \tab  -\cr
- \tab \code{\link[R.devices:getType.DevEvalProduct]{getType}} \tab Gets the type.\cr
-}
-
-
- \bold{Methods inherited from BasicObject}:\cr
-$, $<-, [[, [[<-, as.character, attach, detach, equals, extend, getFields, getInstantiationTime, hasField, hashCode, isReferable, objectSize, print
-
- \bold{Methods inherited from character}:\cr
-all.equal, as.Date, as.POSIXlt, as.data.frame, as.raster, formula, getDLLRegisteredRoutines, isOpen, uses
-
-
+\section{Fields}{
+ The following (virtual; calculate on-the-fly) fields are available:
+ \itemize{
+  \item \code{fullname}, e.g. 'foo,a,b'
+  \item \code{name}, e.g. 'foo'
+  \item \code{tags}, e.g. 'a,b'
+ }
 }
 
 \author{Henrik Bengtsson}

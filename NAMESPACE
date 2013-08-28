@@ -48,24 +48,8 @@ export("toSVG")
 export("toTIFF")
 export("toWMF")
 
-## Until [[.BasicObject is updated to search namespaces:
-## export("DevEvalFileProduct")
-exportPattern("DevEvalProduct$")
-export("getFullname")
-export("getName")
-export("getTags")
-
-## Until [[.BasicObject is updated to search namespaces:
-## export("DevEvalFileProduct")
-exportPattern("DevEvalFileProduct$")
-export("getPathname")
-export("getPath")
-export("getFilename")
-export("getType")
-export("getMimeType")
-export("getMime")
-export("getDataURI")
-
+#export("DevEvalProduct")
+#export("DevEvalFileProduct")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # DECLARATIONS
@@ -75,6 +59,8 @@ S3method("getFullname", "DevEvalProduct")
 S3method("getName", "DevEvalProduct")
 S3method("getTags", "DevEvalProduct")
 S3method("getType", "DevEvalProduct")
+S3method("[[", "DevEvalProduct")
+S3method("$", "DevEvalProduct")
 
 S3method("as.character", "DevEvalFileProduct")
 S3method("getPathname", "DevEvalFileProduct")
@@ -84,6 +70,3 @@ S3method("getMimeType", "DevEvalFileProduct")
 S3method("getMime", "DevEvalFileProduct")
 S3method("getFullname", "DevEvalFileProduct")
 S3method("getDataURI", "DevEvalFileProduct")
-
-## export("getDefault")
-## S3method("getDefault", "DevEvalProduct")
