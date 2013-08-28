@@ -30,7 +30,7 @@ export("devOptions")
 export("eps")
 export("jpeg2")
 export("png2")
-export("toBase64")
+
 export("toBMP")
 export("toEPS")
 export("toEMF")
