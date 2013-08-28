@@ -7,6 +7,7 @@ o Added support for retrieving a Base64-encoded data URI string
   from a DevEvalFile.
 o Added classes DevEvalProduct and DevEvalFileProduct, which are
   returned by devEval().
+o ROBUSTNESS: Added package system tests.
 
 
 Version: 2.5.2 [2013-08-27]
