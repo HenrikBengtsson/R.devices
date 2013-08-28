@@ -48,6 +48,7 @@ R_OUTDIR := _R-$(R_VERSION_FULL)
 R_CHECK_OUTDIR := $(R_OUTDIR)/$(PKG_NAME).Rcheck
 R_CHECK_OPTS = --as-cran --timings
 R_CRAN_OUTDIR := $(R_OUTDIR)/$(PKG_NAME)_$(PKG_VERSION).CRAN
+R_BUILD_OPTS_INT = $(R_BUILD_OPTS)
 
 
 all: build install check
@@ -109,9 +110,12 @@ setup:	update deps
 ../$(R_OUTDIR)/$(PKG_TARBALL): $(PKG_FILES)
 	$(MKDIR) ../$(R_OUTDIR)
 	$(CD) ../$(R_OUTDIR);\
-	$(R_CMD) build ../$(PKG_DIR)
+	$(R_CMD) build $(R_BUILD_OPTS_INT) ../$(PKG_DIR)
 
 build: ../$(R_OUTDIR)/$(PKG_TARBALL)
+
+build_nv:
+	$(MAKE) R_BUILD_OPTS=--no-build-vignettes build
 
 build_force:
 	$(RM) ../$(R_OUTDIR)/$(PKG_TARBALL)

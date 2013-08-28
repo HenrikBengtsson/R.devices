@@ -48,10 +48,10 @@ devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags
 }
 
 \value{
-  Returns a named \code{\link[base]{list}} with items specifying for instance
-  the pathname, the fullname etc of the generated image.
-  If argument \code{field} is given, then the value of the
-  corresponding element is returned.
+  Returns a \code{\link{DevEvalFileProduct}} if the device generated an
+  image file, otherwise an \code{\link{DevEvalProduct}}.
+  If argument \code{field} is given, then the field of the
+  \code{\link{DevEvalProduct}} is returned instead.
   \emph{Note that the return value may be changed in future releases.}
 }
 
@@ -74,12 +74,16 @@ res <- devEval("png", name="MyPlot", tags=c("10", "rnd"), aspectRatio=0.7, {
 })
 print(res$pathname)
 # [1] "figures/MyPlot,10,rnd.png"
+str(res$dataURI)
+# chr "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAA..."
+
 
 res <- devEval("pdf", name="MyPlot", tags=c("10", "rnd"), aspectRatio=0.7, {
   plot(1:10)
 })
 print(res$pathname)
 # [1] "figures/MyPlot,10,rnd.pdf"
+
 
 res <- devEval("eps", name="MyPlot", tags=c("10", "rnd"), aspectRatio=0.7, {
   plot(1:10)

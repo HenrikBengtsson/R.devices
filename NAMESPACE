@@ -2,10 +2,17 @@
 # IMPORTS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 importFrom("R.methodsS3", "throw")
+importFrom("R.methodsS3", "setMethodS3")
 
 importFrom("R.oo", "Package")
 importFrom("R.oo", "getPosition")
 importFrom("R.oo", "startupMessage")
+importFrom("R.oo", "setConstructorS3")
+importFrom("R.oo", "BasicObject")
+importFrom("R.oo", "extend")
+
+# Until R.oo::setConstructorS3() is updated to use R.oo::Class.
+importFrom("R.oo", "Class")
 
 import("R.utils")
 ## Arguments$... methods:
@@ -39,3 +46,40 @@ export("toPNG")
 export("toSVG")
 export("toTIFF")
 export("toWMF")
+
+## Until [[.BasicObject is updated to search namespaces:
+## export("DevEvalFileProduct")
+exportPattern("DevEvalProduct$")
+export("getFullname")
+export("getName")
+export("getTags")
+
+## Until [[.BasicObject is updated to search namespaces:
+## export("DevEvalFileProduct")
+exportPattern("DevEvalFileProduct$")
+export("getPathname")
+export("getPath")
+export("getFilename")
+export("getType")
+export("getMimeType")
+export("getMime")
+export("getDataURI")
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# DECLARATIONS
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+S3method("as.character", "DevEvalProduct")
+S3method("getFullname", "DevEvalProduct")
+S3method("getName", "DevEvalProduct")
+S3method("getTags", "DevEvalProduct")
+S3method("getType", "DevEvalProduct")
+
+S3method("as.character", "DevEvalFileProduct")
+S3method("getPathname", "DevEvalFileProduct")
+S3method("getPath", "DevEvalFileProduct")
+S3method("getFilename", "DevEvalFileProduct")
+S3method("getMimeType", "DevEvalFileProduct")
+S3method("getMime", "DevEvalFileProduct")
+S3method("getFullname", "DevEvalFileProduct")
+S3method("getDataURI", "DevEvalFileProduct")

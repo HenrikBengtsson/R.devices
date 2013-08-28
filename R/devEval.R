@@ -31,10 +31,10 @@
 # }
 #
 # \value{
-#   Returns a named @list with items specifying for instance
-#   the pathname, the fullname etc of the generated image.
-#   If argument \code{field} is given, then the value of the
-#   corresponding element is returned.
+#   Returns a @see "DevEvalFileProduct" if the device generated an
+#   image file, otherwise an @see "DevEvalProduct".
+#   If argument \code{field} is given, then the field of the
+#   @see "DevEvalProduct" is returned instead.
 #   \emph{Note that the return value may be changed in future releases.}
 # }
 #
@@ -112,23 +112,9 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
   # Result object
   if (isInteractive) {
-    res <- list(
-      type = type,
-      name = name,
-      tags = tags
-    );
-##    class(res) <- c("DevEvalFile", class(res));
+    res <- DevEvalProduct(name=name, tags=tags, type=type);
   } else {
-    res <- list(
-      type = type,
-      name = name,
-      tags = tags,
-      fullname = fullname,
-      filename = filename,
-      path = path,
-      pathname = pathname
-    );
-    class(res) <- c("DevEvalFile", class(res));
+    res <- DevEvalFileProduct(pathname, type=type);
   }
 
   if (force || !isFile(pathname)) {
@@ -141,7 +127,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
     }
     on.exit({
       # Make sure to close the device (the same that was opened)
-      devDone(devIdx);
+      if (!is.null(devIdx)) devDone(devIdx);
 
       # Archive file?
       if (isPackageLoaded("R.archive")) {
@@ -188,6 +174,14 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
     eval(expr, envir=envir);
     done <- TRUE;
+  }
+
+  # Close it here to make sure the image file is created.
+  # This is needed if field="dataURI" (which triggers are read
+  # of the image file).
+  if (done) {
+    devDone(devIdx);
+    devIdx <- NULL;
   }
 
   # Subset?
