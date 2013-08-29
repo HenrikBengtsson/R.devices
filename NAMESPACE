@@ -8,12 +8,9 @@ importFrom("R.oo", "Package")
 importFrom("R.oo", "getPosition")
 importFrom("R.oo", "startupMessage")
 importFrom("R.oo", "setConstructorS3")
-importFrom("R.oo", "BasicObject")
 importFrom("R.oo", "extend")
+importFrom("R.oo", "BasicObject")
 importFrom("R.oo", "[[.BasicObject")
-
-# Until R.oo::setConstructorS3() is updated to use R.oo::Class.
-importFrom("R.oo", "Class")
 
 import("R.utils")
 ## Arguments$... methods:

@@ -2,7 +2,7 @@
 Package: R.devices
 ==================
 
-Version: 2.6.0 [2013-08-27]
+Version: 2.6.0 [2013-08-29]
 o Added support for retrieving a Base64-encoded data URI string
   from a DevEvalFile.
 o Added classes DevEvalProduct and DevEvalFileProduct, which are
