@@ -21,9 +21,9 @@
 # \section{Fields}{
 #  The following (virtual; calculate on-the-fly) fields are available:
 #  \itemize{
-#   \item \code{fullname}, e.g. 'foo,a,b'
-#   \item \code{name}, e.g. 'foo'
-#   \item \code{tags}, e.g. 'a,b'
+#   \item \code{fullname}: the fullname of an image, e.g. 'foo,a,b'
+#   \item \code{name}: the part of the fullname before the first comma, e.g. 'foo'
+#   \item \code{tags}: the part of the fullname after the first comma, e.g. 'a,b'
 #  }
 # }
 #
@@ -147,7 +147,7 @@ setMethodS3("getName", "DevEvalProduct", function(this, ...) {
   name;
 })
 
-setMethodS3("getTags", "DevEvalProduct", function(this, collapse=NULL, ...) {
+setMethodS3("getTags", "DevEvalProduct", function(this, collapse=",", ...) {
   fullname <- getFullname(this, ...);
   parts <- unlist(strsplit(fullname, split=","), use.names=FALSE);
   tags <- parts[-1L];
@@ -213,14 +213,19 @@ setMethodS3("getType", "DevEvalProduct", function(this, ...) {
 # \section{Fields}{
 #  The following (virtual; calculate on-the-fly) fields are available:
 #  \itemize{
-#   \item \code{pathname}, e.g. 'figures/foo,a,b.png'
-#   \item \code{path}, e.g. 'figures/'
-#   \item \code{filename}, e.g. 'foo,a,b.png'
-#   \item \code{fullname}, e.g. 'foo,a,b'
-#   \item \code{name}, e.g. 'foo'
-#   \item \code{tags}, e.g. 'a,b'
-#   \item \code{dataURI}, e.g. 'data:image/png;base64,iVBORw0KGgoAAAA...'
+#   \item \code{pathname}: the (relative) pathname of the image file, e.g. 'figures/foo,a,b.png'.  This can be used to \emph{link to} image files in for instance HTML and Markdown documents.
+#   \item \code{path}, the (relative) path to the image file, e.g. 'figures/'
+#   \item \code{filename}: the filename ("basename") of the image file, e.g. 'foo,a,b.png'
+#   \item \code{fullname}: the fullname (the filename without the filename extension), e.g. 'foo,a,b'.  It is recommended to use this when including images in LaTeX documents that use the \code{\\usepackage{graphicx}} package.
+#   \item \code{name}: the part of the fullname before the first comma, e.g. 'foo'
+#   \item \code{tags}: the part of the fullname after the first comma, e.g. 'a,b'
+#   \item \code{dataURI}: the Base64-encoded Data URI representation of the image, e.g. 'data:image/png;base64,iVBORw0KGgoAAAA...'.  This can be used to \emph{include} ("inlining") image files in for instance self-contained HTML and Markdown documents.
 #  }
+# }
+#
+# \seealso{
+#   In order to retrieve the Data URI, the \pkg{base64enc} package
+#   must be installed.
 # }
 #
 # @author
@@ -270,7 +275,7 @@ setMethodS3("getFullname", "DevEvalFileProduct", function(this, ...) {
 # @alias getPath
 # @alias getExtension
 #
-# @title "Gets the pathname, filename and path"
+# @title "Gets the (relative) pathname, filename and path"
 #
 # \description{
 #   @get "title".
@@ -297,8 +302,12 @@ setMethodS3("getFullname", "DevEvalFileProduct", function(this, ...) {
 #   @seeclass
 # }
 #*/###########################################################################
-setMethodS3("getPathname", "DevEvalFileProduct", function(this, ...) {
-  as.character(unclass(this), ...);
+setMethodS3("getPathname", "DevEvalFileProduct", function(this, relative=TRUE, ...) {
+  pathname <- as.character(unclass(this), ...);
+  if (relative) {
+    pathname <- getRelativePath(pathname);
+  }
+  pathname;
 })
 
 setMethodS3("getFilename", "DevEvalFileProduct", function(this, ...) {
@@ -430,6 +439,8 @@ setMethodS3("getDataURI", "DevEvalFileProduct", function(this, mime=getMimeType(
 
 ############################################################################
 # HISTORY:
+# 2013-08-29
+# o Now getPathname() returns the relative pathname, by default.
 # 2013-08-27
 # o Added the DevEvalProduct and DevEvalFileProduct classes.
 # o Created.

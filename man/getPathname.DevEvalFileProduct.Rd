@@ -27,14 +27,14 @@
 \alias{getPath}
 \alias{getExtension}
 
-\title{Gets the pathname, filename and path}
+\title{Gets the (relative) pathname, filename and path}
 
 \description{
-  Gets the pathname, filename and path.
+  Gets the (relative) pathname, filename and path.
 }
 
 \usage{
-\method{getPathname}{DevEvalFileProduct}(this, ...)
+\method{getPathname}{DevEvalFileProduct}(this, relative=TRUE, ...)
 \method{getFilename}{DevEvalFileProduct}(this, ...)
 \method{getPath}{DevEvalFileProduct}(this, ...)
 \method{getExtension}{DevEvalFileProduct}(this, ...)

@@ -35,7 +35,7 @@
 #   image file, otherwise an @see "DevEvalProduct".
 #   If argument \code{field} is given, then the field of the
 #   @see "DevEvalProduct" is returned instead.
-#   \emph{Note that the return value may be changed in future releases.}
+#   \emph{Note that the default return value may be changed in future releases.}
 # }
 #
 # \section{Generated image file}{

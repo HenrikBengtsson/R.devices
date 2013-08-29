@@ -48,9 +48,9 @@ DevEvalProduct(name=NULL, tags=NULL, type=NULL, ...)
 \section{Fields}{
  The following (virtual; calculate on-the-fly) fields are available:
  \itemize{
-  \item \code{fullname}, e.g. 'foo,a,b'
-  \item \code{name}, e.g. 'foo'
-  \item \code{tags}, e.g. 'a,b'
+  \item \code{fullname}: the fullname of an image, e.g. 'foo,a,b'
+  \item \code{name}: the part of the fullname before the first comma, e.g. 'foo'
+  \item \code{tags}: the part of the fullname after the first comma, e.g. 'a,b'
  }
 }
 

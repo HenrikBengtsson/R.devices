@@ -45,8 +45,8 @@ export("toSVG")
 export("toTIFF")
 export("toWMF")
 
-#export("DevEvalProduct")
-#export("DevEvalFileProduct")
+export("DevEvalProduct")
+export("DevEvalFileProduct")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # DECLARATIONS

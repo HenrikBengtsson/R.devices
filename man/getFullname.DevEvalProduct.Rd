@@ -33,7 +33,7 @@
 \method{getFullname}{DevEvalProduct}(this, ...)
 \method{getFullname}{DevEvalFileProduct}(this, ...)
 \method{getName}{DevEvalProduct}(this, ...)
-\method{getTags}{DevEvalProduct}(this, collapse=NULL, ...)
+\method{getTags}{DevEvalProduct}(this, collapse=",", ...)
 }
 
 \arguments{

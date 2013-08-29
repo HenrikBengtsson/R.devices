@@ -52,7 +52,7 @@ devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags
   image file, otherwise an \code{\link{DevEvalProduct}}.
   If argument \code{field} is given, then the field of the
   \code{\link{DevEvalProduct}} is returned instead.
-  \emph{Note that the return value may be changed in future releases.}
+  \emph{Note that the default return value may be changed in future releases.}
 }
 
 \section{Generated image file}{
