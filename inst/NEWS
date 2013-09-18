@@ -2,7 +2,9 @@
 Package: R.devices
 ==================
 
-Version: 2.6.1 [2013-09-16]
+Version: 2.6.1 [2013-09-17]
+o BUG FIX: Package vignette assumed that R.rsp and R.utils 
+  are attached.
 o Bumped up package dependencies.
 
 

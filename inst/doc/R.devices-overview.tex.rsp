@@ -11,6 +11,9 @@
 
 <%
 library("R.devices");
+R.rsp <- R.oo::Package("R.rsp")
+evalWithEcho <- R.rsp::evalWithEcho
+hpaste <- R.utils::hpaste
 
 devOptions("png", width=840);
 options(width=85);
@@ -70,7 +73,7 @@ options(str=strOptions(strict.width="cut"));
 
 \title{<%@meta name="title"%>}
 \author{<%@meta name="author"%>}
-\date{<%=format(as.Date(getDate(R.devices)), format="%B %d, %Y")%>}
+\date{<%=format(as.Date(R.devices$date), format="%B %d, %Y")%>}
 
 \begin{document}
 
