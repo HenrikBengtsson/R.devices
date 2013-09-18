@@ -84,8 +84,13 @@ setMethodS3("[[", "DevEvalProduct", function(x, name, ...) {
   if (name == "*") return(x);
   fcn <- sprintf("get%s", capitalize(name));
   expr <- substitute(fcn(x), list(fcn=as.name(fcn)));
-  res <- try({ eval(expr, ...) }, silent=TRUE);
-  if (!inherits(res, "try-error")) return(res);
+  res <- tryCatch({
+    eval(expr, ...);
+  }, error = function(ex) {
+    ex;
+  });
+  if (inherits(res, "Exception")) throw(res);
+  if (!inherits(res, "simpleError")) return(res);
   NextMethod("[[");
 }, private=TRUE)
 
@@ -407,6 +412,9 @@ setMethodS3("getMime", "DevEvalFileProduct", function(this, ...) {
 # }
 #*/#########################################################################
 setMethodS3("getDataURI", "DevEvalFileProduct", function(this, mime=getMimeType(this), ...) {
+  if (!isPackageInstalled("base64enc")) {
+    throw("Package is not installed: base64enc");
+  }
   base64enc::dataURI(file=getPathname(this), mime=mime, encoding="base64");
 })
 
@@ -439,6 +447,9 @@ setMethodS3("getDataURI", "DevEvalFileProduct", function(this, mime=getMimeType(
 
 ############################################################################
 # HISTORY:
+# 2013-09-17
+# o ROBUSTNESS: Now getDataURI() throws an Exception is suggested
+#   package 'base64enc' is not installed.
 # 2013-08-29
 # o Now getPathname() returns the relative pathname, by default.
 # 2013-08-27

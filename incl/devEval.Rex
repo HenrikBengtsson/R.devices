@@ -3,8 +3,11 @@ res <- devEval("png", name="MyPlot", tags=c("10", "rnd"), aspectRatio=0.7, {
 })
 print(res$pathname)
 # [1] "figures/MyPlot,10,rnd.png"
-str(res$dataURI)
-# chr "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAA..."
+
+if (R.utils::isPackageInstalled("base64enc")) {
+  str(res$dataURI)
+  # chr "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAA..."
+}
 
 
 res <- devEval("pdf", name="MyPlot", tags=c("10", "rnd"), aspectRatio=0.7, {
