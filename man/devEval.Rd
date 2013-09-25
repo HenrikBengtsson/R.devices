@@ -18,8 +18,7 @@
 
 \usage{
 devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL,
-  sep=getOption("devEval/args/sep", ","), ...,
-  ext=if (is.character(type)) type else substitute(type),
+  sep=getOption("devEval/args/sep", ","), ..., ext=NULL,
   filename=sprintf("\%s.\%s", paste(c(name, tags), collapse = sep), ext),
   path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field",
   NULL), onIncomplete=c("remove", "rename", "keep"),
@@ -36,7 +35,8 @@ devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags
    By default, it is inferred from argument \code{type}.}
   \item{...}{Additional arguments passed to \code{\link{devNew}}().}
   \item{filename}{The filename of the image saved, if any.
-    See also below.}
+   By default, it is composed of arguments \code{name}, \code{tags},
+   \code{sep}, and \code{ext}.  See also below.}
   \item{path}{The directory where then image should be saved, if any.}
   \item{field}{An optional \code{\link[base]{character}} string specifying a specific
     field of the named result \code{\link[base]{list}} to be returned.}

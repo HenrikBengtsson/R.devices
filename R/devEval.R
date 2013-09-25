@@ -19,7 +19,8 @@
 #    By default, it is inferred from argument \code{type}.}
 #   \item{...}{Additional arguments passed to @see "devNew".}
 #   \item{filename}{The filename of the image saved, if any.
-#     See also below.}
+#    By default, it is composed of arguments \code{name}, \code{tags},
+#    \code{sep}, and \code{ext}.  See also below.}
 #   \item{path}{The directory where then image should be saved, if any.}
 #   \item{field}{An optional @character string specifying a specific
 #     field of the named result @list to be returned.}
@@ -64,7 +65,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=if (is.character(type)) type else substitute(type), filename=sprintf("%s.%s", paste(c(name, tags), collapse=sep), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
+devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=sprintf("%s.%s", paste(c(name, tags), collapse=sep), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -78,9 +79,6 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
     type <- .devTypeName(type);
   }
 
-  # Argument 'filename' & 'path':
-  pathname <- Arguments$getWritablePathname(filename, path=path);
-
   # Argument 'name' and 'tags':
   fullname <- paste(c(name, tags), collapse=sep);
   fullname <- unlist(strsplit(fullname, split=sep, fixed=TRUE));
@@ -88,6 +86,23 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
   fullname <- sub("[\t\n\f\r ]*$", "", fullname); #
   fullname <- fullname[nchar(fullname) > 0L];     # drop empty tags
   fullname <- paste(fullname, collapse=sep);
+
+  # Argument 'ext':
+  if (is.null(ext)) {
+    if (is.character(type)) {
+      ext <- type;
+    } else {
+      ext <- substitute(type);
+      ext <- as.character(ext);
+    }
+  }
+
+  # Argument 'filename' & 'path':
+  if (is.null(filename)) {
+    fullname <- paste(c(name, tags), collapse=sep);
+    filename <- sprintf("%s.%s", filename, ext);
+  }
+  pathname <- Arguments$getWritablePathname(filename, path=path);
 
   # Argument 'field':
   if (!is.null(field)) {
@@ -171,8 +186,8 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
   }
 
   # Close it here to make sure the image file is created.
-  # This is needed if field="dataURI" (which triggers are read
-  # of the image file).
+  # This is needed if field="dataURI" (which triggers a
+  # reading the image file).
   if (done) {
     devDone(devIdx);
     devIdx <- NULL;
@@ -189,6 +204,10 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
 ############################################################################
 # HISTORY:
+# 2013-09-25
+# o Updated the formal defaults of several devEval() arguments to be NULL.
+#   Instead, NULL for such arguments are translated to default internally.
+#   This makes it easier/possible to vectorize devEval().
 # 2013-09-24
 # o ROBUSTNESS: Now devEval() gives an error if argument 'type' is not
 #   of length one.  However, eventually devEval() will be vectorized.

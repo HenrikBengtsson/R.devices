@@ -2,9 +2,12 @@
 Package: R.devices
 ==================
 
-Version: 2.7.0 [2013-09-24]
+Version: 2.7.0 [2013-09-25]
 o Now devOff() and devDone() checks if device is opened before trying
   to close it.  This avoids opening and closing of non-opened devices.
+o Updated the formal defaults of several devEval() arguments to be
+  NULL.  Instead, NULL for such arguments are translated to default
+  internally.  This makes it easier/possible to vectorize devEval().
 o CONSISTENCY: Now devList() returns an empty integer vector
   (instead of NULL) if no open devices exists.
 o GENERALIZATION: Vectorized devIsInteractive(), devIsOpen(), and
