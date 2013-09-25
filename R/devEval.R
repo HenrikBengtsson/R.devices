@@ -14,6 +14,9 @@
 #    The device is created and opened using @see "devNew".
 #    Multiple types may be specified.}
 #   \item{expr}{The @expression of graphing commands to be evaluated.}
+#   \item{initially, finally}{Optional @expression:s to be evaluated
+#    before and after \code{expr}. If \code{type} specifies multiple
+#    devices, these optional @expression:s are only evaluated ones.}
 #   \item{envir}{The @environment where \code{expr} should be evaluated.}
 #   \item{name, tags, sep}{The fullname name of the image is specified
 #     as the name with optional \code{sep}-separated tags appended.}
@@ -67,7 +70,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
+devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Vectorized version
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -87,10 +90,18 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
     # Expression must be substitute():d to avoid the being evaluated here
     expr <- substitute(expr);
 
+    # Evaluate 'initially' only once
+    eval(initially, envir=envir);
+
+    # Evaluate 'expr' once per graphics device
     res <- lapply(types, FUN=function(type) {
-      devEval(type=type, expr=expr, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force);
+      devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force);
     });
     names(res) <- types;
+
+    # Evaluate 'finally' only once
+    eval(finally, envir=envir);
+
     return(res);
   }
 
@@ -212,7 +223,11 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
       } # if (!done && isFile(...))
     }, add=TRUE);
 
+    # Evaluate 'initially', 'expr' and 'finally' (in that order)
+    eval(initially, envir=envir);
     eval(expr, envir=envir);
+    eval(finally, envir=envir);
+
     done <- TRUE;
   }
 
@@ -236,6 +251,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 ############################################################################
 # HISTORY:
 # 2013-09-25
+# o Added arguments 'initially' and 'finally'.
 # o Vectorized devEval().
 # o Updated the formal defaults of several devEval() arguments to be NULL.
 #   Instead, NULL for such arguments are translated to default internally.

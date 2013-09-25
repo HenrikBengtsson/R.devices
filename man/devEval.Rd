@@ -17,11 +17,11 @@
 }
 
 \usage{
-devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL,
-  sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL,
-  path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field",
-  NULL), onIncomplete=c("remove", "rename", "keep"),
-  force=getOption("devEval/args/force", TRUE))
+devEval(type=getOption("device"), expr, initially=NULL, finally=NULL,
+  envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","),
+  ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"),
+  field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename",
+  "keep"), force=getOption("devEval/args/force", TRUE))
 }
 
 \arguments{
@@ -29,6 +29,9 @@ devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags
    The device is created and opened using \code{\link{devNew}}().
    Multiple types may be specified.}
   \item{expr}{The \code{\link[base]{expression}} of graphing commands to be evaluated.}
+  \item{initially, finally}{Optional \code{\link[base]{expression}}:s to be evaluated
+   before and after \code{expr}. If \code{type} specifies multiple
+   devices, these optional \code{\link[base]{expression}}:s are only evaluated ones.}
   \item{envir}{The \code{\link[base]{environment}} where \code{expr} should be evaluated.}
   \item{name, tags, sep}{The fullname name of the image is specified
     as the name with optional \code{sep}-separated tags appended.}
