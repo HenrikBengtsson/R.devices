@@ -10,7 +10,7 @@ types <- list(
 
 for (type in types) {
   cat("Device types: ", paste(sQuote(type), collapse=", "), "\n", sep="")
-  res <- devEval(type, aspectRatio=2/3, {
+  res <- devEval(type, name="multi", aspectRatio=2/3, {
     plot(1:10)
   })
   print(res)
