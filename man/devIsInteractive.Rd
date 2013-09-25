@@ -17,16 +17,16 @@
 }
 
 \usage{
-devIsInteractive(type, ...)
+devIsInteractive(types, ...)
 }
 
 \arguments{
-  \item{type}{A \code{\link[base]{character}} string.}
+  \item{types}{A \code{\link[base]{character}} \code{\link[base]{vector}}.}
   \item{...}{Not used.}
 }
 
 \value{
-  Returns \code{\link[base:logical]{TRUE}} if the device type is interactive, otherwise \code{\link[base:logical]{FALSE}}.
+  Returns a \code{\link[base]{logical}} @vectoer with \code{\link[base:logical]{TRUE}} if the device type is interactive, otherwise \code{\link[base:logical]{FALSE}}.
 }
 
 \author{Henrik Bengtsson}

@@ -33,13 +33,13 @@
   title = {R.devices: Unified handling of graphics devices},
   author = {Henrik Bengtsson},
   year = {2013},
-  note = {R package version 2.6.2},
+  note = {R package version 2.7.0},
 }
 }
 }
 
 \author{
- Henrik Bengtsson.
+ Henrik Bengtsson [aut, cre, cph].
 }
 
 \section{License}{

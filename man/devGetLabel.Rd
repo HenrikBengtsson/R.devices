@@ -10,10 +10,10 @@
 \alias{devGetLabel}
 
 
-\title{Gets the label of a device}
+\title{Gets the labels of zero or more devices}
 
 \description{
- Gets the label of a device.
+ Gets the labels of zero or more devices.
 }
 
 \usage{
@@ -21,12 +21,13 @@ devGetLabel(which=dev.cur(), ...)
 }
 
 \arguments{
-  \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
+  \item{which}{An index (\code{\link[base]{numeric}}) \code{\link[base]{vector}} or a label (\code{\link[base]{character}}) \code{\link[base]{vector}}.}
   \item{...}{Not used.}
 }
 
 \value{
-  Returns a \code{\link[base]{character}} string.
+  Returns a \code{\link[base]{character}} \code{\link[base]{vector}}.
+  If a device does not exist, an error is thrown.
 }
 
 \author{Henrik Bengtsson}

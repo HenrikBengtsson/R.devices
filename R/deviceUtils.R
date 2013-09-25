@@ -1,7 +1,7 @@
 ###########################################################################/**
 # @RdocFunction devIsOpen
 #
-# @title "Checks if a device is open or not"
+# @title "Checks if zero or more devices are open or not"
 #
 # \description{
 #  @get "title".
@@ -10,12 +10,13 @@
 # @synopsis
 #
 # \arguments{
-#   \item{which}{An index (@numeric) or a label (@character).}
+#   \item{which}{An index (@numeric) @vector or a label (@character) @vector.}
 #   \item{...}{Not used.}
 # }
 #
 # \value{
-#   Returns @TRUE if the device is open, otherwise @FALSE.
+#   Returns a named @logical @vector with @TRUE if a device is open,
+#   otherwise @FALSE.
 # }
 #
 # @examples "../incl/deviceUtils.Rex"
@@ -26,10 +27,19 @@
 # @keyword utilities
 #*/###########################################################################
 devIsOpen <- function(which=dev.cur(), ...) {
+  # Nothing to do?
+  if (length(which) == 0L) {
+    res <- logical(0L);
+    names(res) <- character(0L);
+    return(res);
+  }
+
   devList <- .devList();
-  dev <- devList[which];
-  label <- names(dev);
-  (!is.na(label) && dev[[1L]] != "");
+  devs <- devList[which];
+  labels <- names(devs);
+  isOpen <- sapply(devs, FUN=function(dev) !is.null(dev) && nzchar(dev));
+  isOpen <- isOpen & !is.na(labels);
+  isOpen;
 } # devIsOpen()
 
 
@@ -48,6 +58,8 @@ devIsOpen <- function(which=dev.cur(), ...) {
 # @synopsis
 #
 # \arguments{
+#   \item{dropNull}{If @TRUE, the "null" device (device index 1) is
+#     not returned.}
 #   \item{...}{Not used.}
 # }
 #
@@ -64,7 +76,7 @@ devIsOpen <- function(which=dev.cur(), ...) {
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devList <- function(...) {
+devList <- function(dropNull=TRUE, ...) {
   devList <- .devList();
 
   # Return only opened devices
@@ -72,21 +84,20 @@ devList <- function(...) {
   names(isOpen) <- names(devList);
   idxs <- which(isOpen);
 
-  # Exclude the "null" device
-  idxs <- idxs[-1L];
-
-  if (length(idxs) == 0L)
-    idxs <- NULL;
+  # Exclude the "null" device?
+  if (dropNull) {
+    idxs <- idxs[-1L];
+  }
 
   idxs;
-}
+} # devList()
 
 
 
 ###########################################################################/**
 # @RdocFunction devGetLabel
 #
-# @title "Gets the label of a device"
+# @title "Gets the labels of zero or more devices"
 #
 # \description{
 #  @get "title".
@@ -95,12 +106,13 @@ devList <- function(...) {
 # @synopsis
 #
 # \arguments{
-#   \item{which}{An index (@numeric) or a label (@character).}
+#   \item{which}{An index (@numeric) @vector or a label (@character) @vector.}
 #   \item{...}{Not used.}
 # }
 #
 # \value{
-#   Returns a @character string.
+#   Returns a @character @vector.
+#   If a device does not exist, an error is thrown.
 # }
 #
 # @author
@@ -113,12 +125,13 @@ devList <- function(...) {
 # @keyword utilities
 #*/###########################################################################
 devGetLabel <- function(which=dev.cur(), ...) {
-  devList <- .devList();
-  dev <- devList[which];
-  label <- names(dev);
-  if (is.na(label) || dev[[1L]] == "")
-    throw("No such device: ", which);
-  label;
+  devList <- devList(dropNull=FALSE);
+  devs <- devList[which];
+  labels <- names(devs);
+  if (any(is.na(labels))) {
+    throw("No such device: ", paste(which[is.na(labels)], collapse=", "));
+  }
+  labels;
 } # devGetLabel()
 
 
@@ -154,6 +167,11 @@ devGetLabel <- function(which=dev.cur(), ...) {
 # @keyword utilities
 #*/###########################################################################
 devSetLabel <- function(which=dev.cur(), label, ...) {
+  # Argument 'which':
+  if (length(which) != 1L) {
+    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
+  }
+
   if (is.character(which))
     which <- .devIndexOf(which);
   devList <- .devList();
@@ -205,6 +223,11 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
 # @keyword utilities
 #*/###########################################################################
 devSet <- function(which=dev.next(), ...) {
+  # Argument 'which':
+  if (length(which) != 1L) {
+    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
+  }
+
   args <- list(...);
 
   # Argument 'which':
@@ -288,7 +311,7 @@ devSet <- function(which=dev.next(), ...) {
 # }
 #
 # \value{
-#   Returns what \code{\link[grDevices:dev]{dev.off}()} returns.
+#   Returns \code{\link[grDevices:dev]{dev.cur}()}.
 # }
 #
 # @author
@@ -302,6 +325,21 @@ devSet <- function(which=dev.next(), ...) {
 # @keyword utilities
 #*/###########################################################################
 devOff <- function(which=dev.cur(), ...) {
+  # Nothing to do?
+  if (length(which) == 0L) return(dev.cur());
+
+  # Only close each device once
+  which <- unique(which);
+  if (length(which) > 1L) {
+    lapply(which, FUN=devOff);
+    return(dev.cur());
+  }
+
+  # Nothing to do?
+  if (!devIsOpen(which)) {
+    return(dev.cur());
+  }
+
   # Identify device
   which <- devSet(which);
 
@@ -310,6 +348,8 @@ devOff <- function(which=dev.cur(), ...) {
 
   # Close device
   dev.off(which);
+
+  return(dev.cur());
 } # devOff()
 
 
@@ -332,7 +372,7 @@ devOff <- function(which=dev.cur(), ...) {
 # }
 #
 # \value{
-#   Returns nothing.
+#   Returns (invisibly) \code{\link[grDevices:dev]{dev.cur}()}.
 # }
 #
 # @author
@@ -346,9 +386,22 @@ devOff <- function(which=dev.cur(), ...) {
 # @keyword utilities
 #*/###########################################################################
 devDone <- function(which=dev.cur(), ...) {
+  # Nothing to do?
+  if (length(which) == 0L) return(dev.cur());
+
+  # Argument 'which':
+  if (length(which) != 1L) {
+    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
+  }
+
+  # Nothing to do?
+  if (!devIsOpen(which)) {
+    return(invisible(dev.cur()));
+  }
+
   # Do nothing?
   if (is.numeric(which) && length(which) == 1L && which <= 1L) {
-    return(invisible());
+    return(invisible(dev.cur()));
   }
 
   which <- devSet(which);
@@ -360,6 +413,8 @@ devDone <- function(which=dev.cur(), ...) {
     if (!isOnScreen)
       devOff(which);
   }
+
+  return(invisible(dev.cur()));
 } # devDone()
 
 
@@ -375,12 +430,13 @@ devDone <- function(which=dev.cur(), ...) {
 # @synopsis
 #
 # \arguments{
-#   \item{type}{A @character string.}
+#   \item{types}{A @character @vector.}
 #   \item{...}{Not used.}
 # }
 #
 # \value{
-#   Returns @TRUE if the device type is interactive, otherwise @FALSE.
+#   Returns a @logical @vector with @TRUE if the device type is interactive,
+#   otherwise @FALSE.
 # }
 #
 # @author
@@ -392,20 +448,35 @@ devDone <- function(which=dev.cur(), ...) {
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devIsInteractive <- function(type, ...) {
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Validate arguments
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Argument 'type':
+devIsInteractive <- function(types, ...) {
+  # Nothing to do?
+  if (length(types) == 0L) {
+    res <- logical(0L);
+    names(res) <- character(0L);
+    return(res);
+  }
+
+  if (length(types) > 1L) {
+    res <- sapply(types, FUN=devIsInteractive);
+    if (is.character(types)) names(res) <- types;
+    return(res);
+  }
+
+
+  # Sanity check
+  stopifnot(length(types) == 1L);
+
+  type0 <- type <- types;
   if (is.function(type)) {
   } else {
     type <- as.character(type);
   }
 
-
   # Nothing to do?
   if (!is.character(type)) {
-    return(FALSE);
+    res <- FALSE;
+    names(res) <- NA_character_;
+    return(res);
   }
 
   # Device type aliases?
@@ -415,8 +486,12 @@ devIsInteractive <- function(type, ...) {
   knownInteractive <- grDevices::deviceIsInteractive();
   res <- is.element(tolower(type), tolower(knownInteractive));
 
+  names(res) <- type0;
+
   res;
 } # devIsInteractive()
+
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # BEGIN: Local functions
@@ -446,14 +521,25 @@ devIsInteractive <- function(type, ...) {
   devList;
 } # .devList()
 
-.devIndexOf <- function(label, error=TRUE) {
-  devList <- .devList();
-  idx <- match(label, names(devList));
-  if (is.na(idx) || devList[[idx]] == "") {
-    if (error)
-      throw("No such device: ", label);
+.devIndexOf <- function(labels, error=TRUE) {
+  # Nothing to do?
+  if (length(labels) == 0L) {
+    res <- integer(0L);
+    names(res) <- character(0L);
+    return(res);
   }
-  idx;
+
+  devList <- devList(dropNull=FALSE);
+  idxs <- match(labels, names(devList));
+  names(idxs) <- labels;
+
+  # Sanity check
+  if (error) {
+    if (any(is.na(idxs)))
+      throw("No such device: ", paste(labels[is.na(idxs)], collapse=", "));
+  }
+
+  idxs;
 } # .devIndexOf()
 
 
@@ -470,19 +556,23 @@ devIsInteractive <- function(type, ...) {
   devFree[1L];
 } # .devNextAvailable()
 
-.devTypeName <- function(type, ...) {
+
+.devTypeName <- function(types, ...) {
   # Nothing todo?
-  if (!is.character(type) || length(type) == 0L) {
-    return(type);
+  if (!is.character(types)) {
+    return(types);
   }
 
-  type <- tolower(type);
+  types0 <- types;
+  types <- tolower(types);
 
   # Common aliases
-  type[type == "jpg"] <- "jpeg";
-  type[type == "ps"] <- "postscript";
+  types[types == "jpg"] <- "jpeg";
+  types[types == "ps"] <- "postscript";
 
-  type;
+  names(types) <- types0;
+
+  types;
 } # .devTypeName()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -491,6 +581,17 @@ devIsInteractive <- function(type, ...) {
 
 ############################################################################
 # HISTORY:
+# 2013-09-24
+# o CONSISTENCY: Now devList() returns an empty integer vector
+#   (instead of NULL) if no open devices exists.
+# o Now devOff() and devDone() checks if device is opened before trying
+#   to close it.  This avoids opening and closing of non-opened devices.
+# o ROBUSTNESS: The device functions that are not vectorize do now
+#   throw an informative error if passed a vector.
+# o GENERALIZATION: Vectorized devIsOpen(), devGetLabel(), and
+#   devIsInteractive().
+# o Vectorized internal .devIndexOf().
+# o Added argument 'dropNull' to devList().
 # 2013-08-27
 # o Added devIsInteractive().
 # o Added .devTypeName().

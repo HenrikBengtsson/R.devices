@@ -26,7 +26,7 @@ devDone(which=dev.cur(), ...)
 }
 
 \value{
-  Returns nothing.
+  Returns (invisibly) \code{\link[grDevices:dev]{dev.cur}()}.
 }
 
 \author{Henrik Bengtsson}

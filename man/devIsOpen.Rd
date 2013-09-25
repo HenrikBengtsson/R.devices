@@ -10,10 +10,10 @@
 \alias{devIsOpen}
 
 
-\title{Checks if a device is open or not}
+\title{Checks if zero or more devices are open or not}
 
 \description{
- Checks if a device is open or not.
+ Checks if zero or more devices are open or not.
 }
 
 \usage{
@@ -21,12 +21,13 @@ devIsOpen(which=dev.cur(), ...)
 }
 
 \arguments{
-  \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
+  \item{which}{An index (\code{\link[base]{numeric}}) \code{\link[base]{vector}} or a label (\code{\link[base]{character}}) \code{\link[base]{vector}}.}
   \item{...}{Not used.}
 }
 
 \value{
-  Returns \code{\link[base:logical]{TRUE}} if the device is open, otherwise \code{\link[base:logical]{FALSE}}.
+  Returns a named \code{\link[base]{logical}} \code{\link[base]{vector}} with \code{\link[base:logical]{TRUE}} if a device is open,
+  otherwise \code{\link[base:logical]{FALSE}}.
 }
 
 \examples{

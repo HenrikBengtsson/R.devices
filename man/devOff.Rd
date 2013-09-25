@@ -26,7 +26,7 @@ devOff(which=dev.cur(), ...)
 }
 
 \value{
-  Returns what \code{\link[grDevices:dev]{dev.off}()} returns.
+  Returns \code{\link[grDevices:dev]{dev.cur}()}.
 }
 
 \author{Henrik Bengtsson}

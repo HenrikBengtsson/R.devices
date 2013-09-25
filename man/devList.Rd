@@ -17,10 +17,12 @@
 }
 
 \usage{
-devList(...)
+devList(dropNull=TRUE, ...)
 }
 
 \arguments{
+  \item{dropNull}{If \code{\link[base:logical]{TRUE}}, the "null" device (device index 1) is
+    not returned.}
   \item{...}{Not used.}
 }
 
