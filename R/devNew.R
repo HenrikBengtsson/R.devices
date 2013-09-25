@@ -77,6 +77,9 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'type':
+  if (length(type) != 1L) {
+    throw("Argument 'type' must be a single object: ", length(type));
+  }
   if (is.function(type)) {
   } else {
     type <- as.character(type);
@@ -224,6 +227,9 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 
 ############################################################################
 # HISTORY:
+# 2013-09-24
+# o ROBUSTNESS: Now devNew() gives an error if argument 'type' is not
+#   of length one.
 # 2013-08-27
 # o Now devNew() utilizes devIsInteractive().
 # 2013-07-03

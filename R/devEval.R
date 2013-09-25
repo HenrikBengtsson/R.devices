@@ -66,13 +66,12 @@
 #*/###########################################################################
 devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=if (is.character(type)) type else substitute(type), filename=sprintf("%s.%s", paste(c(name, tags), collapse=sep), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Local functions
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'type':
+  if (length(type) != 1L) {
+    throw("Argument 'type' must be a single object: ", length(type));
+  }
   if (is.function(type)) {
   } else {
     type <- as.character(type);
@@ -190,6 +189,9 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
 ############################################################################
 # HISTORY:
+# 2013-09-24
+# o ROBUSTNESS: Now devEval() gives an error if argument 'type' is not
+#   of length one.  However, eventually devEval() will be vectorized.
 # 2013-08-27
 # o Now devEval() utilizes devIsInteractive().
 # 2013-08-17

@@ -26,7 +26,8 @@ devIsInteractive(types, ...)
 }
 
 \value{
-  Returns a \code{\link[base]{logical}} @vectoer with \code{\link[base:logical]{TRUE}} if the device type is interactive, otherwise \code{\link[base:logical]{FALSE}}.
+  Returns a \code{\link[base]{logical}} \code{\link[base]{vector}} with \code{\link[base:logical]{TRUE}} if the device type is interactive,
+  otherwise \code{\link[base:logical]{FALSE}}.
 }
 
 \author{Henrik Bengtsson}
