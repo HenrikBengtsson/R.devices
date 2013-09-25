@@ -1,7 +1,7 @@
 ###########################################################################/**
 # @RdocFunction devEval
 #
-# @title "Opens a new device, evaluate (graphing) code, and closes device"
+# @title "Opens a new graphics device, evaluate (graphing) code, and closes device"
 #
 # \description{
 #  @get "title".
@@ -10,7 +10,9 @@
 # @synopsis
 #
 # \arguments{
-#   \item{type}{Specifies the type of device to be used by @see "devNew".}
+#   \item{type}{Specifies the type of graphics device to be used.
+#    The device is created and opened using @see "devNew".
+#    Multiple types may be specified.}
 #   \item{expr}{The @expression of graphing commands to be evaluated.}
 #   \item{envir}{The @environment where \code{expr} should be evaluated.}
 #   \item{name, tags, sep}{The fullname name of the image is specified
@@ -65,11 +67,38 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=sprintf("%s.%s", paste(c(name, tags), collapse=sep), ext), path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
+devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Vectorized version
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Nothing to do?
+  if (length(type) == 0L) {
+    return(structure(character(0L), class=class(DevEvalProduct())));
+  }
+
+  # Parse 'type' in case multiple types is specified in one string
+  if (is.character(type)) {
+    type <- unlist(strsplit(type, split=","), use.names=FALSE);
+    type <- trim(type);
+  }
+
+  if (length(type) > 1L) {
+    types <- type;
+    # Expression must be substitute():d to avoid the being evaluated here
+    expr <- substitute(expr);
+
+    res <- lapply(types, FUN=function(type) {
+      devEval(type=type, expr=expr, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force);
+    });
+    names(res) <- types;
+    return(res);
+  }
+
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'type':
+  # Sanity check
   if (length(type) != 1L) {
     throw("Argument 'type' must be a single object: ", length(type));
   }
@@ -79,13 +108,16 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
     type <- .devTypeName(type);
   }
 
-  # Argument 'name' and 'tags':
+  # Argument 'name', 'tags' and 'sep':
   fullname <- paste(c(name, tags), collapse=sep);
   fullname <- unlist(strsplit(fullname, split=sep, fixed=TRUE));
   fullname <- sub("^[\t\n\f\r ]*", "", fullname); # trim tags
   fullname <- sub("[\t\n\f\r ]*$", "", fullname); #
   fullname <- fullname[nchar(fullname) > 0L];     # drop empty tags
   fullname <- paste(fullname, collapse=sep);
+  parts <- unlist(strsplit(fullname, split=sep, fixed=TRUE));
+  name <- parts[1L];
+  tags <- parts[-1L];
 
   # Argument 'ext':
   if (is.null(ext)) {
@@ -99,8 +131,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 
   # Argument 'filename' & 'path':
   if (is.null(filename)) {
-    fullname <- paste(c(name, tags), collapse=sep);
-    filename <- sprintf("%s.%s", filename, ext);
+    filename <- sprintf("%s.%s", fullname, ext);
   }
   pathname <- Arguments$getWritablePathname(filename, path=path);
 
@@ -205,6 +236,7 @@ devEval <- function(type=getOption("device"), expr, envir=parent.frame(), name="
 ############################################################################
 # HISTORY:
 # 2013-09-25
+# o Vectorized devEval().
 # o Updated the formal defaults of several devEval() arguments to be NULL.
 #   Instead, NULL for such arguments are translated to default internally.
 #   This makes it easier/possible to vectorize devEval().

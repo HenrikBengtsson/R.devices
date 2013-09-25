@@ -11,6 +11,7 @@ importFrom("R.oo", "setConstructorS3")
 importFrom("R.oo", "extend")
 importFrom("R.oo", "BasicObject")
 importFrom("R.oo", "[[.BasicObject")
+importFrom("R.oo", "trim")
 
 import("R.utils")
 ## Arguments$... methods:

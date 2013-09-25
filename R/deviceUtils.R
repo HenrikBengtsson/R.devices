@@ -297,7 +297,7 @@ devSet <- function(which=dev.next(), ...) {
 ###########################################################################/**
 # @RdocFunction devOff
 #
-# @title "Closes a device"
+# @title "Closes zero or more devices"
 #
 # \description{
 #  @get "title".
@@ -306,7 +306,7 @@ devSet <- function(which=dev.next(), ...) {
 # @synopsis
 #
 # \arguments{
-#   \item{which}{An index (@numeric) or a label (@character).}
+#   \item{which}{An index (@numeric) @vector or a label (@character) @vector.}
 #   \item{...}{Not used.}
 # }
 #
@@ -358,7 +358,7 @@ devOff <- function(which=dev.cur(), ...) {
 ###########################################################################/**
 # @RdocFunction devDone
 #
-# @title "Closes an open device unless it is a on-screen (interactive) device"
+# @title "Closes zero or more open devices except screen (interactive) devices"
 #
 # \description{
 #  @get "title".
@@ -367,7 +367,7 @@ devOff <- function(which=dev.cur(), ...) {
 # @synopsis
 #
 # \arguments{
-#   \item{which}{An index (@numeric) or a label (@character).}
+#   \item{which}{An index (@numeric) @vector or a label (@character) @vector.}
 #   \item{...}{Not used.}
 # }
 #
@@ -389,9 +389,11 @@ devDone <- function(which=dev.cur(), ...) {
   # Nothing to do?
   if (length(which) == 0L) return(dev.cur());
 
-  # Argument 'which':
-  if (length(which) != 1L) {
-    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
+  # Only close each device once
+  which <- unique(which);
+  if (length(which) > 1L) {
+    lapply(which, FUN=devDone);
+    return(dev.cur());
   }
 
   # Nothing to do?

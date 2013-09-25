@@ -10,23 +10,24 @@
 \alias{devEval}
 
 
-\title{Opens a new device, evaluate (graphing) code, and closes device}
+\title{Opens a new graphics device, evaluate (graphing) code, and closes device}
 
 \description{
- Opens a new device, evaluate (graphing) code, and closes device.
+ Opens a new graphics device, evaluate (graphing) code, and closes device.
 }
 
 \usage{
 devEval(type=getOption("device"), expr, envir=parent.frame(), name="Rplot", tags=NULL,
-  sep=getOption("devEval/args/sep", ","), ..., ext=NULL,
-  filename=sprintf("\%s.\%s", paste(c(name, tags), collapse = sep), ext),
+  sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL,
   path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field",
   NULL), onIncomplete=c("remove", "rename", "keep"),
   force=getOption("devEval/args/force", TRUE))
 }
 
 \arguments{
-  \item{type}{Specifies the type of device to be used by \code{\link{devNew}}().}
+  \item{type}{Specifies the type of graphics device to be used.
+   The device is created and opened using \code{\link{devNew}}().
+   Multiple types may be specified.}
   \item{expr}{The \code{\link[base]{expression}} of graphing commands to be evaluated.}
   \item{envir}{The \code{\link[base]{environment}} where \code{expr} should be evaluated.}
   \item{name, tags, sep}{The fullname name of the image is specified

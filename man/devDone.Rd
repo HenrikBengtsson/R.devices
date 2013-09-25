@@ -10,10 +10,10 @@
 \alias{devDone}
 
 
-\title{Closes an open device unless it is a on-screen (interactive) device}
+\title{Closes zero or more open devices except screen (interactive) devices}
 
 \description{
- Closes an open device unless it is a on-screen (interactive) device.
+ Closes zero or more open devices except screen (interactive) devices.
 }
 
 \usage{
@@ -21,7 +21,7 @@ devDone(which=dev.cur(), ...)
 }
 
 \arguments{
-  \item{which}{An index (\code{\link[base]{numeric}}) or a label (\code{\link[base]{character}}).}
+  \item{which}{An index (\code{\link[base]{numeric}}) \code{\link[base]{vector}} or a label (\code{\link[base]{character}}) \code{\link[base]{vector}}.}
   \item{...}{Not used.}
 }
 

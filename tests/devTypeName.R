@@ -2,7 +2,8 @@ library("R.devices")
 
 .devTypeName <- R.devices:::.devTypeName
 
-for (type in list(character(0L), "png", "jpg", c("png", "png", "jpeg"))) {
+types <- list(character(0L), "png", "jpg", c("png", "png", "jpeg"))
+for (type in types) {
   res <- .devTypeName(type)
   print(res)
   stopifnot(is.character(res));

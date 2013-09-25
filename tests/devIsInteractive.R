@@ -1,6 +1,7 @@
 library("R.devices")
 
-for (types in list(c(), "png", "x11", c("png", "jpeg", "png", "x11"))) {
+types <- list(c(), "png", "x11", c("png", "jpeg", "png", "x11"))
+for (types in types) {
   print(types)
   res <- devIsInteractive(types)
   print(res)

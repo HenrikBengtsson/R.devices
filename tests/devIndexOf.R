@@ -2,7 +2,8 @@ library("R.devices")
 
 .devIndexOf <- R.devices:::.devIndexOf
 
-for (label in list(character(0L), "Device 1", c("Device 1", "Device 1"), c("Device 1", "FooBar"))) {
+labels <- list(character(0L), "Device 1", c("Device 1", "Device 1"), c("Device 1", "FooBar"))
+for (label in labels) {
   res <- .devIndexOf(label, error=FALSE)
   print(res)
   stopifnot(is.integer(res));

@@ -5,7 +5,7 @@ types <- list(
   "png",
   "jpg",
   c("png", "png", "jpeg"),
-  "x11,png,pdf,windows"
+  "png,jpg,pdf"
 )
 
 for (type in types) {
@@ -14,5 +14,5 @@ for (type in types) {
     plot(1:10)
   })
   print(res)
-  stopifnot(length(res) == length(type))
+  stopifnot(length(res) == length(unlist(strsplit(type, split=","))))
 }
