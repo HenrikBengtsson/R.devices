@@ -2,6 +2,12 @@
 Package: R.devices
 ==================
 
+Version: 2.6.2 [2013-09-24]
+o ROBUSTNESS: Now declaring all S3 method in NAMESPACE.
+o CLEANUP: Removed fallback attachments of 'R.utils' as these 
+  are no longer needed with R.oo (>= 1.15.1).
+
+
 Version: 2.6.1 [2013-09-17]
 o ROBUSTNESS: Now getDataURI() throws an Exception is suggested
   package 'base64enc' is not installed.

@@ -51,19 +51,22 @@ export("DevEvalFileProduct")
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # DECLARATIONS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# DevEvalFileProduct
+S3method("as.character", "DevEvalFileProduct")
+S3method("getDataURI", "DevEvalFileProduct")
+S3method("getExtension", "DevEvalFileProduct")
+S3method("getFilename", "DevEvalFileProduct")
+S3method("getFullname", "DevEvalFileProduct")
+S3method("getMime", "DevEvalFileProduct")
+S3method("getMimeType", "DevEvalFileProduct")
+S3method("getPath", "DevEvalFileProduct")
+S3method("getPathname", "DevEvalFileProduct")
+
+# DevEvalProduct
+S3method("$", "DevEvalProduct")
+S3method("[[", "DevEvalProduct")
 S3method("as.character", "DevEvalProduct")
 S3method("getFullname", "DevEvalProduct")
 S3method("getName", "DevEvalProduct")
 S3method("getTags", "DevEvalProduct")
 S3method("getType", "DevEvalProduct")
-S3method("[[", "DevEvalProduct")
-S3method("$", "DevEvalProduct")
-
-S3method("as.character", "DevEvalFileProduct")
-S3method("getPathname", "DevEvalFileProduct")
-S3method("getPath", "DevEvalFileProduct")
-S3method("getFilename", "DevEvalFileProduct")
-S3method("getMimeType", "DevEvalFileProduct")
-S3method("getMime", "DevEvalFileProduct")
-S3method("getFullname", "DevEvalFileProduct")
-S3method("getDataURI", "DevEvalFileProduct")
