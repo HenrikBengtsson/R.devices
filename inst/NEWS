@@ -2,14 +2,14 @@
 Package: R.devices
 ==================
 
-Version: 2.7.0 [2013-09-25]
+Version: 2.7.0 [2013-09-27]
 o GENERALIZATION: Vectorized devEval(), e.g. it is now possible to
   do devEval(c("png", "pdf"), name="MyPlot", { plot(1:10) }).
   Added arguments 'initially' and 'finally' to devEval().  Contrary
   to 'expr' which is evalutated for each graphics type/device, these
   are evaluated only once per call.  This makes it possible to avoid
   repeating expensive computations.
-o GENERALIZATION: Vectorized devIsInteractive(), devIsOpen(), 
+o GENERALIZATION: Vectorized devIsInteractive(), devIsOpen(),
   devGetLabel(), devOff() and devDone().
 o Now devOff() and devDone() checks if device is opened before trying
   to close it.  This avoids opening and closing of non-opened devices.

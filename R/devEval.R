@@ -168,9 +168,8 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     res <- DevEvalFileProduct(pathname, type=type);
   }
 
+  done <- FALSE;
   if (force || !isFile(pathname)) {
-    done <- FALSE;
-
     if (isInteractive) {
       devIdx <- devNew(type, ...);
     } else {
@@ -250,6 +249,9 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
 ############################################################################
 # HISTORY:
+# 2013-09-27
+# o BUG FIX: devEval() could generate "Error in devEval(type = "...",
+#   name = name, ..., field = field) : object 'done' not found".
 # 2013-09-25
 # o Added arguments 'initially' and 'finally'.
 # o Vectorized devEval().
