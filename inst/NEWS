@@ -2,7 +2,7 @@
 Package: R.devices
 ==================
 
-Version: 2.7.0 [2013-09-27]
+Version: 2.7.0 [2013-09-28]
 o GENERALIZATION: Vectorized devEval(), e.g. it is now possible to
   do devEval(c("png", "pdf"), name="MyPlot", { plot(1:10) }).
   Added arguments 'initially' and 'finally' to devEval().  Contrary
@@ -16,6 +16,8 @@ o Now devOff() and devDone() checks if device is opened before trying
 o Updated the formal defaults of several devEval() arguments to be
   NULL.  Instead, NULL for such arguments are translated to default
   internally.  This was necessary in order to vectorize devEval().
+o Now the 'R.devices' Package object is also available when the
+  package is only loaded (but not attached).
 o CONSISTENCY: Now devList() returns an empty integer vector
   (instead of NULL) if no open devices exists.
 o ROBUSTNESS: The device functions that are not vectorize do now

@@ -5,25 +5,27 @@
 .onLoad <- function(libname, pkgname) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Register vignette engines
+  # NOTE: Are we doing this here because of backward compatibility
+  #       issues, e.g. early version of R 3.0.x? /HB 2013-09-28
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   try({
     vignetteEngine <- get("vignetteEngine", envir=asNamespace("tools"));
-
-    # RSP engine
-    vignetteEngine("rsp", package=pkgname, pattern="[.][^.]*[.]rsp$",
-                    weave=R.rsp::rspWeave, tangle=R.rsp::rspTangle);
+    # Add vignette engine, iff missing.  But why?!? /HB 2013-09-28
+    if (is.element("R.rsp::rsp", names(tools::vignetteEngine()))) {
+      vignetteEngine("rsp", package=pkgname, pattern="[.][^.]*[.]rsp$",
+                      weave=R.rsp::rspWeave, tangle=R.rsp::rspTangle);
+    }
   }, silent=TRUE)
+  ns <- getNamespace(pkgname);
+  pkg <- RRspPackage(pkgname);
+  assign(pkgname, pkg, envir=ns);
 }
 
 
-
-## .First.lib <- function(libname, pkgname) {
 .onAttach <- function(libname, pkgname) {
-  pkg <- Package(pkgname);
-  pos <- getPosition(pkg);
-  assign(pkgname, pkg, pos=pos);
-  startupMessage(pkg);
+  startupMessage(get(pkgname, envir=getNamespace(pkgname)));
 }
+
 
 ############################################################################
 # HISTORY:
