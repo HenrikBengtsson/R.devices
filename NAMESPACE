@@ -22,6 +22,8 @@ import("R.utils")
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # EXPORTS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+export("R.devices")
+
 export("devEval")
 export("devIsOpen")
 export("devIsInteractive")

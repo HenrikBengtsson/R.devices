@@ -17,7 +17,7 @@
     }
   }, silent=TRUE)
   ns <- getNamespace(pkgname);
-  pkg <- RRspPackage(pkgname);
+  pkg <- Package(pkgname);
   assign(pkgname, pkg, envir=ns);
 }
 
