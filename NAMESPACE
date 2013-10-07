@@ -10,7 +10,6 @@ importFrom("R.oo", "extend")
 
 ## Importing functions
 importFrom("R.oo", "BasicObject")
-importFrom("R.oo", "extend")
 importFrom("R.oo", "Package")
 importFrom("R.oo", "startupMessage")
 importFrom("R.oo", "trim")
