@@ -3,20 +3,28 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 importFrom("R.methodsS3", "throw")
 importFrom("R.methodsS3", "setMethodS3")
-
-importFrom("R.oo", "Package")
-importFrom("R.oo", "getPosition")
-importFrom("R.oo", "startupMessage")
 importFrom("R.oo", "setConstructorS3")
 importFrom("R.oo", "extend")
-importFrom("R.oo", "BasicObject")
-importFrom("R.oo", "[[.BasicObject")
-importFrom("R.oo", "trim")
 
-import("R.utils")
-## Arguments$... methods:
-##  getWritablePathname(), getCharacter(), getLogical(), getDouble()
-## importFrom("R.utils", "Arguments")
+## importFrom("R.oo", "[[.BasicObject")
+
+## Importing functions
+importFrom("R.oo", "BasicObject")
+importFrom("R.oo", "extend")
+importFrom("R.oo", "Package")
+importFrom("R.oo", "startupMessage")
+importFrom("R.oo", "trim")
+importFrom("R.utils", "capitalize")
+importFrom("R.utils", "getOption") ## Multi-sources: R.utils, base
+importFrom("R.utils", "getRelativePath")
+importFrom("R.utils", "hpaste")
+importFrom("R.utils", "inherits") ## Multi-sources: R.utils, base
+importFrom("R.utils", "isFile")
+importFrom("R.utils", "isPackageInstalled")
+importFrom("R.utils", "isPackageLoaded")
+
+## Manual imports
+importFrom("R.utils", "Arguments")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

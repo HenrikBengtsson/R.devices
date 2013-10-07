@@ -2,6 +2,11 @@
 Package: R.devices
 ==================
 
+Version: 2.7.1 [2013-10-07]
+o CLEANUP: Now explicitly importing only what is needed in NAMESPACE.
+o Bumped up package dependencies.
+
+
 Version: 2.7.0 [2013-09-28]
 o GENERALIZATION: Vectorized devEval(), e.g. it is now possible to
   do devEval(c("png", "pdf"), name="MyPlot", { plot(1:10) }).
