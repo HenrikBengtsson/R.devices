@@ -2,9 +2,9 @@
 Package: R.devices
 ==================
 
-Version: 2.7.2 [2013-10-13]
-o Now the package vignettes are in vignettes/ and no in inst/doc/,
-  which soon will not be supported by R (>= 3.1.0).
+Version: 2.7.2 [2013-10-14]
+o Now the package vignettes are in vignettes/ and not in inst/doc/,
+  which will not be supported by R (>= 3.1.0).
 
 
 Version: 2.7.1 [2013-10-07]
