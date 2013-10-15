@@ -223,6 +223,8 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
 # @keyword utilities
 #*/###########################################################################
 devSet <- function(which=dev.next(), ...) {
+  args <- list(...);
+
   # Argument 'which':
   if (!is.numeric(which) || length(which) != 1L) {
     if (length(which) != 1L || !is.character(which)) {
@@ -243,8 +245,6 @@ devSet <- function(which=dev.next(), ...) {
   if (length(which) != 1L) {
     throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
   }
-
-  args <- list(...);
 
   if (which < 2L) {
     throw("Cannot set device: ", which);
