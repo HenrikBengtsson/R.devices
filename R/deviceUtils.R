@@ -224,13 +224,6 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
 #*/###########################################################################
 devSet <- function(which=dev.next(), ...) {
   # Argument 'which':
-  if (length(which) != 1L) {
-    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
-  }
-
-  args <- list(...);
-
-  # Argument 'which':
   if (!is.numeric(which) || length(which) != 1L) {
     if (length(which) != 1L || !is.character(which)) {
       require("digest") || throw("Package not loaded: digest");
@@ -245,6 +238,13 @@ devSet <- function(which=dev.next(), ...) {
         which <- .devNextAvailable();
     }
   }
+
+  # Argument 'which':
+  if (length(which) != 1L) {
+    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
+  }
+
+  args <- list(...);
 
   if (which < 2L) {
     throw("Cannot set device: ", which);
@@ -583,6 +583,10 @@ devIsInteractive <- function(types, ...) {
 
 ############################################################################
 # HISTORY:
+# 2013-10-15
+# o BUG FIX: devSet(key), where 'key' is a non-integer object (which is
+#   coerced to a device label via digest()), stopped working due to a too
+#   conservative test.
 # 2013-09-24
 # o CONSISTENCY: Now devList() returns an empty integer vector
 #   (instead of NULL) if no open devices exists.
