@@ -1,5 +1,6 @@
 ###########################################################################/**
 # @RdocFunction devEval
+# @alias devDump
 #
 # @title "Opens a new graphics device, evaluate (graphing) code, and closes device"
 #
@@ -72,7 +73,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE), which=devList()) {
+devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur()) {
   # Make sure the currently open device, iff any, is still the active
   # one when returning from this function.
   devCur <- dev.cur();
@@ -301,9 +302,15 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 } # devEval()
 
 
+devDump <- function(type=c("png", "pdf"), ..., envir=parent.frame(), which=devList(interactiveOnly=TRUE)) {
+  devEval(type=type, ..., envir=envir, which=which);
+} # devDump()
+
+
 ############################################################################
 # HISTORY:
 # 2013-10-28
+# o Added devDump() which is short for devEval(c("png", "pdf"), ..., which=devList()).
 # o If 'expr' is missing, devEval() copies the current active device
 #   and devEval(which=devList()) copies all open devices.
 # 2013-09-27
