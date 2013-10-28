@@ -2,6 +2,14 @@
 Package: R.devices
 ==================
 
+Version: 2.8.0 [2013-10-28]
+o Now devEval() copies the current device if 'expr' is missing, e.g.
+  plot(1:10); devEval(c("png", "jpg", "pdf"), name="myfig").
+o Now package imports (no longer suggests) the 'base64enc' package.
+  This way packages using 'R.devices' do not have to specify also
+  'base64enc' if they use dataURI-encoding of images.
+
+
 Version: 2.7.3 [2013-10-28]
 o ROBUSTNESS: Now devSet() is guaranteed to close all temporary
   devices it opens.

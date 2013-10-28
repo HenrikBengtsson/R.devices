@@ -1,5 +1,8 @@
 library("R.devices")
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Various types of single and multiple device outputs
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 types <- list(
   character(0L),
   "png",
@@ -18,6 +21,9 @@ for (type in types) {
 }
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# With 'initially' and 'finally' expression
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 devEval(c("png", "jpg"), name="count", {
   plot(1:10)
   count <- count + 1L
@@ -30,3 +36,12 @@ devEval(c("png", "jpg"), name="count", {
 }, finally = {
   cat("Number of image files created: ", count, "\n", sep="")
 })
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Copy content of current device
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+plot(1:10)
+devEval("png,jpg,pdf", name="count", tags="copy")
+
+

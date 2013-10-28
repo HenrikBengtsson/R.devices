@@ -33,7 +33,7 @@
   title = {R.devices: Unified handling of graphics devices},
   author = {Henrik Bengtsson},
   year = {2013},
-  note = {R package version 2.7.3},
+  note = {R package version 2.8.0},
 }
 }
 }

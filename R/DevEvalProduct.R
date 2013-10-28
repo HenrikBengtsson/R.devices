@@ -412,10 +412,7 @@ setMethodS3("getMime", "DevEvalFileProduct", function(this, ...) {
 # }
 #*/#########################################################################
 setMethodS3("getDataURI", "DevEvalFileProduct", function(this, mime=getMimeType(this), ...) {
-  if (!isPackageInstalled("base64enc")) {
-    throw("Package is not installed: base64enc");
-  }
-  base64enc::dataURI(file=getPathname(this), mime=mime, encoding="base64");
+  dataURI(file=getPathname(this), mime=mime, encoding="base64");
 })
 
 

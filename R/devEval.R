@@ -85,18 +85,29 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     type <- trim(type);
   }
 
+  # Argument 'expr':
+  hasExpr <- !missing(expr);
+
   if (length(type) > 1L) {
     types <- type;
-    # Expression must be substitute():d to avoid the being evaluated here
-    expr <- substitute(expr);
 
     # Evaluate 'initially' only once
     eval(initially, envir=envir);
 
-    # Evaluate 'expr' once per graphics device
-    res <- lapply(types, FUN=function(type) {
-      devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force);
-    });
+    if (hasExpr) {
+      # Expression must be substitute():d to avoid the being evaluated here
+      expr <- substitute(expr);
+
+      # Evaluate 'expr' once per graphics device
+      res <- lapply(types, FUN=function(type) {
+        devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force);
+      });
+    } else {
+      # Evaluate 'expr' once per graphics device
+      res <- lapply(types, FUN=function(type) {
+        devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force);
+      });
+    }
     names(res) <- types;
 
     # Evaluate 'finally' only once
@@ -170,6 +181,9 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
   done <- FALSE;
   if (force || !isFile(pathname)) {
+    # Record the currently open device
+    devCur <- dev.cur();
+
     if (isInteractive) {
       devIdx <- devNew(type, ...);
     } else {
@@ -224,7 +238,13 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
     # Evaluate 'initially', 'expr' and 'finally' (in that order)
     eval(initially, envir=envir);
-    eval(expr, envir=envir);
+    if (hasExpr) {
+      eval(expr, envir=envir);
+    } else {
+      # Copy the currently open device
+      devSet(devCur);
+      dev.copy(which=devIdx);
+    }
     eval(finally, envir=envir);
 
     done <- TRUE;
@@ -249,6 +269,8 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
 ############################################################################
 # HISTORY:
+# 2013-10-28
+# o Now devEval() copies the current device if 'expr' is missing.
 # 2013-09-27
 # o BUG FIX: devEval() could generate "Error in devEval(type = "...",
 #   name = name, ..., field = field) : object 'done' not found".
