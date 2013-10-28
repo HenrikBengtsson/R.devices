@@ -273,20 +273,22 @@ devSet <- function(which=dev.next(), ...) {
       toBeClosed[[idx]] <- pathname;
       postscript(file=pathname);
     }
+
+    # Close temporarily opened devices when exiting function
+    on.exit({
+      for (kk in seq_along(toBeClosed)) {
+        pathname <- toBeClosed[[kk]];
+        if (!is.null(pathname)) {
+          dev.set(kk);
+          dev.off();
+          file.remove(pathname);
+        }
+      }
+    }, add=TRUE);
   }
 
   # Open the device
   res <- do.call("devNew", args=args);
-
-  # Close temporarily opened devices
-  for (kk in seq_along(toBeClosed)) {
-    pathname <- toBeClosed[[kk]];
-    if (!is.null(pathname)) {
-      dev.set(kk);
-      dev.off();
-      file.remove(pathname);
-    }
-  }
 
   invisible(res);
 } # devSet()
@@ -583,6 +585,9 @@ devIsInteractive <- function(types, ...) {
 
 ############################################################################
 # HISTORY:
+# 2013-10-28
+# o ROBUSTNESS: Now devSet() is guaranteed to close all temporary
+#   devices it opens.
 # 2013-10-15
 # o BUG FIX: devSet(key), where 'key' is a non-integer object (which is
 #   coerced to a device label via digest()), stopped working due to a too

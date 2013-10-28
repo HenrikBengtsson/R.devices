@@ -2,6 +2,11 @@
 Package: R.devices
 ==================
 
+Version: 2.7.3 [2013-10-28]
+o ROBUSTNESS: Now devSet() is guaranteed to close all temporary
+  devices it opens.
+
+
 Version: 2.7.2 [2013-10-15]
 o Now the package vignettes are in vignettes/ and not in inst/doc/,
   which will not be supported by R (>= 3.1.0).
