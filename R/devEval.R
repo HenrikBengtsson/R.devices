@@ -34,6 +34,8 @@
 #     or an error.}
 #   \item{force}{If @TRUE, and the image file already exists, then it is
 #     overwritten, otherwise not.}
+#   \item{which}{A @vector of devices to be copied.  Only applied if
+#     argument \code{expr} is missing.}
 # }
 #
 # \value{
@@ -70,7 +72,15 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE)) {
+devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE), which=devList()) {
+  # Make sure the currently open device, iff any, is still the active
+  # one when returning from this function.
+  devCur <- dev.cur();
+  on.exit({
+    if (devCur != 1L) devSet(devCur);
+  }, add=TRUE)
+
+
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Vectorized version
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,6 +98,21 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # Argument 'expr':
   hasExpr <- !missing(expr);
 
+
+  # Copy multiple input devices?
+  if (!hasExpr && length(which) > 1L) {
+    # Record current device
+    devCur <- dev.cur();
+    for (idx in which) {
+      devSet(idx);
+      devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=idx);
+    } # for (idx ...)
+    devSet(devCur);
+    return(invisible());
+  } # if (length(which) > 1L)
+
+
+  # Multiple output types/devices?
   if (length(type) > 1L) {
     types <- type;
 
@@ -103,9 +128,9 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
         devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force);
       });
     } else {
-      # Evaluate 'expr' once per graphics device
+      # Evaluate 'expr' once per output device
       res <- lapply(types, FUN=function(type) {
-        devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force);
+        devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=which);
       });
     }
     names(res) <- types;
@@ -114,7 +139,11 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     eval(finally, envir=envir);
 
     return(res);
-  }
+  } # if (length(type) > 1L)
+
+  # Sanity check
+  stopifnot(length(type) == 1L);
+
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
@@ -131,6 +160,14 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   }
 
   # Argument 'name', 'tags' and 'sep':
+  # Default 'name' value
+  if (is.null(name)) {
+    if (hasExpr) {
+      name <- "Rplot"; # Backward compatible
+    } else {
+      name <- devGetLabel(which);
+    }
+  }
   fullname <- paste(c(name, tags), collapse=sep);
   fullname <- unlist(strsplit(fullname, split=sep, fixed=TRUE));
   fullname <- sub("^[\t\n\f\r ]*", "", fullname); # trim tags
@@ -181,9 +218,6 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
   done <- FALSE;
   if (force || !isFile(pathname)) {
-    # Record the currently open device
-    devCur <- dev.cur();
-
     if (isInteractive) {
       devIdx <- devNew(type, ...);
     } else {
@@ -241,8 +275,8 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     if (hasExpr) {
       eval(expr, envir=envir);
     } else {
-      # Copy the currently open device
-      devSet(devCur);
+      # Copy the device specified by argument 'which'.
+      devSet(which);
       dev.copy(which=devIdx);
     }
     eval(finally, envir=envir);
@@ -270,7 +304,8 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 ############################################################################
 # HISTORY:
 # 2013-10-28
-# o Now devEval() copies the current device if 'expr' is missing.
+# o If 'expr' is missing, devEval() copies the current active device
+#   and devEval(which=devList()) copies all open devices.
 # 2013-09-27
 # o BUG FIX: devEval() could generate "Error in devEval(type = "...",
 #   name = name, ..., field = field) : object 'done' not found".

@@ -41,7 +41,32 @@ devEval(c("png", "jpg"), name="count", {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Copy content of current device
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Open device
 plot(1:10)
+
 devEval("png,jpg,pdf", name="count", tags="copy")
 
+# Same using a default name
+devEval("png,jpg,pdf")
 
+# Close device
+devOff()
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Copy content of all devices
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Open several devices
+idxs <- NULL
+
+idxs <- c(idxs, devNew())
+plot(1:10)
+
+idxs <- c(idxs, devNew())
+plot(cos)
+
+# Save all
+devEval("png,pdf", which=devList())
+
+# Close all opened devices
+devOff(idxs)

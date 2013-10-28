@@ -3,7 +3,8 @@ Package: R.devices
 ==================
 
 Version: 2.8.0 [2013-10-28]
-o Now devEval() copies the current device if 'expr' is missing, e.g.
+o If 'expr' is missing, devEval() copies the current active device
+  and devEval(which=devList()) copies all open devices.  For example,
   plot(1:10); devEval(c("png", "jpg", "pdf"), name="myfig").
 o Now package imports (no longer suggests) the 'base64enc' package.
   This way packages using 'R.devices' do not have to specify also

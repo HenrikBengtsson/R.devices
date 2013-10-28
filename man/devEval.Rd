@@ -18,10 +18,10 @@
 
 \usage{
 devEval(type=getOption("device"), expr, initially=NULL, finally=NULL,
-  envir=parent.frame(), name="Rplot", tags=NULL, sep=getOption("devEval/args/sep", ","),
+  envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","),
   ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"),
   field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename",
-  "keep"), force=getOption("devEval/args/force", TRUE))
+  "keep"), force=getOption("devEval/args/force", TRUE), which=devList())
 }
 
 \arguments{
@@ -49,6 +49,8 @@ devEval(type=getOption("device"), expr, initially=NULL, finally=NULL,
     or an error.}
   \item{force}{If \code{\link[base:logical]{TRUE}}, and the image file already exists, then it is
     overwritten, otherwise not.}
+  \item{which}{A \code{\link[base]{vector}} of devices to be copied.  Only applied if
+    argument \code{expr} is missing.}
 }
 
 \value{
