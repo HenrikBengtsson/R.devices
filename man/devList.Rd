@@ -17,7 +17,7 @@
 }
 
 \usage{
-devList(interactiveOnly=TRUE, dropNull=TRUE, ...)
+devList(interactiveOnly=FALSE, dropNull=TRUE, ...)
 }
 
 \arguments{

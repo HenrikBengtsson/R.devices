@@ -35,11 +35,7 @@ devIsOpen <- function(which=dev.cur(), ...) {
   }
 
   devList <- .devList();
-  if (is.numeric(which)) {
-    devs <- devList[match(which, unlist(devList))];
-  } else {
-    devs <- devList[which];
-  }
+  devs <- devList[which];
 
   labels <- names(devs);
   isOpen <- sapply(devs, FUN=function(dev) !is.null(dev) && nzchar(dev));
@@ -83,7 +79,7 @@ devIsOpen <- function(which=dev.cur(), ...) {
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devList <- function(interactiveOnly=TRUE, dropNull=TRUE, ...) {
+devList <- function(interactiveOnly=FALSE, dropNull=TRUE, ...) {
   devList <- .devList();
 
   # Return only opened devices
@@ -616,8 +612,8 @@ devIsInteractive <- function(types, ...) {
 ############################################################################
 # HISTORY:
 # 2013-10-28
-# o BUG FIX: devIsOpen(), dev(Get|Set)Label(which) would not handle the
-#   case when the device specified by an numeric 'which' and there is a
+# o BUG FIX: dev(Get|Set)Label(which) would not handle the case when
+#   the device specified by an numeric 'which' and there is a
 #   gap in the device list.
 # o Added argument 'interactiveOnly' to devList().
 # o ROBUSTNESS: Now devSet() is guaranteed to close all temporary

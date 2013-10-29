@@ -76,9 +76,20 @@
 devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur()) {
   # Make sure the currently open device, iff any, is still the active
   # one when returning from this function.
+  devIdx <- NULL;
+  devListEntry <- devList();
   devCur <- dev.cur();
   on.exit({
     if (devCur != 1L) devSet(devCur);
+
+    # Assert that no temporarily opened devices are left behind
+    devListExit <- setdiff(devList(), devIdx);
+    devListDiff <- setdiff(devListExit, devListEntry);
+    if (length(devListDiff) > 0L) {
+      types <- unlist(.devList());
+      types <- types[devListDiff];
+      throw("Detected new graphics devices that was opened but not closed while executing devEval(): ", paste(sprintf("%s (%s)", sQuote(devListDiff), types), collapse=", "));
+    }
   }, add=TRUE)
 
 
@@ -103,12 +114,10 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # Copy multiple input devices?
   if (!hasExpr && length(which) > 1L) {
     # Record current device
-    devCur <- dev.cur();
     for (idx in which) {
       devSet(idx);
       devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=idx);
     } # for (idx ...)
-    devSet(devCur);
     return(invisible());
   } # if (length(which) > 1L)
 
@@ -226,7 +235,9 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     }
     on.exit({
       # Make sure to close the device (the same that was opened)
-      if (!is.null(devIdx)) devDone(devIdx);
+      if (!is.null(devIdx)) {
+        devDone(devIdx);
+      }
 
       # Archive file?
       if (isPackageLoaded("R.archive")) {
@@ -269,7 +280,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
           }
         } # if (onIncomplete == ...)
       } # if (!done && isFile(...))
-    }, add=TRUE);
+    }, add=TRUE); # on.exit()
 
     # Evaluate 'initially', 'expr' and 'finally' (in that order)
     eval(initially, envir=envir);
@@ -285,7 +296,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
         ok <- is.element(which, names(devList));
       }
       if (!ok) {
-        types <- unlist(R.devices:::.devList());
+        types <- unlist(.devList());
         type <- types[which];
         throw(sprintf("Cannot copy a %s device - only interactive/screen devices are supported: %s", sQuote(type), sQuote(which)));
       }
