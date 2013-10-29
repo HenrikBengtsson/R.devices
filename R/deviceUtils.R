@@ -35,7 +35,12 @@ devIsOpen <- function(which=dev.cur(), ...) {
   }
 
   devList <- .devList();
-  devs <- devList[which];
+  if (is.numeric(which)) {
+    devs <- devList[match(which, unlist(devList))];
+  } else {
+    devs <- devList[which];
+  }
+
   labels <- names(devs);
   isOpen <- sapply(devs, FUN=function(dev) !is.null(dev) && nzchar(dev));
   isOpen <- isOpen & !is.na(labels);
@@ -58,6 +63,8 @@ devIsOpen <- function(which=dev.cur(), ...) {
 # @synopsis
 #
 # \arguments{
+#   \item{interactiveOnly}{If @TRUE, only open interactive/screen devices
+#     are returned.}
 #   \item{dropNull}{If @TRUE, the "null" device (device index 1) is
 #     not returned.}
 #   \item{...}{Not used.}
@@ -76,7 +83,7 @@ devIsOpen <- function(which=dev.cur(), ...) {
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devList <- function(dropNull=TRUE, ...) {
+devList <- function(interactiveOnly=TRUE, dropNull=TRUE, ...) {
   devList <- .devList();
 
   # Return only opened devices
@@ -87,6 +94,13 @@ devList <- function(dropNull=TRUE, ...) {
   # Exclude the "null" device?
   if (dropNull) {
     idxs <- idxs[-1L];
+  }
+
+  # Include only interactive devices?
+  if (interactiveOnly) {
+    types <- unlist(devList[idxs]);
+    keep <- devIsInteractive(types);
+    idxs <- idxs[keep];
   }
 
   idxs;
@@ -126,10 +140,17 @@ devList <- function(dropNull=TRUE, ...) {
 #*/###########################################################################
 devGetLabel <- function(which=dev.cur(), ...) {
   devList <- devList(dropNull=FALSE);
-  devs <- devList[which];
+  if (is.numeric(which)) {
+    devs <- devList[match(which, devList)];
+  } else {
+    devs <- devList[which];
+  }
   labels <- names(devs);
-  if (any(is.na(labels))) {
-    throw("No such device: ", paste(which[is.na(labels)], collapse=", "));
+  unknown <- which[is.na(labels)];
+  if (length(unknown) > 0L) {
+    known <- names(devList(dropNull=FALSE));
+    if (length(known) == 0L) known <- "<none>";
+    throw(sprintf("Cannot get device label. No such device: %s (known devices: %s)", paste(sQuote(unknown), collapse=", "), paste(sQuote(known), collapse=", ")));
   }
   labels;
 } # devGetLabel()
@@ -172,11 +193,19 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
     throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
   }
 
-  if (is.character(which))
-    which <- .devIndexOf(which);
   devList <- .devList();
-  if (devList[[which]] == "")
-    throw("No such device: ", which);
+  if (is.numeric(which)) {
+    idx <- which;
+  } else {
+    idx <- .devIndexOf(which);
+  }
+
+  # Unknown devices?
+  if (devList[[idx]] == "") {
+    known <- names(devList(dropNull=FALSE));
+    if (length(known) == 0L) known <- "<none>";
+    throw(sprintf("Cannot set device label. No such device: %s (known devices: %s)", paste(sQuote(which), collapse=", "), paste(sQuote(known), collapse=", ")));
+  }
 
   # Update the label
   if (is.null(label))
@@ -413,7 +442,7 @@ devDone <- function(which=dev.cur(), ...) {
     type <- tolower(names(which));
     type <- gsub(":.*", "", type);
 
-    isOnScreen <- (type %in% deviceIsInteractive());
+    isOnScreen <- (is.element(type, deviceIsInteractive()));
     if (!isOnScreen)
       devOff(which);
   }
@@ -485,10 +514,11 @@ devIsInteractive <- function(types, ...) {
 
   # Device type aliases?
   type <- .devTypeName(type);
+  type <- tolower(type);
 
   # A known interactive device?
   knownInteractive <- grDevices::deviceIsInteractive();
-  res <- is.element(tolower(type), tolower(knownInteractive));
+  res <- is.element(type, tolower(knownInteractive));
 
   names(res) <- type0;
 
@@ -586,6 +616,10 @@ devIsInteractive <- function(types, ...) {
 ############################################################################
 # HISTORY:
 # 2013-10-28
+# o BUG FIX: devIsOpen(), dev(Get|Set)Label(which) would not handle the
+#   case when the device specified by an numeric 'which' and there is a
+#   gap in the device list.
+# o Added argument 'interactiveOnly' to devList().
 # o ROBUSTNESS: Now devSet() is guaranteed to close all temporary
 #   devices it opens.
 # 2013-10-15

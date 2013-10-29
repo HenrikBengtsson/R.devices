@@ -17,10 +17,12 @@
 }
 
 \usage{
-devList(dropNull=TRUE, ...)
+devList(interactiveOnly=TRUE, dropNull=TRUE, ...)
 }
 
 \arguments{
+  \item{interactiveOnly}{If \code{\link[base:logical]{TRUE}}, only open interactive/screen devices
+    are returned.}
   \item{dropNull}{If \code{\link[base:logical]{TRUE}}, the "null" device (device index 1) is
     not returned.}
   \item{...}{Not used.}

@@ -9,6 +9,7 @@
 \name{devEval}
 \alias{devEval}
 
+\alias{devDump}
 
 \title{Opens a new graphics device, evaluate (graphing) code, and closes device}
 
@@ -21,7 +22,7 @@ devEval(type=getOption("device"), expr, initially=NULL, finally=NULL,
   envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","),
   ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"),
   field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename",
-  "keep"), force=getOption("devEval/args/force", TRUE), which=devList())
+  "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur())
 }
 
 \arguments{

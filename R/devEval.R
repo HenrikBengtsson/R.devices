@@ -277,6 +277,19 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
       eval(expr, envir=envir);
     } else {
       # Copy the device specified by argument 'which'.
+      # Assert that device is interactive
+      devList <- devList(interactiveOnly=TRUE);
+      if (is.numeric(which)) {
+        ok <- is.element(which, devList);
+      } else {
+        ok <- is.element(which, names(devList));
+      }
+      if (!ok) {
+        types <- unlist(R.devices:::.devList());
+        type <- types[which];
+        throw(sprintf("Cannot copy a %s device - only interactive/screen devices are supported: %s", sQuote(type), sQuote(which)));
+      }
+
       devSet(which);
       dev.copy(which=devIdx);
     }
@@ -310,7 +323,10 @@ devDump <- function(type=c("png", "pdf"), ..., envir=parent.frame(), which=devLi
 ############################################################################
 # HISTORY:
 # 2013-10-28
-# o Added devDump() which is short for devEval(c("png", "pdf"), ..., which=devList()).
+# o ROBUSTNESS: Now devEval() detects and gives an informative error
+#   if one tries to copy a non-interactive/non-screen device.
+# o Added devDump() which is short for devEval(c("png", "pdf"), ...,
+#   which=devList()).
 # o If 'expr' is missing, devEval() copies the current active device
 #   and devEval(which=devList()) copies all open devices.
 # 2013-09-27

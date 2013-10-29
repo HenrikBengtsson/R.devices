@@ -3,12 +3,19 @@ Package: R.devices
 ==================
 
 Version: 2.8.0 [2013-10-28]
+o Added devDump() which is short for calling devEval(c("png", "pdf"),
+  ..., which=devList(interactiveOnly=TRUE)), i.e. it copies the content
+  of open interactive ("screen") devices.
+o Added argument 'interactiveOnly' to devList().
 o If 'expr' is missing, devEval() copies the current active device
   and devEval(which=devList()) copies all open devices.  For example,
   plot(1:10); devEval(c("png", "jpg", "pdf"), name="myfig").
 o Now package imports (no longer suggests) the 'base64enc' package.
   This way packages using 'R.devices' do not have to specify also
   'base64enc' if they use dataURI-encoding of images.
+o BUG FIX: devIsOpen(), dev(Get|Set)Label(which) would not handle the
+  case when the device specified by an numeric 'which' and there is a
+  gap in the device list.
 
 
 Version: 2.7.3 [2013-10-28]
