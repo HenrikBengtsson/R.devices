@@ -271,10 +271,9 @@ devSet <- function(which=dev.next(), ...) {
     throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
   }
 
-  if (which < 2L) {
-    throw("Cannot set device: ", which);
+  if (which < 2L || which > 63L) {
+    throw("Cannot set device: Argument 'which' is out of range [2,63]: ", which);
   }
-
 
   if (devIsOpen(which)) {
     # Active already existing device
@@ -289,27 +288,23 @@ devSet <- function(which=dev.next(), ...) {
     toBeOpened <- setdiff(2:(which-1L), dev.list());
   }
 
-  toBeClosed <- list();
   len <- length(toBeOpened);
   if (len > 0L) {
-    for (idx in toBeOpened) {
-      # Create a dummy postscript device (which is non-visible)
-      pathname <- tempfile();
-      toBeClosed[[idx]] <- pathname;
-      postscript(file=pathname);
-    }
+    tempfiles <- sapply(toBeOpened, FUN=function(...) tempfile());
 
-    # Close temporarily opened devices when exiting function
+    # Make sure to close all temporary devices when exiting function
     on.exit({
-      for (kk in seq_along(toBeClosed)) {
-        pathname <- toBeClosed[[kk]];
-        if (!is.null(pathname)) {
-          dev.set(kk);
-          dev.off();
-          file.remove(pathname);
-        }
+      for (kk in seq_along(toBeOpened)) {
+        dev.set(toBeOpened[kk]);
+        dev.off();
+        if (file.exists(tempfiles[kk])) file.remove(tempfiles[kk]);
       }
     }, add=TRUE);
+
+    # Create a dummy temporary postscript device (which is non-visible)
+    for (kk in seq_along(toBeOpened)) {
+      postscript(file=tempfiles[kk]);
+    }
   }
 
   # Open the device
@@ -611,6 +606,11 @@ devIsInteractive <- function(types, ...) {
 
 ############################################################################
 # HISTORY:
+# 2013-10-29
+# o ROBUSTESS/BUG FIX: devSet(which) where 'which' is a very large number
+#   could leave lots of stray temporary devices open when error "too many
+#   open devices" occurred.  Now all temporary devices are guaranteed to
+#   be closed also when there is an error.
 # 2013-10-28
 # o BUG FIX: dev(Get|Set)Label(which) would not handle the case when
 #   the device specified by an numeric 'which' and there is a

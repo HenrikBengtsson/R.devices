@@ -113,12 +113,14 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
   # Copy multiple input devices?
   if (!hasExpr && length(which) > 1L) {
-    # Record current device
-    for (idx in which) {
+    res <- list();
+    for (kk in seq_along(which)) {
+      idx <- which[kk];
       devSet(idx);
-      devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=idx);
+      res[[kk]] <- devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=name, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=idx);
     } # for (idx ...)
-    return(invisible());
+    names(res) <- names(which);
+    return(res);
   } # if (length(which) > 1L)
 
 
@@ -326,13 +328,23 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 } # devEval()
 
 
-devDump <- function(type=c("png", "pdf"), ..., envir=parent.frame(), which=devList(interactiveOnly=TRUE)) {
-  devEval(type=type, ..., envir=envir, which=which);
+devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), field=NULL, which=devList(interactiveOnly=TRUE)) {
+  if (is.null(path)) {
+    # Timestamp, e.g. 2011-03-10_041359.032
+    timestamp <- format(Sys.time(), "%Y-%m-%d_%H%M%OS3", tz="UTC");
+    path <- getOption("devEval/args/path", "figures/");
+    path <- file.path(path, timestamp);
+    path <- getOption("devDump/args/path", path);
+  }
+
+  devEval(type=type, ..., path=path, envir=envir, field=field, which=which);
 } # devDump()
 
 
 ############################################################################
 # HISTORY:
+# 2013-10-29
+# o Now devDump() by default outputs to figures/<timestamp>/
 # 2013-10-28
 # o ROBUSTNESS: Now devEval() detects and gives an informative error
 #   if one tries to copy a non-interactive/non-screen device.

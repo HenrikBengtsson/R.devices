@@ -2,7 +2,7 @@
 Package: R.devices
 ==================
 
-Version: 2.8.0 [2013-10-28]
+Version: 2.8.0 [2013-10-29]
 o Added devDump() which is short for calling devEval(c("png", "pdf"),
   ..., which=devList(interactiveOnly=TRUE)), i.e. it copies the content
   of open interactive ("screen") devices.
@@ -13,6 +13,10 @@ o If 'expr' is missing, devEval() copies the current active device
 o Now package imports (no longer suggests) the 'base64enc' package.
   This way packages using 'R.devices' do not have to specify also
   'base64enc' if they use dataURI-encoding of images.
+o ROBUSTESS/BUG FIX: devSet(which) where 'which' is a very large number
+  could leave lots of stray temporary devices open when error "too many
+  open devices" occurred.  Now all temporary devices are guaranteed to
+  be closed also when there is an error.
 o BUG FIX: devIsOpen(), dev(Get|Set)Label(which) would not handle the
   case when the device specified by an numeric 'which' and there is a
   gap in the device list.
