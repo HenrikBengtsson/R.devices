@@ -13,7 +13,7 @@ o If 'expr' is missing, devEval() copies the current active device
 o Now package imports (no longer suggests) the 'base64enc' package.
   This way packages using 'R.devices' do not have to specify also
   'base64enc' if they use dataURI-encoding of images.
-o ROBUSTESS/BUG FIX: devSet(which) where 'which' is a very large number
+o ROBUSTNESS/BUG FIX: devSet(which) where 'which' is a very large number
   could leave lots of stray temporary devices open when error "too many
   open devices" occurred.  Now all temporary devices are guaranteed to
   be closed also when there is an error.
@@ -42,7 +42,7 @@ Version: 2.7.0 [2013-09-28]
 o GENERALIZATION: Vectorized devEval(), e.g. it is now possible to
   do devEval(c("png", "pdf"), name="MyPlot", { plot(1:10) }).
   Added arguments 'initially' and 'finally' to devEval().  Contrary
-  to 'expr' which is evalutated for each graphics type/device, these
+  to 'expr' which is evaluated for each graphics type/device, these
   are evaluated only once per call.  This makes it possible to avoid
   repeating expensive computations.
 o GENERALIZATION: Vectorized devIsInteractive(), devIsOpen(),
