@@ -18,8 +18,8 @@ o ROBUSTNESS/BUG FIX: devSet(which) where 'which' is a very large number
   open devices" occurred.  Now all temporary devices are guaranteed to
   be closed also when there is an error.
 o BUG FIX: devIsOpen(), dev(Get|Set)Label(which) would not handle the
-  case when the device specified by an numeric 'which' and there is a
-  gap in the device list.
+  case when the device was specified by an numeric 'which' and there is
+  a gap in the device list.
 
 
 Version: 2.7.3 [2013-10-28]
