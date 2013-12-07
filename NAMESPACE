@@ -26,11 +26,6 @@ importFrom("R.utils", "isPackageInstalled")
 importFrom("R.utils", "isPackageLoaded")
 importFrom("base64enc", "dataURI")
 
-## Manual imports
-if (packageVersion("R.utils") < "1.27.5") {
-  importFrom("R.utils", "getOption.default")
-}
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # EXPORTS

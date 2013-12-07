@@ -2,6 +2,11 @@
 Package: R.devices
 ==================
 
+Version: 2.8.1 [2013-12-07]
+o CLEANUP: Bumped up package dependencies. No longer need for an ad hoc 
+  NAMESPACE import.
+
+
 Version: 2.8.0 [2013-10-29]
 o Added devDump() which is short for calling devEval(c("png", "pdf"),
   ..., which=devList(interactiveOnly=TRUE)), i.e. it copies the content
