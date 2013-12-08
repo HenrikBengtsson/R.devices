@@ -308,7 +308,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
     # Support vector of 'type':s
     types <- type;
-    res <- sapply(types, FUN=devOptions, drop=TRUE);
+    res <- lapply(types, FUN=devOptions, drop=TRUE);
     fields <- lapply(res, FUN=function(opts) names(opts));
     fields <- unique(unlist(fields, use.names=FALSE));
     opts <- lapply(res, FUN=function(x) x[fields]);
@@ -464,6 +464,10 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
 
 ############################################################################
 # HISTORY:
+# 2013-12-08
+# o BUG FIX: devOptions(types) would drop all options for combinations
+#   devices types that have identical sets of options, e.g.
+#   types=c("png", "png") or types=c("bmp", "png").
 # 2012-07-26
 # o Added arguments 'options' and 'drop' to devOptions().
 # 2012-07-24

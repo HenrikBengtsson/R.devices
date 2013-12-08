@@ -2,8 +2,11 @@
 Package: R.devices
 ==================
 
-Version: 2.8.1 [2013-12-07]
-o CLEANUP: Bumped up package dependencies. No longer need for an ad hoc 
+Version: 2.8.1 [2013-12-08]
+o BUG FIX: devOptions(types) would drop all options for combinations
+  devices types that have identical sets of options, e.g.
+  types=c("png", "png") or types=c("bmp", "png").
+o CLEANUP: Bumped up package dependencies. No longer need for an ad hoc
   NAMESPACE import.
 
 
