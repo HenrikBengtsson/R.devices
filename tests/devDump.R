@@ -42,6 +42,10 @@ if (interactive()) {
   idxs <- c(idxs, devNew())
   plot(cos)
 
+  # Automatially "dump" image files of all open devices
+  devDump()
+
+  # "Manual" saving of defined
   which <- devList()
   print(which)
 

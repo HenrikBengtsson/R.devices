@@ -2,6 +2,11 @@
 Package: R.devices
 ==================
 
+Version: 2.8.2 [2014-01-02]
+o Now the timestamp of the default path for devDump() is in the
+  current time zone.
+
+
 Version: 2.8.1 [2013-12-08]
 o BUG FIX: devOptions(types) would drop all options for combinations
   of device types that have identical sets of options, e.g.

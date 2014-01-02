@@ -331,7 +331,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), field=NULL, which=devList(interactiveOnly=TRUE)) {
   if (is.null(path)) {
     # Timestamp, e.g. 2011-03-10_041359.032
-    timestamp <- format(Sys.time(), "%Y-%m-%d_%H%M%OS3", tz="UTC");
+    timestamp <- format(Sys.time(), "%Y-%m-%d_%H%M%OS3", tz="");
     path <- getOption("devEval/args/path", "figures/");
     path <- file.path(path, timestamp);
     path <- getOption("devDump/args/path", path);
@@ -343,6 +343,9 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 
 ############################################################################
 # HISTORY:
+# 2014-01-02
+# o Now the timestamp of the default path for devDump() is in the
+#   current time zone.
 # 2013-10-29
 # o Now devDump() by default outputs to figures/<timestamp>/
 # 2013-10-28
