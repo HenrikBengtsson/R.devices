@@ -17,6 +17,7 @@
 \alias{toSVG}
 \alias{toTIFF}
 \alias{toWMF}
+\alias{toFavicon}
 
 \title{Methods for creating image files of a specific format}
 
@@ -32,6 +33,7 @@
   toSVG(name, ..., field=getOption("devEval/args/field", "fullname"))
   toTIFF(name, ..., field=getOption("devEval/args/field", "fullname"))
   toWMF(name, ..., ext="wmf", field=getOption("devEval/args/field", "fullname"))
+  toFavicon(..., name="favicon", type="png", width=32L, height=width, par=list(mar=c(0,0,0,0)))
 }
 
 \arguments{
@@ -40,6 +42,7 @@
      \code{tags} and \code{aspectRatio}.}
   \item{ext}{A \code{\link[base]{character}} string specifying the filename extension.}
   \item{field}{Passed to \code{\link{devEval}}().}
+  \item{width, height, type, par}{Passed to \code{\link{devEval}}().}
 }
 
 \value{
