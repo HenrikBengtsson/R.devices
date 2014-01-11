@@ -56,6 +56,7 @@ export("toPNG")
 export("toSVG")
 export("toTIFF")
 export("toWMF")
+export("toFavicon")
 
 export("DevEvalProduct")
 export("DevEvalFileProduct")

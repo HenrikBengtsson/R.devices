@@ -33,7 +33,8 @@
   toSVG(name, ..., field=getOption("devEval/args/field", "fullname"))
   toTIFF(name, ..., field=getOption("devEval/args/field", "fullname"))
   toWMF(name, ..., ext="wmf", field=getOption("devEval/args/field", "fullname"))
-  toFavicon(..., name="favicon", type="png", width=32L, height=width, par=list(mar=c(0,0,0,0)))
+  toFavicon(..., name="favicon", type="png", width=32L, height=width,
+                 par=list(mar=c(0,0,0,0)))
 }
 
 \arguments{
