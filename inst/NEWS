@@ -2,6 +2,11 @@
 Package: R.devices
 ==================
 
+Version: 2.8.4 [2014-01-11]
+o Added asDataURI() for converting an image file to an
+  Base64-encoded data URI character string.
+
+
 Version: 2.8.3 [2014-01-10]
 o Added toFavicon() for outputting figures as HTML favicons.
 

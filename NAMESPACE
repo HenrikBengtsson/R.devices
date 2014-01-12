@@ -58,6 +58,8 @@ export("toTIFF")
 export("toWMF")
 export("toFavicon")
 
+export("asDataURI")
+
 export("DevEvalProduct")
 export("DevEvalFileProduct")
 
