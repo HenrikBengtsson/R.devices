@@ -18,10 +18,10 @@
 }
 
 \usage{
-devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2",
-  "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile",
-  "windows", "x11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ...,
-  reset=FALSE)
+devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps",
+  "JavaGD", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript",
+  "quartz", "svg", "tiff", "win.metafile", "windows", "X11", "xfig"), custom=TRUE,
+  special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE)
 }
 
 \arguments{

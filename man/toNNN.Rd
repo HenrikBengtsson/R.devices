@@ -13,6 +13,7 @@
 \alias{toEMF}
 \alias{toEPS}
 \alias{toPDF}
+%% \alias{toCairoPNG}
 \alias{toPNG}
 \alias{toSVG}
 \alias{toTIFF}
@@ -28,7 +29,6 @@
 \alias{toQuartz}
 \alias{toWindows}
 \alias{toX11}
-\alias{toX11cairo}
 
 \title{Methods for creating image files of a specific format}
 
@@ -44,13 +44,14 @@
   toSVG(name, ..., field=getOption("devEval/args/field", "fullname"))
   toTIFF(name, ..., field=getOption("devEval/args/field", "fullname"))
   toWMF(name, ..., ext="wmf", field=getOption("devEval/args/field", "fullname"))
+  %% toCairoPNG(name, ..., field=getOption("devEval/args/field", "fullname"))
+
   toFavicon(..., name="favicon", type="png", width=32L, height=width,
                  par=list(mar=c(0,0,0,0), bg="transparent"))
 
   % Interactive/screen devices
   toDefault(name, ...)
   toX11(name, ...)
-  toX11cairo(name, ...)
   toWindows(name, ...)
   toQuartz(name, ...)
   toCairoWin(name, ...)

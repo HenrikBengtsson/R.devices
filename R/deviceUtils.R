@@ -595,7 +595,7 @@ devIsInteractive <- function(types, ...) {
   }
 
   types0 <- types;
-  types <- tolower(types);
+#  types <- tolower(types);
 
   # Common aliases
   types[types == "jpg"] <- "jpeg";

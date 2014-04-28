@@ -58,7 +58,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "JavaGD", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "X11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -66,7 +66,11 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     bmp=c("grDevices::bmp"),
     cairo_pdf=c("grDevices::cairo_pdf"),
     cairo_ps=c("grDevices::cairo_ps"),
+##    CairoPNG=c("Cairo::CairoPNG"),  ## If used, gets extension CairoPNG.
+    CairoWin=c("Cairo::CairoWin"),
+    CairoX11=c("Cairo::CairoX11"),
     eps=c("eps", "grDevices::postscript"),
+    JavaGD=c("JavaGD::JavaGD"),
     jpeg=c("grDevices::jpeg"),
     jpeg2=c("jpeg2", "grDevices::bitmap", "grDevices::postscript"),
     pdf=c("grDevices::pdf"),
@@ -79,7 +83,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     tiff=c("grDevices::tiff"),
     win.metafile=c("grDevices::win.metafile"),
     windows=c("grDevices::windows"),
-    x11=c("grDevices::x11"),
+    X11=c("grDevices::X11"),
     xfig=c("grDevices::xfig")
   );
 
@@ -175,7 +179,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
       dim <- paperSizes[[paper]];
 
       # Replace "special" 0:s with NA:s, to indicate they are missing
-      dim[dim == 0L] <- as.double(NA);
+      dim[dim == 0L] <- NA_real_;
     } else {
       dim <- c(options$width, options$height);
     }
@@ -227,7 +231,13 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "eps", "jpeg", "jp
     parts <- strsplit(devs, split="::", fixed=TRUE);
     devs <- lapply(parts, FUN=function(s) {
       if (length(s) > 1L) {
-        envir <- getNamespace(s[1L]);
+        # Device package may not be installed, e.g. Cairo and JavaGD.
+        envir <- tryCatch({
+          # Attach it as well, so that the device function is found.
+          require(s[1L], character.only=TRUE)
+          # Return namespace
+          getNamespace(s[1L])
+        }, error = function(ex) emptyenv());
         s <- s[-1L];
       } else {
         envir <- as.environment(-1L);

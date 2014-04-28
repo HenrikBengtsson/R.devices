@@ -5,8 +5,8 @@ Package: R.devices
 Version: 2.9.0 [2014-04-28]
 o Added toDefault() for plotting to the default device analogously to
   how the other toNnn() device functions works.  Likewise, added toX11(),
-  toX11cairo(), toWindows(), toQuartz(), toCairoWin(), toCairoX11(), and
-  toJavaGD() for plotting to interactive/screen devices.
+  toWindows(), toQuartz(), toCairoWin(), toCairoX11(), and toJavaGD()
+  for plotting to interactive/screen devices.
 o Now it's possible to use devEval() to open a new or activate an
   existing interactive/screen device.
 o Added support for (hidden) argument 'which' to devNew(), such that
