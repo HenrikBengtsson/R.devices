@@ -48,7 +48,6 @@ export("eps")
 export("jpeg2")
 export("png2")
 
-export("toDefault")
 export("toBMP")
 export("toEPS")
 export("toEMF")
@@ -58,6 +57,15 @@ export("toSVG")
 export("toTIFF")
 export("toWMF")
 export("toFavicon")
+
+export("toDefault")
+export("toCairoWin")
+export("toCairoX11")
+export("toJavaGD")
+export("toQuartz")
+export("toWindows")
+export("toX11")
+export("toX11cairo")
 
 export("asDataURI")
 
@@ -86,4 +94,3 @@ S3method("getFullname", "DevEvalProduct")
 S3method("getName", "DevEvalProduct")
 S3method("getTags", "DevEvalProduct")
 S3method("getType", "DevEvalProduct")
-

@@ -9,7 +9,6 @@
 \name{toNNN}
 \alias{toNNN}
 
-\alias{toDefault}
 \alias{toBMP}
 \alias{toEMF}
 \alias{toEPS}
@@ -21,6 +20,16 @@
 \alias{toFavicon}
 \alias{asDataURI}
 
+% Interactive/screen devices
+\alias{toDefault}
+\alias{toCairoWin}
+\alias{toCairoX11}
+\alias{toJavaGD}
+\alias{toQuartz}
+\alias{toWindows}
+\alias{toX11}
+\alias{toX11cairo}
+
 \title{Methods for creating image files of a specific format}
 
 \description{
@@ -28,7 +37,6 @@
 }
 
 \usage{
-  toDefault(name, ...)
   toBMP(name, ..., field=getOption("devEval/args/field", "fullname"))
   toEMF(name, ..., ext="emf", field=getOption("devEval/args/field", "fullname"))
   toPDF(name, ..., field=getOption("devEval/args/field", "fullname"))
@@ -38,6 +46,16 @@
   toWMF(name, ..., ext="wmf", field=getOption("devEval/args/field", "fullname"))
   toFavicon(..., name="favicon", type="png", width=32L, height=width,
                  par=list(mar=c(0,0,0,0), bg="transparent"))
+
+  % Interactive/screen devices
+  toDefault(name, ...)
+  toX11(name, ...)
+  toX11cairo(name, ...)
+  toWindows(name, ...)
+  toQuartz(name, ...)
+  toCairoWin(name, ...)
+  toCairoX11(name, ...)
+  toJavaGD(name, ...)
 }
 
 \arguments{
