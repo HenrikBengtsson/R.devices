@@ -58,7 +58,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "JavaGD", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "X11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "JavaGD", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -83,6 +83,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     tiff=c("grDevices::tiff"),
     win.metafile=c("grDevices::win.metafile"),
     windows=c("grDevices::windows"),
+    x11=c("grDevices::x11"),
     X11=c("grDevices::X11"),
     xfig=c("grDevices::xfig")
   );
@@ -95,6 +96,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     # To please R CMD check
     windows.options <- NULL; rm(list="windows.options");
     x11.options <- windows.options;
+    X11.options <- windows.options;
   }
 
 
@@ -108,6 +110,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
       postscript="ps.options",
       quartz="quartz.options",
       windows="windows.options",
+      x11="X11.options",
       X11="x11.options"
     );
 
