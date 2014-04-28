@@ -197,19 +197,65 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Exclude 'file' and 'filename' arguments?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (devIsInteractive(type)) {
+  isInteractive <- devIsInteractive(type);
+  if (isInteractive) {
     keep <- !is.element(names(args), c("file", "filename"));
     args <- args[keep];
   }
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Open device by calling device function
+  # Open an existing device?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  res <- do.call(type, args=args);
+  which <- args[["which"]];
+  if (is.null(which) || (nchar(which) == 0L) || !isInteractive) {
+    # Default is to open a new one
+    devIdx <- NA_integer_;
+  } else {
+    # ...otherwise, is requested device already opened?
+    devList <- devList(dropNull=FALSE);
+    labels <- names(devList);
 
-  # Retrieve the index of the recently opened device
-  devIdx <- dev.cur();
+    # Default is to open a new one
+    devIdx <- NA_integer_;
+    if (is.character(which)) {
+      # An existing device by its label?
+      devIdx <- match(which, table=labels);
+      names(devIdx) <- labels[devIdx];
+      if (is.null(label)) label <- which;
+    } else if (is.numeric(which)) {
+      # An existing device by its index?
+      if (which <= length(devList)) {
+        devIdx <- which;
+        names(devIdx) <- labels[devIdx];
+      }
+    }
+  }
+  # Drop 'which' argument, if specified
+  keep <- !is.element(names(args), "which");
+  args <- args[keep];
+
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Open (new or existing) device
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (is.na(devIdx)) {
+    # (a) New, i.e. call the device function
+    res <- do.call(type, args=args);
+    # Retrieve the index of the recently opened device
+    devIdx <- dev.cur();
+  } else {
+    # (b) Existing one, i.e. set focus.
+    dev <- devSet(devIdx);
+
+    # Assert that the existing device is of the requested type
+    if (!.devEqualTypes(type, other=names(dev), args=args)) {
+      if (is.function(type)) type <- "<a function>";
+      throw(sprintf("Detected an existing devices with the requested label (which='%s'), but its device type is different from the requested type: '%s' != '%s'", names(devIdx), type, names(dev)));
+    }
+    # Make sure not to reset the device label below
+    if (is.null(label)) label <- names(devIdx);
+  }
 
   # Set the label of the recently opened device
   devSetLabel(which=devIdx, label=label);
@@ -227,6 +273,10 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 
 ############################################################################
 # HISTORY:
+# 2014-04-27
+# o Added support for (hidden) argument 'which' to devNew(), such that
+#   devNew(type, which=which) avoids opening a new device iff an existing
+#   device of the same device type and index/label already is opened.
 # 2013-09-24
 # o ROBUSTNESS: Now devNew() gives an error if argument 'type' is not
 #   of length one.

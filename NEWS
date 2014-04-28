@@ -2,6 +2,23 @@
 Package: R.devices
 ==================
 
+Version: 2.9.0 [2014-04-27]
+o Added toDefault() for opening the default device analogously to how
+  the other toNnn() device functions works.
+o Now it's possible to use devEval() to open a new or activate an
+  existing interactive/screen device.
+o Added support for (hidden) argument 'which' to devNew(), such that
+  devNew(type, which=which) avoids opening a new device iff an existing
+  device of the same device type and index/label already is opened.
+  For instance, calling devNew("X11", which="foo") will open an X11
+  device and label it 'foo'.  Subsequent calls will set the focus that
+  same device.
+o BUG FIX: Now devEval("windows", { plot(1:10) }) no longer gives
+  "Error: Detected new graphics devices that was opened but not
+  closed while executing devEval(): '2' (windows)".
+o Bumped up package dependencies.
+
+
 Version: 2.8.4 [2014-01-11]
 o Added asDataURI() for converting an image file to an
   Base64-encoded data URI character string.

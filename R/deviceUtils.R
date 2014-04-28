@@ -490,28 +490,34 @@ devIsInteractive <- function(types, ...) {
   # Sanity check
   stopifnot(length(types) == 1L);
 
+  # Investigate one type below
   type0 <- type <- types;
-  if (is.function(type)) {
-  } else {
-    type <- as.character(type);
-  }
-
-  # Nothing to do?
-  if (!is.character(type)) {
-    res <- FALSE;
-    names(res) <- NA_character_;
-    return(res);
-  }
-
-  # Device type aliases?
-  type <- .devTypeName(type);
-  type <- tolower(type);
 
   # A known interactive device?
   knownInteractive <- grDevices::deviceIsInteractive();
-  res <- is.element(type, tolower(knownInteractive));
 
-  names(res) <- type0;
+  if (is.function(type)) {
+    for (name in knownInteractive) {
+      if (exists(name, mode="function")) {
+        dev <- get(name, mode="function");
+        if (identical(dev, type)) {
+          res <- TRUE;
+          names(res) <- name;
+          return(res);
+        }
+      }
+    }
+    res <- FALSE;
+    names(res) <- NA_character_;
+  } else {
+    type <- as.character(type);
+    # Device type aliases?
+    type <- .devTypeName(type);
+    type <- tolower(type);
+    # An known one?
+    res <- is.element(type, tolower(knownInteractive));
+    names(res) <- type0;
+  }
 
   res;
 } # devIsInteractive()
@@ -600,12 +606,64 @@ devIsInteractive <- function(types, ...) {
   types;
 } # .devTypeName()
 
+
+.devEqualTypes <- (function() {
+   # Recorded known results
+   known <- list();
+
+   function(type, other, args=list()) {
+     # (a) Same types?
+     if (identical(unname(type), unname(other))) return(TRUE);
+
+     # (b) A known equality?
+     if (is.character(type) && is.character(other)) {
+       res <- known[[type]][other];
+       if (is.logical(res)) return(res);
+     }
+
+     # (c) Comparing to a device function?
+     if (is.function(type) && is.character(other)) {
+       if (!exists(other, mode="function")) return(FALSE);
+       otherT <- get(other, mode="function");
+       if (identical(unname(type), unname(otherT))) return(TRUE);
+     } else if (is.function(other) && is.character(type)) {
+       if (!exists(type, mode="function")) return(FALSE);
+       typeT <- get(type, mode="function");
+       if (identical(unname(typeT), unname(other))) return(TRUE);
+     }
+
+     # (d) Check if temporarily opening the requested type actually
+     # creates a device matching the existing one.
+     do.call(type, args=args);
+     on.exit(dev.off(), add=TRUE);
+     typeT <- names(dev.cur());
+
+     if (is.function(other)) {
+       do.call(other, args=args);
+       on.exit(dev.off(), add=TRUE);
+       other <- names(dev.cur());
+     }
+
+     res <- (typeT == other);
+
+     # Record result to avoid opening next?
+     if (is.character(type) && is.character(other)) {
+       known[[type]][other] <<- res;
+     }
+
+     res;
+  }
+})() # .devEqualTypes()
+
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # END: Local functions
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ############################################################################
 # HISTORY:
+# 2014-04-27
+# o Added .devEqualTypes().
 # 2013-10-29
 # o ROBUSTESS/BUG FIX: devSet(which) where 'which' is a very large number
 #   could leave lots of stray temporary devices open when error "too many

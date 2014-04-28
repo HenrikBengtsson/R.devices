@@ -48,6 +48,7 @@ export("eps")
 export("jpeg2")
 export("png2")
 
+export("toDefault")
 export("toBMP")
 export("toEPS")
 export("toEMF")

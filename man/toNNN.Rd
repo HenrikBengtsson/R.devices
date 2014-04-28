@@ -9,6 +9,7 @@
 \name{toNNN}
 \alias{toNNN}
 
+\alias{toDefault}
 \alias{toBMP}
 \alias{toEMF}
 \alias{toEPS}
@@ -27,6 +28,7 @@
 }
 
 \usage{
+  toDefault(name, ...)
   toBMP(name, ..., field=getOption("devEval/args/field", "fullname"))
   toEMF(name, ..., ext="emf", field=getOption("devEval/args/field", "fullname"))
   toPDF(name, ..., field=getOption("devEval/args/field", "fullname"))
