@@ -23,12 +23,12 @@
 
 % Interactive/screen devices
 \alias{toDefault}
-\alias{toCairoWin}
-\alias{toCairoX11}
-\alias{toJavaGD}
 \alias{toQuartz}
 \alias{toWindows}
 \alias{toX11}
+\alias{toCairoWin}
+\alias{toCairoX11}
+%% \alias{toJavaGD}
 
 \title{Methods for creating image files of a specific format}
 
@@ -51,12 +51,14 @@
 
   % Interactive/screen devices
   toDefault(name, ...)
+  toQuartz(name, ...)
   toX11(name, ...)
   toWindows(name, ...)
-  toQuartz(name, ...)
+
+  % Interactive/screen devices from other packages
   toCairoWin(name, ...)
   toCairoX11(name, ...)
-  toJavaGD(name, ...)
+  %% toJavaGD(name, ...)
 }
 
 \arguments{

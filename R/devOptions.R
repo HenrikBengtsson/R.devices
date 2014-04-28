@@ -58,7 +58,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "JavaGD", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -70,7 +70,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     CairoWin=c("Cairo::CairoWin"),
     CairoX11=c("Cairo::CairoX11"),
     eps=c("eps", "grDevices::postscript"),
-    JavaGD=c("JavaGD::JavaGD"),
+##    JavaGD=c("JavaGD::JavaGD"),
     jpeg=c("grDevices::jpeg"),
     jpeg2=c("jpeg2", "grDevices::bitmap", "grDevices::postscript"),
     pdf=c("grDevices::pdf"),
@@ -236,10 +236,16 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
       if (length(s) > 1L) {
         # Device package may not be installed, e.g. Cairo and JavaGD.
         envir <- tryCatch({
-          # Attach it as well, so that the device function is found.
-          require(s[1L], character.only=TRUE)
-          # Return namespace
-          getNamespace(s[1L])
+          # Attach it as well, so that the device function is found
+          # when needed inside devNew() at do.call().
+          suppressWarnings({
+            if (require(s[1L], character.only=TRUE, quietly=TRUE)) {
+              # Return namespace
+              getNamespace(s[1L]);
+            } else {
+              emptyenv();
+            }
+          })
         }, error = function(ex) emptyenv());
         s <- s[-1L];
       } else {
