@@ -108,7 +108,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
       postscript="ps.options",
       quartz="quartz.options",
       windows="windows.options",
-      x11="x11.options"
+      X11="x11.options"
     );
 
     dummy <- function(...) { list(); }
