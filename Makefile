@@ -264,7 +264,11 @@ cran: cran_setup ../$(R_CRAN_OUTDIR)/$(PKG_NAME),EmailToCRAN.txt
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 # Local repositories
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-REPOS_PATH := T:/My\ Repositories/braju.com/R
+ifeq ($(OS), Windows_NT)
+REPOS_PATH = T:/My\ Repositories/braju.com/R
+else
+REPOS_PATH = /tmp/hb/repositories/braju.com/R
+endif
 REPOS_SRC := $(REPOS_PATH)/src/contrib
 
 $(REPOS_SRC):
