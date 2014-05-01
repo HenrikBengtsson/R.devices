@@ -2,6 +2,10 @@
 Package: R.devices
 ==================
 
+Version: 2.9.1 [2014-05-01]
+o Added withPar() for plotting with temporarily set graphical parameters.
+
+
 Version: 2.9.0 [2014-04-28]
 o Added toDefault() for plotting to the default device analogously to
   how the other toNnn() device functions works.  Likewise, added toX11(),

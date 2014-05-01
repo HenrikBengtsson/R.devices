@@ -32,6 +32,8 @@ importFrom("base64enc", "dataURI")
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 export("R.devices")
 
+export("withPar")
+
 export("devDump")
 export("devEval")
 export("devIsOpen")
@@ -71,6 +73,7 @@ export("asDataURI")
 
 export("DevEvalProduct")
 export("DevEvalFileProduct")
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # DECLARATIONS
