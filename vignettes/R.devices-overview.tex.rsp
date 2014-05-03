@@ -24,6 +24,7 @@ options(str=strOptions(strict.width="cut"));
 \documentclass[letter,12pt]{article}
 \usepackage{xspace}
 \usepackage{alltt}
+\usepackage{xcolor}
 \usepackage{natbib} % \citep{}, \citet{}
 
 \usepackage{graphicx}
