@@ -12,7 +12,7 @@
 <%
 library("R.devices");
 R.rsp <- R.oo::Package("R.rsp")
-evalWithEcho <- R.rsp::evalWithEcho
+evalCapture <- R.utils::evalCapture
 hpaste <- R.utils::hpaste
 
 devOptions("png", width=840);
@@ -24,7 +24,6 @@ options(str=strOptions(strict.width="cut"));
 \documentclass[letter,12pt]{article}
 \usepackage{xspace}
 \usepackage{alltt}
-\usepackage{xcolor}
 \usepackage{natbib} % \citep{}, \citet{}
 
 \usepackage{graphicx}
@@ -218,28 +217,28 @@ The \code{devOptions()} function provides a unified interface to getting and set
 When using one of the \code{toNNN()} functions, \code{devEval()} or \code{devNew()}, the device options used are given by \code{devOptions()}.  For example, to see the current settings used by PNG device, do:
 \begin{rspVerbatim}
 <% devOptions("png", reset=TRUE) %>
-<%=evalWithEcho({
+<%=evalCapture({
 devOptions("png")
 })%>
 \end{rspVerbatim}
 
 To change one or several options, do:
 \begin{rspVerbatim}
-<%=evalWithEcho({
+<%=evalCapture({
 devOptions("png", width=1024, bg="lightblue")
 })%>
 \end{rspVerbatim}
 
 To reset the options back to the built-in defaults, do:
 \begin{rspVerbatim}
-<%=evalWithEcho({
+<%=evalCapture({
 devOptions("png", reset=TRUE)
 })%>
 \end{rspVerbatim}
 
 To get an overview of a set of common options for all supported devices, do:
 \begin{rspVerbatim}
-<%=evalWithEcho({
+<%=evalCapture({
 devOptions()[,c("width", "height", "bg", "fg", "pointsize")]
 })%>
 \end{rspVerbatim}
