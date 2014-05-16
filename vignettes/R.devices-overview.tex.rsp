@@ -12,7 +12,7 @@
 <%
 library("R.devices");
 R.rsp <- R.oo::Package("R.rsp")
-evalCapture <- R.utils::evalCapture
+withCapture <- R.utils::withCapture
 hpaste <- R.utils::hpaste
 
 devOptions("png", width=840);
@@ -218,28 +218,28 @@ The \code{devOptions()} function provides a unified interface to getting and set
 When using one of the \code{toNNN()} functions, \code{devEval()} or \code{devNew()}, the device options used are given by \code{devOptions()}.  For example, to see the current settings used by PNG device, do:
 \begin{rspVerbatim}
 <% devOptions("png", reset=TRUE) %>
-<%=evalCapture({
+<%=withCapture({
 devOptions("png")
 })%>
 \end{rspVerbatim}
 
 To change one or several options, do:
 \begin{rspVerbatim}
-<%=evalCapture({
+<%=withCapture({
 devOptions("png", width=1024, bg="lightblue")
 })%>
 \end{rspVerbatim}
 
 To reset the options back to the built-in defaults, do:
 \begin{rspVerbatim}
-<%=evalCapture({
+<%=withCapture({
 devOptions("png", reset=TRUE)
 })%>
 \end{rspVerbatim}
 
 To get an overview of a set of common options for all supported devices, do:
 \begin{rspVerbatim}
-<%=evalCapture({
+<%=withCapture({
 devOptions()[,c("width", "height", "bg", "fg", "pointsize")]
 })%>
 \end{rspVerbatim}

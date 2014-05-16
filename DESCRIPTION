@@ -1,14 +1,14 @@
 Package: R.devices
-Version: 2.9.1
+Version: 2.9.2
 Depends: R (>= 2.10.0)
-Imports: R.methodsS3 (>= 1.6.1), R.oo (>= 1.18.0), R.utils (>= 1.29.8), base64enc (>= 0.1-1)
+Imports: R.methodsS3 (>= 1.6.1), R.oo (>= 1.18.0), R.utils (>= 1.32.4), base64enc (>= 0.1-1)
 Suggests: digest (>= 0.6.4), R.rsp (>= 0.15.0)
 VignetteBuilder: R.rsp
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
 Author: Henrik Bengtsson [aut, cre, cph]
 Maintainer: Henrik Bengtsson <henrikb@braju.com>
-Date: 2014-05-01
+Date: 2014-05-15
 Title: Unified handling of graphics devices
 Description: This package provides functions for creating plots and image files in a unified way regardless of output format (EPS, PDF, PNG, SVG, TIFF, WMF, etc.).  Default device options as well as scales and aspect ratios are controlled in a uniform way across all device types.  Switching output format requires minimal changes in code.  This package is ideal for large-scale batch processing, because it will never leave open graphics devices or incomplete image files behind, even on errors or user interrupts.
 License: LGPL (>= 2.1)
