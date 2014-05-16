@@ -2,6 +2,10 @@
 Package: R.devices
 ==================
 
+Version: 2.9.2 [2014-05-15]
+o Bumped up the package dependencies.
+
+
 Version: 2.9.1 [2014-05-01]
 o Added withPar() for plotting with temporarily set graphical parameters.
 
