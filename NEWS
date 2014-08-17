@@ -2,6 +2,11 @@
 Package: R.devices
 ==================
 
+Version: 2.9.3 [2014-08-17]
+o CLEANUP: Removed false R CMD check NOTE.
+o Bumped up the package dependencies.
+
+
 Version: 2.9.2 [2014-05-15]
 o Bumped up the package dependencies.
 
