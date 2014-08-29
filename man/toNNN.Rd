@@ -37,14 +37,14 @@
 }
 
 \usage{
-  toBMP(name, ..., field=getOption("devEval/args/field", "fullname"))
-  toEMF(name, ..., ext="emf", field=getOption("devEval/args/field", "fullname"))
-  toPDF(name, ..., field=getOption("devEval/args/field", "fullname"))
-  toPNG(name, ..., field=getOption("devEval/args/field", "fullname"))
-  toSVG(name, ..., field=getOption("devEval/args/field", "fullname"))
-  toTIFF(name, ..., field=getOption("devEval/args/field", "fullname"))
-  toWMF(name, ..., ext="wmf", field=getOption("devEval/args/field", "fullname"))
-  %% toCairoPNG(name, ..., field=getOption("devEval/args/field", "fullname"))
+  toBMP(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toEMF(name, ..., ext="emf", field=getOption("devEval/args/field", "pathname"))
+  toPDF(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toPNG(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toSVG(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toTIFF(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toWMF(name, ..., ext="wmf", field=getOption("devEval/args/field", "pathname"))
+  %% toCairoPNG(name, ..., field=getOption("devEval/args/field", "pathname"))
 
   toFavicon(..., name="favicon", type="png", width=32L, height=width,
                  par=list(mar=c(0,0,0,0), bg="transparent"))

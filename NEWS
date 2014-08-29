@@ -2,6 +2,15 @@
 Package: R.devices
 ==================
 
+Version: 2.10.0 [2014-08-29]
+o Changed default argument 'field' for toNNN() from "fullname" to
+  "pathname" as in getOption("devEval/args/field", "pathname").
+  This should work for most compilers include LaTeX, although in
+  later it is preferred to use "fullname".
+o DOCUMENTATION: Update package vignette with information on how
+  to output image files of multiple formats in one call.
+
+
 Version: 2.9.3 [2014-08-17]
 o CLEANUP: Removed false R CMD check NOTE.
 o Bumped up the package dependencies.

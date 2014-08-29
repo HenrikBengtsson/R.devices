@@ -105,7 +105,20 @@ Feedback is very much appreciated.}
   CREATING IMAGE FILES
   -------------------------------------------------------------------%>
 \section{Creating image files}
-When creating image files using one of the built-in R device functions (e.g. \code{pdf()}) several device specific arguments needs to the specified.  This makes it tedious to change the output format.  For instance, when first creating a PDF file (\code{file="GaussianDensity.pdf"}) with aspect ratio 0.6 (\code{width=7, height=0.6*7}), it is necessary to modify at least three of the arguments (\code{file="GaussianDensity.png", width=480, height=0.6*480}) in order to create a PNG image file.
+When creating image files using one of the built-in R device functions (e.g. \code{pdf()}) several device specific arguments needs to the specified.  For instance, when creating a PDF file with aspect ratio 0.6, one will do something like
+\begin{rspVerbatim}
+pdf("GaussianDensity.pdf", width=7, height=0.6*7)
+curve(dnorm, from=-5, to=+5)
+dev.off()
+\end{rspVerbatim}
+If one later wish to output a PNG file instead, one has to change (i) the name of the function, (ii) filename, (iii) the \code{width} and (iv) the \code{height} arguments, e.g.
+\begin{rspVerbatim}
+png("GaussianDensity.png", width=480, height=0.6*480)
+curve(dnorm, from=-5, to=+5)
+dev.off()
+\end{rspVerbatim}
+Changing output formats is not only tedious but also error prone, e.g. you may forget to change the filename extension or create images with ridiculously large or small dimensions.
+
 
 \subsection{devEval()}
 To overcome the above and other hurdles, the \code{devEval()} function was created.  When using \code{devEval()} it is only argument that specify the image format that needs to be modified.  For instance,
@@ -128,7 +141,19 @@ devEval("png", name="GaussianDensity,large", aspectRatio=0.6, scale=2, \{
 \})
 \end{rspVerbatim}
 creates a PNG file named \file{GaussianDensity,large.png} that is 960 pixels wide and 576 pixels tall.
-Note also how there is in none of the above examples a need for closing the device via \code{dev.new()}, which is sometimes forgotten by newcomers.  The graphical device opened is also guaranteed to be closed by \code{devEval()}.
+Note also how in none of the above examples there is a need for closing the device via \code{dev.new()}, which is sometimes forgotten by newcomers.  The graphical device opened is also guaranteed to be closed by \code{devEval()}.
+
+
+
+\subsection{Creating multiple image files of different formats in one call}
+The \code{devEval()} function can also be used to generate image files or different formats in one call.  For instance,
+\begin{rspVerbatim}
+devEval(c("pdf", "png", "svg"), name="GaussianDensity", aspectRatio=0.6, {
+  curve(dnorm, from=-5, to=+5)
+})
+\end{rspVerbatim}
+creates image files \file{GaussianDensity.pdf}, \file{GaussianDensity.png}, and \file{GaussianDensity.svg}.  To adjust the default image dimensions for each format, see Section~\ref{secOptions}.
+
 
 
 \subsection{toEPS(), toPDF(), toPNG() etc.}
