@@ -22,7 +22,7 @@ devEval(type=getOption("device"), expr, initially=NULL, finally=NULL,
   envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","),
   ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"),
   field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename",
-  "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur())
+  "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur(), .exprAsIs=FALSE)
 }
 
 \arguments{
@@ -52,6 +52,7 @@ devEval(type=getOption("device"), expr, initially=NULL, finally=NULL,
     overwritten, otherwise not.}
   \item{which}{A \code{\link[base]{vector}} of devices to be copied.  Only applied if
     argument \code{expr} is missing.}
+  \item{.exprAsIs}{(Internal use only).}
 }
 
 \value{

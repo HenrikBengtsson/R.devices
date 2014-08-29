@@ -37,6 +37,7 @@
 #     overwritten, otherwise not.}
 #   \item{which}{A @vector of devices to be copied.  Only applied if
 #     argument \code{expr} is missing.}
+#   \item{.exprAsIs}{(Internal use only).}
 # }
 #
 # \value{
@@ -73,7 +74,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur()) {
+devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur(), .exprAsIs=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Vectorized version
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -137,18 +138,18 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
     if (hasExpr) {
       # Expression must be substitute():d to avoid the being evaluated here
-      expr <- substitute(expr);
+      if (!.exprAsIs) expr <- substitute(expr);
 
       # Evaluate 'expr' once per graphics device
       res <- lapply(types, FUN=function(type) {
-        devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force);
+        devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, .exprAsIs=TRUE);
       });
     } else {
       # Evaluate 'expr' once per output device
       res <- lapply(types, FUN=function(type) {
-        devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=which);
+        devEval(type=type,            initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=which);
       });
-    }
+    } # if (hasExpr)
     names(res) <- types;
 
     # Evaluate 'finally' only once
@@ -157,9 +158,71 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     return(res);
   } # if (length(type) > 1L)
 
+  # Sanity check
+  stopifnot(length(type) == 1L);
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # (c) Plot code expression and a single output type/device
+  # (c) Use first successful device type among several options?
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  types <- unlist(strsplit(type, split="|", fixed=TRUE));
+  types <- trim(types);
+  types <- unique(types);
+  if (length(types) > 1L) {
+    res <- NULL;
+    errors <- list(); # Record any errors
+
+    # Evaluate 'initially' only once
+    eval(initially, envir=envir);
+
+    if (hasExpr) {
+      # Expression must be substitute():d to avoid the being evaluated here
+      if (!.exprAsIs) expr <- substitute(expr);
+
+      # Evaluate 'expr' once per graphics device
+      for (type in types) {
+        tryCatch({
+          res <- devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, .exprAsIs=TRUE);
+          attr(res, "type") <- type;
+          break
+        }, error = function(ex) {
+          errors <<- c(errors, list(ex))
+        })
+      } # for (type ...)
+    } else {
+      # Evaluate 'expr' once per output device
+      for (type in types) {
+        tryCatch({
+          res <- devEval(type=type,            initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=which);
+          attr(res, "type") <- type;
+          break
+        }, error = function(ex) {
+          errors <<- c(errors, list(ex))
+        })
+      } # for (type ...)
+    } # if (hasExpr)
+
+    # Evaluate 'finally' only once
+    eval(finally, envir=envir);
+
+    # Successfully created output?
+    if (!is.null(res)) {
+      return(res);
+    }
+
+    msg <- sprintf("None of the specified device types (%s) generated output", paste(sQuote(types), collapse=", "));
+    if (length(errors) > 0L) {
+      reasons <- sapply(errors, FUN=function(ex) ex$message);
+      reasons <- unique(reasons);
+      reasons <- sprintf("(%d) %s", seq_along(reasons), reasons);
+      reasons <- paste(reasons, collapse="; ");
+      msg <- sprintf("%s. The reasons reported were: %s", msg, reasons)
+    }
+    throw(msg);
+  } # if (length(type) > 1L)
+
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # (d) Plot code expression and a single output type/device
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Sanity check
   stopifnot(length(type) == 1L);
@@ -377,6 +440,9 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 
 ############################################################################
 # HISTORY:
+# 2014-08-29
+# o Added support for devEval() to try multiple device types one-by-one
+#   until success, e.g. devEval("png|jpg|bmp", ...).
 # 2014-04-28
 # o By code inspection, it's now possible to do toX11({ plot(1:2) }), where
 #   argument 'name' is not given and the plot expression is the first

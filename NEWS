@@ -2,6 +2,11 @@
 Package: R.devices
 ==================
 
+Version: 2.11.0 [2014-08-29]
+o Added support for devEval() to try multiple device types one-by-one
+  until success, e.g. devEval("png|jpg|bmp", ...).
+
+
 Version: 2.10.0 [2014-08-29]
 o Changed default argument 'field' for toNNN() from "fullname" to
   "pathname" as in getOption("devEval/args/field", "pathname").
