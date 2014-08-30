@@ -156,6 +156,15 @@ devEval(c("pdf", "png", "svg"), name="GaussianDensity", aspectRatio=0.6, {
 creates image files \file{GaussianDensity.pdf}, \file{GaussianDensity.png}, and \file{GaussianDensity.svg}.  To adjust the default image dimensions for each format, see Section~\ref{secOptions}.
 
 
+\subsection{Creating one image file trying different device types}
+Some image formats, or more precisely some device types, are only supported on certain systems.  If that is the case, and several different image formats work equally, \code{devEval()} can be used to generate an image file based on the first supported device type.  For instance,
+\begin{rspVerbatim}
+devEval("png|pdf|eps", name="GaussianDensity", aspectRatio=0.6, {
+  curve(dnorm, from=-5, to=+5)
+})
+\end{rspVerbatim}
+will first try to create a PNG file and if that does not work it will try to create a PDF file and as a last resort an EPS file.  It is only if none of them work that an error is generated.
+
 
 \subsection{toEPS(), toPDF(), toPNG() etc.}
 For conveniency, there exists a set of \code{toNNN()} functions that basically are wrappers for \code{devEval()}.  For instance, instead of calling \code{devEval("png", ...)} one can use \code{toPNG(...)} as
