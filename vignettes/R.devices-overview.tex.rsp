@@ -106,7 +106,7 @@ Feedback is very much appreciated.}
   CREATING IMAGE FILES
   -------------------------------------------------------------------%>
 \section{Creating image files}
-When creating image files using one of the built-in R device functions (e.g. \code{pdf()}) several device specific arguments needs to the specified.  For instance, when creating a PDF file with aspect ratio 0.6, one will do something like
+When creating image files using one of the built-in R device functions (e.g. \code{pdf()}) several device specific arguments need to the specified.  For instance, when creating a PDF file with aspect ratio 0.6, one will do something like
 \begin{rspVerbatim}
 pdf("GaussianDensity.pdf", width=7, height=0.6*7)
 curve(dnorm, from=-5, to=+5)
@@ -122,19 +122,19 @@ Changing output formats is not only tedious but also error prone, e.g. you may f
 
 
 \subsection{devEval()}
-To overcome the above and other hurdles, the \code{devEval()} function was created.  When using \code{devEval()} it is only argument that specify the image format that needs to be modified.  For instance,
+To overcome the above and other hurdles, the \code{devEval()} function was created.  When using \code{devEval()} it is only the argument that specify the image format that needs to be modified.  For instance,
 \begin{rspVerbatim}
 devEval("pdf", name="GaussianDensity", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-creates a PDF file named \file{GaussianDensity.pdf} that is 7.0 inches wide and 4.2 inches tall, whereas
+creates a PDF file named \file{GaussianDensity.pdf} that is 7.0 inches wide and 4.2 inches tall (for default dimensions see Section~\ref{secOptions}), whereas
 \begin{rspVerbatim}
 devEval("png", name="GaussianDensity", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-creates a PNG file named \file{GaussianDensity.png} that is 480 pixels wide and 288 pixels tall.  For default dimensions, see Section~\ref{secOptions}.
+creates a PNG file named \file{GaussianDensity.png} that is 480 pixels wide and 288 pixels tall (Section~\ref{secOptions}).
 By specifying the \code{scale} argument, it is possible to create an image file with a smaller or a larger dimension relative to that of the default, e.g.
 \begin{rspVerbatim}
 devEval("png", name="GaussianDensity,large", aspectRatio=0.6, scale=2, \{
@@ -142,7 +142,7 @@ devEval("png", name="GaussianDensity,large", aspectRatio=0.6, scale=2, \{
 \})
 \end{rspVerbatim}
 creates a PNG file named \file{GaussianDensity,large.png} that is 960 pixels wide and 576 pixels tall.
-Note also how in none of the above examples there is a need for closing the device via \code{dev.new()}, which is sometimes forgotten by newcomers.  The graphical device opened is also guaranteed to be closed by \code{devEval()}.
+Note also how in none of the above examples there is a need for closing the device via \code{dev.new()}, which is sometimes forgotten, particularly by newcomers to R.  The graphical device opened is also guaranteed to be closed by \code{devEval()} regardless of errors or interrupts (Section~\ref{secRobust}).
 
 
 
@@ -210,6 +210,7 @@ Note that whenever a figure is skipped this way, it also means that none of the 
 
 
 \subsection{No more incomplete image files}
+\label{secRobust}
 The \code{devEval()/toNNN()} functions create image files atomically.
 When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{png(...); \{...\}; dev.off()}), there is a risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
 By contrast, \code{devEval()/toNNN()} is fault tolerant and guarantees that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
@@ -225,7 +226,7 @@ To further lower the risk for incomplete image files, for instance due to abrupt
 
 
 \subsection{Including images in RSP-embedded LaTeX documents}
-By using RSP-markup, image files can be included in for instance LaTeX, Sweave and knitr documents in a very clean fashion, while keeping full control of all image formatting.  For instance, the plot in Figure~\ref{fig:MyGaussianDensity} was included as:
+By using RSP markup, image files can be included in for instance LaTeX, Sweave and knitr documents in a very clean fashion, while keeping full control of all image formatting.  For instance, the plot in Figure~\ref{fig:MyGaussianDensity} was included as:
 \begin{rspVerbatim}
 {\bs}includegraphics\{<\%=toPDF("MyGaussianDensity", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
