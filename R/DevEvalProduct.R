@@ -425,7 +425,7 @@ setMethodS3("getData", "DevEvalFileProduct", function(this, mode=c("character", 
   pathname <- this;
   size <- file.info(pathname)$size;
   if (mode == "character") {
-    res <- readBin(con=pathname, what=character(), n=size);
+    res <- readChar(con=pathname, nchars=size);
   } else if (mode == "raw") {
     res <- readBin(con=pathname, what=raw(), n=size);
   }
