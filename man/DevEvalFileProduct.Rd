@@ -57,6 +57,7 @@ DevEvalFileProduct(filename=NULL, path=NULL, ...)
   \item \code{name}: the part of the fullname before the first comma, e.g. 'foo'
   \item \code{tags}: the part of the fullname after the first comma, e.g. 'a,b'
   \item \code{dataURI}: the Base64-encoded Data URI representation of the image, e.g. 'data:image/png;base64,iVBORw0KGgoAAAA...'.  This can be used to \emph{include} ("inlining") image files in for instance self-contained HTML and Markdown documents.
+  \item \code{data}: the character content of the image file.  This can be used to \emph{include} ("inlining") WebGL HTML-based image files in for instance self-contained HTML and Markdown documents.
  }
 }
 

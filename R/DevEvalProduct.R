@@ -225,6 +225,7 @@ setMethodS3("getType", "DevEvalProduct", function(this, ...) {
 #   \item \code{name}: the part of the fullname before the first comma, e.g. 'foo'
 #   \item \code{tags}: the part of the fullname after the first comma, e.g. 'a,b'
 #   \item \code{dataURI}: the Base64-encoded Data URI representation of the image, e.g. 'data:image/png;base64,iVBORw0KGgoAAAA...'.  This can be used to \emph{include} ("inlining") image files in for instance self-contained HTML and Markdown documents.
+#   \item \code{data}: the character content of the image file.  This can be used to \emph{include} ("inlining") WebGL HTML-based image files in for instance self-contained HTML and Markdown documents.
 #  }
 # }
 #
@@ -387,8 +388,10 @@ setMethodS3("getMime", "DevEvalFileProduct", function(this, ...) {
 #########################################################################/**
 # @RdocMethod getDataURI
 # @alias getDataURI
+# @aliasmethod getData
+# @alias getData
 #
-# @title "Gets a Base64-encoded data URI"
+# @title "Gets content as a Base64-encoded data URI"
 #
 # \description{
 #  @get "title".
@@ -415,6 +418,19 @@ setMethodS3("getDataURI", "DevEvalFileProduct", function(this, mime=getMimeType(
   dataURI(file=getPathname(this), mime=mime, encoding="base64");
 })
 
+setMethodS3("getData", "DevEvalFileProduct", function(this, mode=c("character", "raw"), ...) {
+  # Argument 'mode':
+  mode <- match.arg(mode);
+
+  pathname <- this;
+  size <- file.info(pathname)$size;
+  if (mode == "character") {
+    res <- readBin(con=pathname, what=character(), n=size);
+  } else if (mode == "raw") {
+    res <- readBin(con=pathname, what=raw(), n=size);
+  }
+  res
+}) # getData()
 
 
 ## setMethodS3("defaultField", "DevEvalProduct", function(this, default=getOption("devEval/args/field", "pathname"), ...) {
@@ -444,6 +460,8 @@ setMethodS3("getDataURI", "DevEvalFileProduct", function(this, mime=getMimeType(
 
 ############################################################################
 # HISTORY:
+# 2014-09-02
+# o Added getData() to DevEvalFileProduct.
 # 2013-09-17
 # o ROBUSTNESS: Now getDataURI() throws an Exception is suggested
 #   package 'base64enc' is not installed.

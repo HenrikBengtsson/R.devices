@@ -2,6 +2,10 @@
 Package: R.devices
 ==================
 
+Version: 2.11.1 [2014-09-02]
+o Added getData() to DevEvalFileProduct.
+
+
 Version: 2.11.0 [2014-08-29]
 o Added support for devEval() to try multiple device types one-by-one
   until success, e.g. devEval("png|jpg|bmp", ...).

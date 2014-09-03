@@ -11,11 +11,16 @@
 \alias{DevEvalFileProduct.getDataURI}
 \alias{getDataURI,DevEvalFileProduct-method}
 \alias{getDataURI}
+\alias{DevEvalFileProduct.getData}
+\alias{getData.DevEvalFileProduct}
+\alias{getData,DevEvalFileProduct-method}
 
-\title{Gets a Base64-encoded data URI}
+\alias{getData}
+
+\title{Gets content as a Base64-encoded data URI}
 
 \description{
- Gets a Base64-encoded data URI.
+ Gets content as a Base64-encoded data URI.
 }
 
 \usage{
