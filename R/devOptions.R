@@ -58,11 +58,12 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig", "*"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   devList <- list(
+    "*"=NA_character_,  ## Global device options
     bmp=c("grDevices::bmp"),
     cairo_pdf=c("grDevices::cairo_pdf"),
     cairo_ps=c("grDevices::cairo_ps"),
@@ -320,6 +321,10 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     }
   }
 
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Vectorized call?
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (length(type) > 1L) {
     if (nopts > 0L) {
       throw("Cannot set device options for more than one devices at the time: ", hpaste(sprintf("'%s'", type), collapse=", "));
@@ -338,6 +343,11 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     ##class(opts) <- c("DeviceOptions", class(opts));
     return(opts);
   }
+
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # A single device at this point
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (is.function(type)) {
     # Try to find name of device function
     type <- findDeviceFunction(fcn=type);
@@ -483,6 +493,9 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
 
 ############################################################################
 # HISTORY:
+# 2014-09-12
+# o Starting to add support for global "*" device options.  Can get, set
+#   and reset them.
 # 2013-12-08
 # o BUG FIX: devOptions(types) would drop all options for combinations
 #   devices types that have identical sets of options, e.g.

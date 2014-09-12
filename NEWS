@@ -2,6 +2,12 @@
 Package: R.devices
 ==================
 
+Version: 2.12.0 [2014-09-12]
+o Added support for "global" device options to fall back on if no set
+  for the device type queried, e.g. devOptions("*", pointsize=14) and
+  devOptions("quartz", global=TRUE)$pointsize.
+
+
 Version: 2.11.2 [2014-09-11]
 o ROBUSTNESS: Added explicit package tests for devOptions().
 o BUG FIX: devEval("cairo_pdf", ...) for generate an image file with
