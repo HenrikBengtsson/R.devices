@@ -17,6 +17,10 @@ o CLEANUP: devDump() fell back on option 'devDump/args/path', but
   that would never happen. Dropping that option.
 
 
+Version: 2.11.3 [2014-09-12]
+o BUG FIX: devOptions(type, name=NULL) did not assign the option NULL.
+
+
 Version: 2.11.2 [2014-09-11]
 o ROBUSTNESS: Added explicit package tests for devOptions().
 o BUG FIX: devEval("cairo_pdf", ...) for generate an image file with
