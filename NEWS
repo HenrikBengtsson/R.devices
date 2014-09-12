@@ -6,6 +6,9 @@ Version: 2.12.0 [2014-09-12]
 o Added support for "global" device options to fall back on if no set
   for the device type queried, e.g. devOptions("*", pointsize=14) and
   devOptions("quartz", global=TRUE)$pointsize.
+  STATUS: Can currently get, set and reset global options.
+  TODO: Add option inherits=TRUE to enable falling back to global 
+  options in case the option is not set for the requested device type.
 
 
 Version: 2.11.2 [2014-09-11]
