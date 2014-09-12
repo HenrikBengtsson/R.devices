@@ -9,5 +9,6 @@
 ^.svn
 ^.git
 ^.check
+^.devel
 ^.test
 README.md

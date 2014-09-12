@@ -2,6 +2,13 @@
 Package: R.devices
 ==================
 
+Version: 2.11.2 [2014-09-11]
+o ROBUSTNESS: Added explicit package tests for devOptions().
+o BUG FIX: devEval("cairo_pdf", ...) for generate an image file with
+  a *.cairo_pdf filename extension. Now devEval(..., ext=NULL) does a
+  better job of inferring the default extension from the device type.
+
+
 Version: 2.11.1 [2014-09-02]
 o Added getData() to DevEvalFileProduct.
 

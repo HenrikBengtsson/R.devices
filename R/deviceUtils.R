@@ -597,7 +597,6 @@ devIsInteractive <- function(types, ...) {
   }
 
   types0 <- types;
-#  types <- tolower(types);
 
   # Common aliases
   types[types == "jpg"] <- "jpeg";
@@ -607,6 +606,25 @@ devIsInteractive <- function(types, ...) {
 
   types;
 } # .devTypeName()
+
+.devTypeExt <- function(types, ...) {
+  tyeps <- as.character(types);
+  exts <- tolower(types);
+
+  # Common type-to-extension conversions
+  exts[exts == "win.metafile"] <- "wmf";
+  exts[exts == "png2"] <- "png";
+  exts[exts == "jpeg"] <- "jpg";
+  exts[exts == "jpeg2"] <- "jpg";
+  exts[exts == "postscript"] <- "ps";
+  exts[exts == "cairo_pdf"] <- "pdf";
+  exts[exts == "cairo_ps"] <- "ps";
+  exts[exts == "CairoWin"] <- "windows";
+  exts[exts == "CairoX11"] <- "x11";
+  exts[exts == "CairoX11"] <- "x11";
+
+  exts
+} # .devTypeExt()
 
 
 .devEqualTypes <- (function() {
@@ -664,6 +682,8 @@ devIsInteractive <- function(types, ...) {
 
 ############################################################################
 # HISTORY:
+# 2014-09-11
+# o Added .devTypeExt().
 # 2014-04-27
 # o Added .devEqualTypes().
 # 2013-10-29

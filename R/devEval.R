@@ -266,11 +266,11 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   if (!isInteractive) {
     # Argument 'ext':
     if (is.null(ext)) {
+      # Infer filename extension from the type
       if (is.character(type)) {
-        ext <- type;
+        ext <- .devTypeExt(type);
       } else {
-        ext <- substitute(type);
-        ext <- as.character(ext);
+        ext <- .devTypeExt(substitute(type));
       }
     }
 
@@ -440,6 +440,9 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 
 ############################################################################
 # HISTORY:
+# 2014-09-11
+# o Now devEval(..., ext=NULL) does a better job of inferring the default
+#   filename extension from the device type.
 # 2014-08-29
 # o Added support for devEval() to try multiple device types one-by-one
 #   until success, e.g. devEval("png|jpg|bmp", ...).
