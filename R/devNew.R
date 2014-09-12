@@ -257,11 +257,19 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
     if (is.null(label)) label <- names(devIdx);
   }
 
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Set the label of the recently opened device
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   devSetLabel(which=devIdx, label=label);
 
-  # Default and user-specific parameters
-  parT <- getOption("devNew/args/par", list());
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Default and user-specific graphical parameters
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Get type-specific or global "par" settings
+  parT <- .devOption(type=type, name="par", old="devNew/args/par")
+
+  # Append to user ones
   parT <- c(parT, par);
   if (length(parT) > 0L) {
     par(parT);
@@ -271,8 +279,11 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 } # devNew()
 
 
+
 ############################################################################
 # HISTORY:
+# 2014-09-12
+# o CLEANUP: devOptions(...)$par instead of getOption('devNew/args/par').
 # 2014-04-27
 # o Added support for (hidden) argument 'which' to devNew(), such that
 #   devNew(type, which=which) avoids opening a new device iff an existing

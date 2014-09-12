@@ -433,31 +433,6 @@ setMethodS3("getData", "DevEvalFileProduct", function(this, mode=c("character", 
 }) # getData()
 
 
-## setMethodS3("defaultField", "DevEvalProduct", function(this, default=getOption("devEval/args/field", "pathname"), ...) {
-##   res <- attr(this, "defaultField", exact=TRUE);
-##   if (is.null(res)) res <- default;
-##   res;
-## }, private=TRUE)
-##
-## setMethodS3("setDefault", "DevEvalProduct", function(x, value, ...) {
-##   if (!is.null(value)) {
-##     value <- Arguments$getCharacter(value);
-##   }
-##   attr(x, "defaultField") <- value;
-##   invisible(x);
-## }, private=TRUE)
-##
-## setMethodS3("getDefault", "DevEvalProduct", function(this, ...) {
-##   field <- defaultField(this, ...);
-##   if (is.null(field)) return(this);
-##   # AD HOC: Workaround for internal protection of `[[.BasicObject`.
-##   attr(this, "disableGetMethods") <- NULL;
-##   this[[field]];
-## }, private=TRUE)
-
-
-
-
 ############################################################################
 # HISTORY:
 # 2014-09-02

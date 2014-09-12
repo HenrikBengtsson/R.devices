@@ -18,6 +18,7 @@ importFrom("R.utils", "Arguments")
 importFrom("R.oo", "trim")
 importFrom("R.utils", "capitalize")
 importFrom("R.utils", "getOption") ## Multi-sources: R.utils, base
+importFrom("R.utils", "setOption")
 importFrom("R.utils", "getRelativePath")
 importFrom("R.utils", "hpaste")
 importFrom("R.utils", "inherits") ## Multi-sources: R.utils, base

@@ -74,7 +74,39 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur(), .exprAsIs=FALSE) {
+devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=NULL, ..., ext=NULL, filename=NULL, path=NULL, field=NULL, onIncomplete=c("remove", "rename", "keep"), force=NULL, which=dev.cur(), .exprAsIs=FALSE) {
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # SPECIAL: Arguments 'field', 'path', 'sep' and 'force'.
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (is.null(field)) {
+    # BACKWARD COMPATIBILITY
+    .importOldGlobalOption("field", from="devEval/args/field")
+##    field <- devOptions(type)$field
+    if (is.null(field)) field <- devOptions("*")$field
+  }
+
+  if (is.null(path)) {
+    # BACKWARD COMPATIBILITY
+    .importOldGlobalOption("path", from="devEval/args/path")
+##    path <- devOptions(type)$path
+    if (is.null(path)) path <- devOptions("*")$path
+  }
+
+  if (is.null(sep)) {
+    # BACKWARD COMPATIBILITY
+    .importOldGlobalOption("sep", from="devEval/args/sep")
+##    sep <- devOptions(type)$sep
+    if (is.null(sep)) sep <- devOptions("*")$sep
+  }
+
+  if (is.null(force)) {
+    # BACKWARD COMPATIBILITY
+    .importOldGlobalOption("force", from="devEval/args/force")
+##    force <- devOptions(type)$force
+    if (is.null(force)) force <- devOptions("*")$force
+  }
+
+
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Vectorized version
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -425,13 +457,17 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 } # devEval()
 
 
+
 devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), field=NULL, which=devList(interactiveOnly=TRUE)) {
   if (is.null(path)) {
+    # BACKWARD COMPATIBILITY
+    .importOldGlobalOption("par", from="devEval/args/par")
+
     # Timestamp, e.g. 2011-03-10_041359.032
     timestamp <- format(Sys.time(), "%Y-%m-%d_%H%M%OS3", tz="");
-    path <- getOption("devEval/args/path", "figures/");
+    path <- devOptions("*")$path
+    if (is.null(path)) path <- "figures";
     path <- file.path(path, timestamp);
-    path <- getOption("devDump/args/path", path);
   }
 
   devEval(type=type, ..., path=path, envir=envir, field=field, which=which);
@@ -440,6 +476,11 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 
 ############################################################################
 # HISTORY:
+# 2014-09-12
+# o Now arguments 'sep', 'path', 'field' and 'force' uses devOptions("*").
+#   If old-style R options are set they are used first.
+# o CLEANUP: devDump() fell back on option 'devDump/args/path', but
+#   that would never happen.  Dropping that option.
 # 2014-09-11
 # o Now devEval(..., ext=NULL) does a better job of inferring the default
 #   filename extension from the device type.

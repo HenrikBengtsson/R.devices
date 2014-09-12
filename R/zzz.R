@@ -19,6 +19,9 @@
   ns <- getNamespace(pkgname);
   pkg <- Package(pkgname);
   assign(pkgname, pkg, envir=ns);
+
+  # Set default global options when package is loaded
+  devOptions("*", reset=TRUE)
 }
 
 

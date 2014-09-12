@@ -37,14 +37,14 @@
 }
 
 \usage{
-  toBMP(name, ..., field=getOption("devEval/args/field", "pathname"))
-  toEMF(name, ..., ext="emf", field=getOption("devEval/args/field", "pathname"))
-  toPDF(name, ..., field=getOption("devEval/args/field", "pathname"))
-  toPNG(name, ..., field=getOption("devEval/args/field", "pathname"))
-  toSVG(name, ..., field=getOption("devEval/args/field", "pathname"))
-  toTIFF(name, ..., field=getOption("devEval/args/field", "pathname"))
-  toWMF(name, ..., ext="wmf", field=getOption("devEval/args/field", "pathname"))
-  %% toCairoPNG(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toBMP(name, ..., field="*")
+  toEMF(name, ..., ext="emf", field="*")
+  toPDF(name, ..., field="*")
+  toPNG(name, ..., field="*")
+  toSVG(name, ..., field="*")
+  toTIFF(name, ..., field="*")
+  toWMF(name, ..., ext="wmf", field="*")
+  %% toCairoPNG(name, ..., field="*")
 
   toFavicon(..., name="favicon", type="png", width=32L, height=width,
                  par=list(mar=c(0,0,0,0), bg="transparent"))
@@ -74,6 +74,12 @@
   Returns by default the so called \emph{fullname} of the generated
   image file.  The fullname of an file is the filename without the
   extension.
+}
+
+\section{Options for defaults}{
+  If argument \code{field} is \code{"*"} it will default to
+  \code{devOptions(type, inherits=TRUE)$field} and if that is not
+  set then it will default to \code{"pathname"}.
 }
 
 \author{Henrik Bengtsson}

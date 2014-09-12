@@ -21,7 +21,7 @@
 devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps",
   "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg",
   "tiff", "win.metafile", "windows", "x11", "X11", "xfig", "*"), custom=TRUE,
-  special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE)
+  special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE, inherits=FALSE)
 }
 
 \arguments{

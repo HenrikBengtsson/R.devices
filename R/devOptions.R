@@ -58,7 +58,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig", "*"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig", "*"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE, inherits=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -101,9 +101,17 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
   }
 
 
+  # Global options; only used for its ability to reset them
+  "*.options" <- function(..., reset=FALSE) {
+    if (reset) {
+      devOptions("*", sep=",", path="figures", field=NULL, force=TRUE)
+    }
+  }
+
   # A template for a dummy device options function.
   getNnnOptions <- function(type, ...) {
     optList <- list(
+      "*"="*.options",
       eps="ps.options",
       jpeg2="ps.options",
       pdf="pdf.options",
@@ -299,8 +307,9 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     throw("Optional ('...') arguments must be named.");
   }
 
+  # Append/overwrite 'options' with the named argument, e.g. field=NULL
   for (key in names(args)) {
-    options[[key]] <- args[[key]];
+    options[key] <- list(args[[key]]);
   }
   nopts <- length(options);
   # Not needed anymore
@@ -491,9 +500,53 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
 } # devOptions()
 
 
+
+# BACKWARD COMPATIBILITY for old-style R options().
+.importOldGlobalOption <- function(name, from, remove=TRUE, ...) {
+  # Nothing to do?
+  if (!is.element(from, names(options()))) return()
+
+  # (a) Get old-style option value
+  opt <- options(from);
+
+  # (b) Assign to global device options instead
+  names(opt) <- name;
+  do.call(devOptions, args=list(type="*", options=opt));
+
+  # (c) Delete old-style option and never look back
+  if (remove) setOption(from, NULL);
+} # .importOldGlobalOption()
+
+
+.devOption <- function(type=NULL, name, user="*", default=NULL, old=sprintf("devEval/args/%s", name), ...) {
+  # Nothing to do?
+  if (!identical(user, "*")) return(user)
+
+  # BACKWARD COMPATIBILITY:
+  .importOldGlobalOption(name, from=old, ...)
+
+  # Device type specific?
+  if (is.null(type)) {
+    value <- NULL
+  } else {
+    value <- devOptions(type)[[name]]
+  }
+
+  # Fallback to global options?
+  if (is.null(value)) value <- devOptions("*")[[name]]
+
+  # Use default value?
+  if (is.null(value)) value <- default
+
+  value
+} # .devOption()
+
+
 ############################################################################
 # HISTORY:
 # 2014-09-12
+# o Now devOptions("*", reset=TRUE) works.
+# o Added .importOldGlobalOption() and .devOption().
 # o Starting to add support for global "*" device options.  Can get, set
 #   and reset them.
 # 2013-12-08
