@@ -18,6 +18,8 @@ o CLEANUP: devDump() fell back on option 'devDump/args/path', but
 
 
 Version: 2.11.3 [2014-09-12]
+o BUG FIX: On Windows, devOptions() assumed that the 'grDevices'
+  package was attached.
 o BUG FIX: devOptions(type, name=NULL) did not assign the option NULL.
 
 

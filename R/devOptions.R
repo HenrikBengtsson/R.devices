@@ -17,6 +17,8 @@
 #   \item{custom}{If @TRUE, also the default settings specific to this
 #      function is returned. For more details, see below.}
 #   \item{special}{A @logical.  For more details, see below.}
+#   \item{inherits}{If @TRUE, the global option is used if the
+#      type-specific is not set (or @NULL).}
 #   \item{drop}{If @TRUE and only one device type is queried, then
 #      a @list is returned, otherwise a @matrix.}
 #   \item{options}{Optional named @list of settings.}
@@ -58,7 +60,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig", "*"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE, inherits=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig", "*"), custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -96,8 +98,8 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
   if (.Platform$OS.type == "windows") {
     # To please R CMD check
     windows.options <- NULL; rm(list="windows.options");
-    x11.options <- windows.options;
-    X11.options <- windows.options;
+    x11.options <- grDevices::windows.options;
+    X11.options <- x11.options;
   }
 
 
@@ -549,6 +551,9 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
 # o Added .importOldGlobalOption() and .devOption().
 # o Starting to add support for global "*" device options.  Can get, set
 #   and reset them.
+# 2014-09-12
+# o BUG FIX: On Windows, devOptions() assumed that the 'grDevices'
+#   package was attached.
 # 2013-12-08
 # o BUG FIX: devOptions(types) would drop all options for combinations
 #   devices types that have identical sets of options, e.g.

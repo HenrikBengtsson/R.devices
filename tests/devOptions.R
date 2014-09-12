@@ -1,3 +1,7 @@
+# Without attaching package
+opts <- R.devices::devOptions("png")
+print(opts)
+
 library("R.devices")
 
 # Options for the PNG device
