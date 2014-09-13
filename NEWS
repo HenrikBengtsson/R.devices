@@ -13,6 +13,7 @@ o Added support for "global" device options to fall back on if no set
   STATUS: Can currently get, set and reset global options.
   TODO: Add option inherits=TRUE to enable falling back to global
   options in case the option is not set for the requested device type.
+o Added getDevOption().
 o CLEANUP: All old-style R options (e.g. 'devEval/args/field') have
   been deprecated.  They will still work for a while but it is
   recommended to set them as devOptions("*", field=...) instead.

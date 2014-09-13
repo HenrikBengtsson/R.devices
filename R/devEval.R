@@ -79,31 +79,19 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # SPECIAL: Arguments 'field', 'path', 'sep' and 'force'.
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (is.null(field)) {
-    # BACKWARD COMPATIBILITY
-    .importOldGlobalOption("field", from="devEval/args/field")
-##    field <- devOptions(type)$field
-    if (is.null(field)) field <- devOptions("*")$field
+    field <- getDevOption(type="*", name="field")
   }
 
   if (is.null(path)) {
-    # BACKWARD COMPATIBILITY
-    .importOldGlobalOption("path", from="devEval/args/path")
-##    path <- devOptions(type)$path
-    if (is.null(path)) path <- devOptions("*")$path
+    path <- getDevOption(type="*", name="path", default="figures")
   }
 
   if (is.null(sep)) {
-    # BACKWARD COMPATIBILITY
-    .importOldGlobalOption("sep", from="devEval/args/sep")
-##    sep <- devOptions(type)$sep
-    if (is.null(sep)) sep <- devOptions("*")$sep
+    sep <- getDevOption(type="*", name="sep", default=",")
   }
 
   if (is.null(force)) {
-    # BACKWARD COMPATIBILITY
-    .importOldGlobalOption("force", from="devEval/args/force")
-##    force <- devOptions(type)$force
-    if (is.null(force)) force <- devOptions("*")$force
+    force <- getDevOption(type="*", name="force", default=TRUE)
   }
 
 

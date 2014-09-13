@@ -9,6 +9,7 @@
 \name{devOptions}
 \alias{devOptions}
 
+\alias{getDevOption}
 
 \title{Gets the default device options}
 

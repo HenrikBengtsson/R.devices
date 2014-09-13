@@ -267,7 +267,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # Default and user-specific graphical parameters
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Get type-specific or global "par" settings
-  parT <- .devOption(type=type, name="par", old="devNew/args/par")
+  parT <- getDevOption(type=type, name="par", old="devNew/args/par")
 
   # Append to user ones
   parT <- c(parT, par);

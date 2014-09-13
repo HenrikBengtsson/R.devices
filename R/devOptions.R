@@ -1,5 +1,6 @@
 ###########################################################################/**
 # @RdocFunction devOptions
+# @alias getDevOption
 #
 # @title "Gets the default device options"
 #
@@ -106,7 +107,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
   # Global options; only used for its ability to reset them
   "*.options" <- function(..., reset=FALSE) {
     if (reset) {
-      devOptions("*", sep=",", path="figures", field=NULL, force=TRUE)
+      devOptions(type="*", sep=",", path="figures", field=NULL, force=TRUE)
     }
   }
 
@@ -302,6 +303,12 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     throw("Argument 'options' must be a named list.");
   }
 
+  # Argument 'inherits':
+  inherits <- as.logical(inherits);
+
+  # Argument 'reset':
+  reset <- as.logical(reset);
+
   # Additional arguments
   args <- list(...);
   nargs <- length(args);
@@ -324,7 +331,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
       throw("Cannot set device options. Argument 'type' is missing or NULL. Should be one of: ", paste(sprintf("'%s'", knownTypes), collapse=", "));
     }
 
-    res <- devOptions(type=knownTypes, custom=custom, special=special, drop=drop, reset=reset);
+    res <- devOptions(type=knownTypes, custom=custom, special=special, inherits=inherits, drop=drop, reset=reset);
     if (reset) {
       return(invisible(res));
     } else {
@@ -343,7 +350,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
 
     # Support vector of 'type':s
     types <- type;
-    res <- lapply(types, FUN=devOptions, drop=TRUE);
+    res <- lapply(types, FUN=devOptions, inherits=inherits, drop=TRUE);
     fields <- lapply(res, FUN=function(opts) names(opts));
     fields <- unique(unlist(fields, use.names=FALSE));
     opts <- lapply(res, FUN=function(x) x[fields]);
@@ -370,6 +377,10 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
 
   if (!is.element(type, names(devList))) {
     throw("Cannot query/modify device options. Unknown device: ", type);
+  }
+
+  if (inherits) {
+    throw("Argument inherits=TRUE is not yet supported.");
   }
 
 
@@ -502,6 +513,31 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
 } # devOptions()
 
 
+getDevOption <- function(type, name, default=NULL, inherits=TRUE, ..., old=TRUE) {
+  # BACKWARD COMPATIBILITY:
+  if (isTRUE(old)) old <- sprintf("devEval/args/%s", name)
+  if (is.character(old)) {
+    .importOldGlobalOption(name, from=old, remove=TRUE)
+  }
+
+  # Get options
+  if (is.character(type) && type != "*") {
+    value <- devOptions(type=type, ...)[[name]]
+  } else {
+    value <- NULL
+  }
+
+  # Fallback to global options?
+  if (is.null(value) && inherits) {
+    value <- devOptions(type="*", ...)[[name]]
+  }
+
+  # Use default value?
+  if (is.null(value)) value <- default
+
+  value
+} # getDevOption()
+
 
 # BACKWARD COMPATIBILITY for old-style R options().
 .importOldGlobalOption <- function(name, from, remove=TRUE, ...) {
@@ -520,35 +556,12 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
 } # .importOldGlobalOption()
 
 
-.devOption <- function(type=NULL, name, user="*", default=NULL, old=sprintf("devEval/args/%s", name), ...) {
-  # Nothing to do?
-  if (!identical(user, "*")) return(user)
-
-  # BACKWARD COMPATIBILITY:
-  .importOldGlobalOption(name, from=old, ...)
-
-  # Device type specific?
-  if (is.null(type)) {
-    value <- NULL
-  } else {
-    value <- devOptions(type)[[name]]
-  }
-
-  # Fallback to global options?
-  if (is.null(value)) value <- devOptions("*")[[name]]
-
-  # Use default value?
-  if (is.null(value)) value <- default
-
-  value
-} # .devOption()
-
-
 ############################################################################
 # HISTORY:
 # 2014-09-12
+# o Added getDevOption().
 # o Now devOptions("*", reset=TRUE) works.
-# o Added .importOldGlobalOption() and .devOption().
+# o Added .importOldGlobalOption().
 # o Starting to add support for global "*" device options.  Can get, set
 #   and reset them.
 # 2014-09-12
