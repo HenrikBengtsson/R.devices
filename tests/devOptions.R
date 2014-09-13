@@ -29,3 +29,6 @@ str(devOptions("png")$foo)
 devOptions("png", foo=NULL)
 str(devOptions("png")$foo)
 str(devOptions("png"))
+
+# Get individual device options
+print(getDevOption("png", "width"))
