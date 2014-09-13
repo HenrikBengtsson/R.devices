@@ -37,15 +37,15 @@
 }
 
 \usage{
-  toBMP(name, ..., field=getDevOption(type="bmp", name="field", default="pathname"))
-  toPDF(name, ..., field=getDevOption(type="pdf", name="field", default="pathname"))
-  toPNG(name, ..., field=getDevOption(type="png", name="field", default="pathname"))
-  toSVG(name, ..., field=getDevOption(type="svg", name="field", default="pathname"))
-  toTIFF(name, ..., field=getDevOption(type="tiff", name="field", default="pathname"))
-  toEMF(name, ..., ext="emf",
-        field=getDevOption(type="win.metafile", name="field", default="pathname"))
-  toWMF(name, ..., ext="wmf",
-        field=getDevOption(type="win.metafile", name="field", default="pathname"))
+  toBMP(name, ..., field=getDevOption("bmp", "field", default="pathname"))
+  toPDF(name, ..., field=getDevOption("pdf", "field", default="pathname"))
+  toPNG(name, ..., field=getDevOption("png", "field", default="pathname"))
+  toSVG(name, ..., field=getDevOption("svg", "field", default="pathname"))
+  toTIFF(name, ..., field=getDevOption("tiff", "field", default="pathname"))
+  toEMF(name, ..., field=getDevOption("win.metafile", "field", default="pathname"),
+        ext="emf")
+  toWMF(name, ..., field=getDevOption("win.metafile", "field", default="pathname"),
+        ext="wmf")
 
   toFavicon(..., name="favicon", type="png", width=32L, height=width,
                  par=list(mar=c(0,0,0,0), bg="transparent"))
