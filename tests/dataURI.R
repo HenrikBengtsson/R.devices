@@ -1,11 +1,11 @@
-options("devEval/args/field"="dataURI")
+R.devices::devOptions("*", field="dataURI")
 uri <- R.devices::toPNG("foo", tags=c("a", "b"), aspectRatio=0.7, {
   plot(1:10)
 })
 str(uri)
 
 
-options("devEval/args/field"="pathname")
+R.devices::devOptions("*", field="pathname")
 png <- R.devices::toPNG("foo", tags=c("a", "b"), aspectRatio=0.7, {
   plot(1:10)
 }, force=FALSE)
