@@ -559,14 +559,12 @@ getDevOption <- function(type, name, default=NULL, inherits=TRUE, ..., old=TRUE)
 ############################################################################
 # HISTORY:
 # 2014-09-12
-# o Added getDevOption().
-# o Now devOptions("*", reset=TRUE) works.
-# o Added .importOldGlobalOption().
-# o Starting to add support for global "*" device options.  Can get, set
-#   and reset them.
-# 2014-09-12
+# o Added support for global options via devOptions("*").
 # o BUG FIX: On Windows, devOptions() assumed that the 'grDevices'
 #   package was attached.
+# o BUG FIX: devOptions(type, name=NULL) did not assign the option NULL.
+# 2014-09-12
+# o Added getDevOption().
 # 2013-12-08
 # o BUG FIX: devOptions(types) would drop all options for combinations
 #   devices types that have identical sets of options, e.g.

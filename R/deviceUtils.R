@@ -601,8 +601,6 @@ devIsInteractive <- function(types, ...) {
   # Common aliases
   types[types == "jpg"] <- "jpeg";
   types[types == "ps"] <- "postscript";
-  types[types == "emf"] <- "win.metafile";
-  types[types == "wmf"] <- "win.metafile";
 
   names(types) <- types0;
 

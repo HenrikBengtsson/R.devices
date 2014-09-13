@@ -263,10 +263,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   devSetLabel(which=devIdx, label=label);
 
 
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Default and user-specific graphical parameters
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Get type-specific or global "par" settings
+  # Default and user-specific parameters
   parT <- getDevOption(type=type, name="par", old="devNew/args/par")
 
   # Append to user ones
@@ -282,8 +279,6 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 
 ############################################################################
 # HISTORY:
-# 2014-09-12
-# o CLEANUP: devOptions(...)$par instead of getOption('devNew/args/par').
 # 2014-04-27
 # o Added support for (hidden) argument 'which' to devNew(), such that
 #   devNew(type, which=which) avoids opening a new device iff an existing

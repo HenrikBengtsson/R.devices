@@ -443,8 +443,6 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 # 2014-09-12
 # o Now arguments 'sep', 'path', 'field' and 'force' uses devOptions("*").
 #   If old-style R options are set they are used first.
-# o CLEANUP: devDump() fell back on option 'devDump/args/path', but
-#   that would never happen.  Dropping that option.
 # 2014-09-11
 # o Now devEval(..., ext=NULL) does a better job of inferring the default
 #   filename extension from the device type.
