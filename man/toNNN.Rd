@@ -37,14 +37,15 @@
 }
 
 \usage{
-  toBMP(name, ..., field="*")
-  toEMF(name, ..., ext="emf", field="*")
-  toPDF(name, ..., field="*")
-  toPNG(name, ..., field="*")
-  toSVG(name, ..., field="*")
-  toTIFF(name, ..., field="*")
-  toWMF(name, ..., ext="wmf", field="*")
-  %% toCairoPNG(name, ..., field="*")
+  toBMP(name, ..., field=getDevOption(type="bmp", name="field", default="pathname"))
+  toPDF(name, ..., field=getDevOption(type="pdf", name="field", default="pathname"))
+  toPNG(name, ..., field=getDevOption(type="png", name="field", default="pathname"))
+  toSVG(name, ..., field=getDevOption(type="svg", name="field", default="pathname"))
+  toTIFF(name, ..., field=getDevOption(type="tiff", name="field", default="pathname"))
+  toEMF(name, ..., ext="emf",
+        field=getDevOption(type="win.metafile", name="field", default="pathname"))
+  toWMF(name, ..., ext="wmf",
+        field=getDevOption(type="win.metafile", name="field", default="pathname"))
 
   toFavicon(..., name="favicon", type="png", width=32L, height=width,
                  par=list(mar=c(0,0,0,0), bg="transparent"))
@@ -76,10 +77,9 @@
   extension.
 }
 
-\section{Options for defaults}{
-  If argument \code{field} is \code{"*"} it will default to
-  \code{devOptions(type, inherits=TRUE)$field} and if that is not
-  set then it will default to \code{"pathname"}.
+\details{
+  Both \code{toEMF()} and \code{toWMF()} use the exact same graphics
+  device and settings.  They only differ by filename exension.
 }
 
 \author{Henrik Bengtsson}
