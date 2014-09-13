@@ -425,7 +425,6 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 } # devEval()
 
 
-
 devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), field=NULL, which=devList(interactiveOnly=TRUE)) {
   if (is.null(path)) {
     # Timestamp, e.g. 2011-03-10_041359.032

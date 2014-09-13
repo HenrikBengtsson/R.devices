@@ -262,11 +262,11 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   devSetLabel(which=devIdx, label=label);
 
-
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Default and user-specific parameters
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   parT <- getDevOption(type=type, name="par", old="devNew/args/par")
-
-  # Append to user ones
+  # Append
   parT <- c(parT, par);
   if (length(parT) > 0L) {
     par(parT);
@@ -274,7 +274,6 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 
   invisible(devIdx);
 } # devNew()
-
 
 
 ############################################################################

@@ -111,6 +111,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     }
   }
 
+
   # A template for a dummy device options function.
   getNnnOptions <- function(type, ...) {
     optList <- list(
