@@ -74,27 +74,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=NULL, ..., ext=NULL, filename=NULL, path=NULL, field=NULL, onIncomplete=c("remove", "rename", "keep"), force=NULL, which=dev.cur(), .exprAsIs=FALSE) {
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # SPECIAL: Arguments 'field', 'path', 'sep' and 'force'.
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  if (is.null(field)) {
-    field <- getDevOption(type="*", name="field")
-  }
-
-  if (is.null(path)) {
-    path <- getDevOption(type="*", name="path", default="figures")
-  }
-
-  if (is.null(sep)) {
-    sep <- getDevOption(type="*", name="sep", default=",")
-  }
-
-  if (is.null(force)) {
-    force <- getDevOption(type="*", name="force", default=TRUE)
-  }
-
-
+devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getDevOption(type, "sep", default=","), ..., ext=NULL, filename=NULL, path=getDevOption(type, "path", default="figures"), field=getDevOption(type, name="field"), onIncomplete=c("remove", "rename", "keep"), force=getDevOption(type, "force", default=TRUE), which=dev.cur(), .exprAsIs=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Vectorized version
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -448,13 +428,9 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
 devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), field=NULL, which=devList(interactiveOnly=TRUE)) {
   if (is.null(path)) {
-    # BACKWARD COMPATIBILITY
-    .importOldGlobalOption("par", from="devEval/args/par")
-
     # Timestamp, e.g. 2011-03-10_041359.032
     timestamp <- format(Sys.time(), "%Y-%m-%d_%H%M%OS3", tz="");
-    path <- devOptions("*")$path
-    if (is.null(path)) path <- "figures";
+    path <- getDevOption("*", "path", default="figures")
     path <- file.path(path, timestamp);
   }
 
