@@ -3,28 +3,23 @@ Package: R.devices
 ==================
 
 Version: 2.12.0 [2014-09-12]
-o Now arguments 'sep', 'path', 'field' and 'force' for devEval() and
-  the various toNnn() functions default the corresponding "global"
-  device options.  These are set when the packages is loaded. For
-  backward compatibilty, old style R options are still acknowledged.
 o Added support for "global" device options to fall back on if no set
-  for the device type queried, e.g. devOptions("*", pointsize=14) and
-  devOptions("quartz", global=TRUE)$pointsize.
-  STATUS: Can currently get, set and reset global options.
-  TODO: Add option inherits=TRUE to enable falling back to global
-  options in case the option is not set for the requested device type.
-o Added getDevOption().
+  for the device type queried, e.g. devOptions("*", pointsize=14).
+o Now arguments 'sep', 'path', 'field' and 'force' for devEval() and
+  the various toNnn() functions now utilizes getDevOption(), which
+  is still backward compatibilty with the old style R options.
 o CLEANUP: All old-style R options (e.g. 'devEval/args/field') have
   been deprecated.  They will still work for a while but it is
   recommended to set them as devOptions("*", field=...) instead.
-o CLEANUP: devDump() fell back on option 'devDump/args/path', but
-  that would never happen. Dropping that option.
 
 
 Version: 2.11.3 [2014-09-12]
+o Added getDevOption().
 o BUG FIX: On Windows, devOptions() assumed that the 'grDevices'
   package was attached.
 o BUG FIX: devOptions(type, name=NULL) did not assign the option NULL.
+o CLEANUP: devDump() fell back on option 'devDump/args/path', but
+  that would never happen.  Dropping that option.
 
 
 Version: 2.11.2 [2014-09-11]
