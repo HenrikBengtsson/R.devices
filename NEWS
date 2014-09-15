@@ -2,15 +2,22 @@
 Package: R.devices
 ==================
 
-Version: 2.12.0 [2014-09-12]
+Version: 2.12.0 [2014-09-15]
 o Added support for "global" device options to fall back on if no set
   for the device type queried, e.g. devOptions("*", pointsize=14).
 o Now arguments 'sep', 'path', 'field' and 'force' for devEval() and
   the various toNnn() functions now utilizes getDevOption(), which
   is still backward compatibilty with the old style R options.
+o CLEANUP: Dropped argument 'field' for toNnn(), because the default
+  is now NULL which corresponds to returning a DevEvalProduct object.
+  In turn, this object has the pathname as it's value, which was the
+  previous default 'field' value.  Also, as.character() on this object
+  returns the (relative) pathname.
 o CLEANUP: All old-style R options (e.g. 'devEval/args/field') have
   been deprecated.  They will still work for a while but it is
   recommended to set them as devOptions("*", field=...) instead.
+o BUG FIX: Now getPathname(..., relative=FALSE) returns the absolute
+  pathname.
 
 
 Version: 2.11.4 [2014-09-15]
@@ -46,7 +53,7 @@ o Added support for devEval() to try multiple device types one-by-one
 
 
 Version: 2.10.0 [2014-08-29]
-o Changed default argument 'field' for toNNN() from "fullname" to
+o Changed default argument 'field' for toNnn() from "fullname" to
   "pathname" as in getOption("devEval/args/field", "pathname").
   This should work for most compilers including LaTeX, although
   for the latter it is preferred to use "fullname".  See the
@@ -265,7 +272,7 @@ o Bumped up package dependencies.
 Version: 2.1.6 [2013-02-13]
 o Changed default argument 'field' for devEval() from NULL to
   getOption("devEval/args/field", NULL).
-o Changed default argument 'field' for toNNN() from "fullname"
+o Changed default argument 'field' for toNnn() from "fullname"
   to getOption("devEval/args/field", "fullname").
 
 

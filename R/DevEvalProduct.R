@@ -312,6 +312,8 @@ setMethodS3("getPathname", "DevEvalFileProduct", function(this, relative=TRUE, .
   pathname <- as.character(unclass(this), ...);
   if (relative) {
     pathname <- getRelativePath(pathname);
+  } else {
+    pathname <- getAbsolutePath(pathname);
   }
   pathname;
 })
@@ -435,6 +437,9 @@ setMethodS3("getData", "DevEvalFileProduct", function(this, mode=c("character", 
 
 ############################################################################
 # HISTORY:
+# 2014-09-15
+# o BUG FIX: Now getPathname(..., relative=FALSE) returns the absolute
+#   pathname.
 # 2014-09-02
 # o Added getData() to DevEvalFileProduct.
 # 2013-09-17

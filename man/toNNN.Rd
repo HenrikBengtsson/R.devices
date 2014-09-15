@@ -37,15 +37,13 @@
 }
 
 \usage{
-  toBMP(name, ..., field=getDevOption("bmp", "field", default="pathname"))
-  toPDF(name, ..., field=getDevOption("pdf", "field", default="pathname"))
-  toPNG(name, ..., field=getDevOption("png", "field", default="pathname"))
-  toSVG(name, ..., field=getDevOption("svg", "field", default="pathname"))
-  toTIFF(name, ..., field=getDevOption("tiff", "field", default="pathname"))
-  toEMF(name, ..., field=getDevOption("win.metafile", "field", default="pathname"),
-        ext="emf")
-  toWMF(name, ..., field=getDevOption("win.metafile", "field", default="pathname"),
-        ext="wmf")
+  toBMP(name, ...)
+  toPDF(name, ...)
+  toPNG(name, ...)
+  toSVG(name, ...)
+  toTIFF(name, ...)
+  toEMF(name, ..., ext="emf")
+  toWMF(name, ..., ext="wmf")
 
   toFavicon(..., name="favicon", type="png", width=32L, height=width,
                  par=list(mar=c(0,0,0,0), bg="transparent"))
@@ -67,7 +65,6 @@
   \item{...}{Additional arguments passed to \code{\link{devEval}}(), e.g.
      \code{tags} and \code{aspectRatio}.}
   \item{ext}{A \code{\link[base]{character}} string specifying the filename extension.}
-  \item{field}{Passed to \code{\link{devEval}}().}
   \item{width, height, type, par}{Passed to \code{\link{devEval}}().}
 }
 
