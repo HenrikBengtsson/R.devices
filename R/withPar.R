@@ -20,6 +20,13 @@
 #  Returns the results of the expression evaluated.
 # }
 #
+# \details{
+#   Upon exit (also on errors), this function will reset \emph{all}
+#   (modifiable) graphical parameters to the state of options available
+#   upon entry.  This means any parameters \emph{modified} from evaluating
+#   \code{expr} will also be undone upon exit.
+# }
+#
 # @author
 #
 # @examples "../incl/withPar.Rex"
@@ -49,11 +56,10 @@ withPar <- function(expr, ..., args=list(), envir=parent.frame()) {
   # All arguments specified
   new <- c(list(...), args)
 
-  # Set options temporarily
-  if (length(new) > 0L) {
-    prev <- par(new)
-    on.exit(par(prev))
-  }
+  # Set parameters temporarily (restore *all* upon exit)
+  prev <- par(no.readonly=TRUE)
+  on.exit(par(prev))
+  if (length(new) > 0L) par(new)
 
   eval(expr, envir=envir)
 } # withPar()
@@ -61,6 +67,11 @@ withPar <- function(expr, ..., args=list(), envir=parent.frame()) {
 
 ############################################################################
 # HISTORY:
+# 2014-09-15
+# o ROBUSTNESS: Now withPar() also resets the the graphical parameters
+#   at entry even if no explicit ones were specified.  This covers the
+#   case when the 'expr' changes the parameters, e.g.
+#   withPar({ par(cex=2L); plot(1:10) }).
 # 2014-05-01
 # o Created.
 ############################################################################

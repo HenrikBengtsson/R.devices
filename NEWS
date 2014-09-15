@@ -13,6 +13,13 @@ o CLEANUP: All old-style R options (e.g. 'devEval/args/field') have
   recommended to set them as devOptions("*", field=...) instead.
 
 
+Version: 2.11.4 [2014-09-15]
+o ROBUSTNESS: Now withPar() also resets all the graphical parameters
+  available upon entry even if no explicit ones were specified.  This
+  covers the case when 'expr' changes the parameters, e.g.
+  withPar({ par(cex=2L); plot(1:10) }).
+
+
 Version: 2.11.3 [2014-09-12]
 o Added getDevOption().
 o BUG FIX: On Windows, devOptions() assumed that the 'grDevices'

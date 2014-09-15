@@ -31,6 +31,13 @@ withPar(expr, ..., args=list(), envir=parent.frame())
  Returns the results of the expression evaluated.
 }
 
+\details{
+  Upon exit (also on errors), this function will reset \emph{all}
+  (modifiable) graphical parameters to the state of options available
+  upon entry.  This means any parameters \emph{modified} from evaluating
+  \code{expr} will also be undone upon exit.
+}
+
 \author{Henrik Bengtsson}
 
 \examples{

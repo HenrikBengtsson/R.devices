@@ -35,3 +35,13 @@ withPar({
 
 message("x=", x)
 stopifnot(all(x == 1:5))
+
+
+# Graphical parameters set "manually" are also reset
+opar <- par()
+withPar({
+  par(pch=4L, lwd=3)
+  plot(1:10)
+})
+stopifnot(all.equal(par(), opar))
+
