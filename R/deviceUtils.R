@@ -478,7 +478,7 @@ devIsInteractive <- function(types, ...) {
   # Known interactive devices
   knownInteractive <- grDevices::deviceIsInteractive();
   knownInteractive <- c(knownInteractive, "CairoWin", "CairoX11");
-  knownInteractive <- c(knownInteractive, "Cairo");
+##  knownInteractive <- c(knownInteractive, "Cairo");
 
   # Return all known?
   if (missing(types)) return(knownInteractive);
