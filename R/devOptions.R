@@ -73,15 +73,15 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
 ##    CairoPNG=c("Cairo::CairoPNG"),  ## If used, gets extension CairoPNG.
     CairoWin=c("Cairo::CairoWin"),
     CairoX11=c("Cairo::CairoX11"),
-    eps=c("eps", "grDevices::postscript"),
-    favicon=c("favicon", "grDevices::png"),
+    eps=c("R.devices::eps", "grDevices::postscript"),
+    favicon=c("R.devices::favicon", "grDevices::png"),
 ##    JavaGD=c("JavaGD::JavaGD"),
     jpeg=c("grDevices::jpeg"),
-    jpeg2=c("jpeg2", "grDevices::bitmap", "grDevices::postscript"),
+    jpeg2=c("R.devices::jpeg2", "grDevices::bitmap", "grDevices::postscript"),
     pdf=c("grDevices::pdf"),
     pictex=c("grDevices::pictex"),
     png=c("grDevices::png"),
-    png2=c("png2", "grDevices::bitmap", "grDevices::postscript"),
+    png2=c("R.devices::png2", "grDevices::bitmap", "grDevices::postscript"),
     postscript=c("grDevices::postscript"),
     quartz=c("grDevices::quartz"),
     svg=c("grDevices::svg"),
@@ -560,6 +560,9 @@ getDevOption <- function(type, name, default=NULL, inherits=TRUE, ..., old=TRUE)
 
 ############################################################################
 # HISTORY:
+# 2014-09-16
+# o BUG FIX: devOptions() returned the incorrect options for device
+#   types "eps", "jpg2" and "png2" if package was not attached.
 # 2014-09-15
 # o Added "favicon" as a known type.
 # 2014-09-12

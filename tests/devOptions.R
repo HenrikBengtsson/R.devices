@@ -1,8 +1,24 @@
 # Without attaching package
+opts0 <- R.devices::devOptions()
+print(opts0)
+
+opts0eps <- R.devices::devOptions("eps")
+str(opts0eps)
+
 opts <- R.devices::devOptions("png")
 print(opts)
 
+# With attaching package
 library("R.devices")
+opts1 <- R.devices::devOptions()
+print(opts1)
+
+opts1eps <- R.devices::devOptions("eps")
+str(opts1eps)
+
+stopifnot(identical(opts1eps, opts0eps))
+stopifnot(identical(opts1, opts0))
+
 
 # Options for the PNG device
 opts <- devOptions("png")
@@ -32,3 +48,6 @@ str(devOptions("png"))
 
 # Get individual device options
 print(getDevOption("png", "width"))
+
+opts1 <- R.devices::devOptions()
+print(opts1)
