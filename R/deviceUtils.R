@@ -435,7 +435,7 @@ devDone <- function(which=dev.cur(), ...) {
     type <- tolower(names(which));
     type <- gsub(":.*", "", type);
 
-    isOnScreen <- (is.element(type, deviceIsInteractive()));
+    isOnScreen <- is.element(type, tolower(devIsInteractive()));
     if (!isOnScreen)
       devOff(which);
   }
@@ -475,6 +475,14 @@ devDone <- function(which=dev.cur(), ...) {
 # @keyword utilities
 #*/###########################################################################
 devIsInteractive <- function(types, ...) {
+  # Known interactive devices
+  knownInteractive <- grDevices::deviceIsInteractive();
+  knownInteractive <- c(knownInteractive, "CairoWin", "CairoX11");
+  knownInteractive <- c(knownInteractive, "Cairo");
+
+  # Return all known?
+  if (missing(types)) return(knownInteractive);
+
   # Nothing to do?
   if (length(types) == 0L) {
     res <- logical(0L);
@@ -495,9 +503,6 @@ devIsInteractive <- function(types, ...) {
   # Investigate one type below
   type0 <- type <- types;
 
-  # A known interactive device?
-  knownInteractive <- grDevices::deviceIsInteractive();
-
   if (is.function(type)) {
     for (name in knownInteractive) {
       if (exists(name, mode="function")) {
@@ -516,6 +521,7 @@ devIsInteractive <- function(types, ...) {
     # Device type aliases?
     type <- .devTypeName(type);
     type <- tolower(type);
+
     # An known one?
     res <- is.element(type, tolower(knownInteractive));
     names(res) <- type0;
@@ -590,26 +596,60 @@ devIsInteractive <- function(types, ...) {
 } # .devNextAvailable()
 
 
-.devTypeName <- function(types, ...) {
+.devTypeName <- function(types, pattern=FALSE, ...) {
   # Nothing todo?
   if (!is.character(types)) {
     return(types);
   }
 
-  types0 <- types;
+  names <- names(types);
+  if (is.null(names)) {
+    names(types) <- types;
+  }
+
+  # Match to known set of device types by regular expression?
+  if (pattern) {
+    knownTypes <- eval(formals(devOptions)$type);
+    types <- as.list(types);
+    for (kk in seq_along(types)) {
+      typeKK <- types[[kk]];
+      pattern <- sprintf("^%s$", typeKK);
+      idxs <- grep(pattern, knownTypes);
+      if (length(idxs) > 0L) {
+        typesKK <- knownTypes[idxs];
+        names(typesKK) <- rep(typeKK, length=length(typesKK));
+        types[[kk]] <- typesKK;
+      } else {
+        names(types[[kk]]) <- typeKK;
+      }
+    } # for (kk ...)
+    types <- unlist(types, use.names=TRUE);
+  }
 
   # Common aliases
+  names <- names(types);
   types[types == "jpg"] <- "jpeg";
   types[types == "ps"] <- "postscript";
-
-  names(types) <- types0;
+  names(types) <- names;
 
   types;
 } # .devTypeName()
 
 .devTypeExt <- function(types, ...) {
-  tyeps <- as.character(types);
-  exts <- tolower(types);
+  types <- as.character(types);
+  exts <- types;
+
+  ## Cairo package
+  pattern <- "^Cairo(JPEG|PDF|PNG|PS|SVG|TIFF)$";
+  idxs <- grep(pattern, exts);
+  exts[idxs] <- tolower(gsub(pattern, "\\1", exts[idxs]));
+
+  ## cairo_* devices
+  pattern <- "^cairo_(pdf|ps)$";
+  exts <- gsub(pattern, "\\1", exts);
+
+  ## Recognize types of any case. Always return in lower case.
+  exts <- tolower(exts);
 
   # Common type-to-extension conversions
   exts[exts == "win.metafile"] <- "wmf";
@@ -617,11 +657,6 @@ devIsInteractive <- function(types, ...) {
   exts[exts == "jpeg"] <- "jpg";
   exts[exts == "jpeg2"] <- "jpg";
   exts[exts == "postscript"] <- "ps";
-  exts[exts == "cairo_pdf"] <- "pdf";
-  exts[exts == "cairo_ps"] <- "ps";
-  exts[exts == "CairoWin"] <- "windows";
-  exts[exts == "CairoX11"] <- "x11";
-  exts[exts == "CairoX11"] <- "x11";
 
   exts
 } # .devTypeExt()
@@ -682,6 +717,9 @@ devIsInteractive <- function(types, ...) {
 
 ############################################################################
 # HISTORY:
+# 2014-09-16
+# o Now devIsInteractive() without arguments returns all known
+#   interactive devices.
 # 2014-09-11
 # o Added .devTypeExt().
 # 2014-04-27

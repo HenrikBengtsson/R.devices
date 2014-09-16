@@ -92,6 +92,11 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # Argument 'expr':
   hasExpr <- !missing(expr);
 
+
+  ## Expand device type names by regexp matching, iff any
+  type <- .devTypeName(type, pattern=TRUE);
+
+
   ## SPECIAL CASE: Handle calls like toNnn({ expr }) where the actual plot
   ## expression is actually passed via the first argument which is 'name'
   ## and not via 'expr', e.g. toX11({ plot(1:3) }).
@@ -167,6 +172,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   types <- unlist(strsplit(type, split="|", fixed=TRUE));
   types <- trim(types);
   types <- unique(types);
+
   if (length(types) > 1L) {
     res <- NULL;
     errors <- list(); # Record any errors
@@ -439,6 +445,8 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 
 ############################################################################
 # HISTORY:
+# 2014-09-16
+# o Added support regexpr device type names.
 # 2014-09-12
 # o Now arguments 'sep', 'path', 'field' and 'force' uses devOptions("*").
 #   If old-style R options are set they are used first.

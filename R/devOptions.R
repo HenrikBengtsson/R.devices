@@ -61,21 +61,20 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig", "favicon", "*"), custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE, options=list(), ..., reset=FALSE) {
+devOptions <- function(type=c("png", "png2", "CairoPNG", "favicon", "bmp", "jpeg", "jpeg2", "CairoJPEG", "tiff", "CairoTIFF", "svg", "CairoSVG", "eps", "pdf", "cairo_pdf", "CairoPDF", "postscript", "cairo_ps", "CairoPS", "pictex", "xfig", "quartz", "win.metafile", "windows", "CairoWin", "x11", "X11", "CairoX11", "*"), custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   devList <- list(
-    "*"=NA_character_,  ## Global device options
+    ## Global device options
+    "*"=NA_character_,
+
+    ## grDevices package
     bmp=c("grDevices::bmp"),
     cairo_pdf=c("grDevices::cairo_pdf"),
     cairo_ps=c("grDevices::cairo_ps"),
-##    CairoPNG=c("Cairo::CairoPNG"),  ## If used, gets extension CairoPNG.
-    CairoWin=c("Cairo::CairoWin"),
-    CairoX11=c("Cairo::CairoX11"),
     eps=c("R.devices::eps", "grDevices::postscript"),
     favicon=c("R.devices::favicon", "grDevices::png"),
-##    JavaGD=c("JavaGD::JavaGD"),
     jpeg=c("grDevices::jpeg"),
     jpeg2=c("R.devices::jpeg2", "grDevices::bitmap", "grDevices::postscript"),
     pdf=c("grDevices::pdf"),
@@ -90,7 +89,18 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     windows=c("grDevices::windows"),
     x11=c("grDevices::x11"),
     X11=c("grDevices::X11"),
-    xfig=c("grDevices::xfig")
+    xfig=c("grDevices::xfig"),
+
+    ## Cairo package
+    CairoPDF  = c("Cairo::CairoPDF", "grDevices::pdf"),
+    CairoPS   = c("Cairo::CairoPS", "grDevices::postscript"),
+    CairoPNG  = c("Cairo::CairoPNG", "grDevices::png"),
+    CairoJPEG = c("Cairo::CairoJPEG", "grDevices::jpeg"),
+    CairoTIFF = c("Cairo::CairoTIFF", "grDevices::tiff"),
+    CairoSVG  = c("Cairo::CairoSVG", "grDevices::svg"),
+    CairoWin  = c("Cairo::CairoWin", "grDevices::windows"),
+    CairoX11  = c("Cairo::CairoX11", "grDevices::x11")
+##    JavaGD=c("JavaGD::JavaGD"),
   );
 
 
@@ -114,7 +124,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
 
 
   # A template for a dummy device options function.
-  getNnnOptions <- function(type, ...) {
+  getNnnOptions <- function(type, fallbacks=FALSE, ...) {
     optList <- list(
       "*"="*.options",
       eps="ps.options",
@@ -127,6 +137,14 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
       x11="X11.options",
       X11="x11.options"
     );
+
+    if (fallbacks) {
+      optList <- c(optList, list(
+        "CairoPDF"="pdf.options",
+        "CairoPS"="ps.options",
+        "CairoX11"="x11.options"
+      ))
+    }
 
     dummy <- function(...) { list(); }
 
@@ -339,6 +357,9 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     } else {
       return(res);
     }
+  } else if (is.character(type)) {
+    # Expand by regexp matching, iff any
+    type <- .devTypeName(type, pattern=TRUE);
   }
 
 
@@ -373,7 +394,6 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     type <- findDeviceFunction(fcn=type);
   }
   if (is.character(type)) {
-    type <- .devTypeName(type);
     type <- match.arg(type);
   }
 
@@ -428,6 +448,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
   # Get builtin device options, if available
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Only for certain devices...
+  nnn.options <- getNnnOptions(type, fallbacks=TRUE);
   opts <- nnn.options();
 
 
@@ -438,6 +459,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
   defArgs <- Reduce(append, defArgs);
   # Drop '...'
   defArgs <- defArgs[names(defArgs) != "..."];
+  # Drop missing
   # Drop overridden values
   defArgs <- defArgs[!duplicated(names(defArgs), fromLast=TRUE)];
 
@@ -479,13 +501,13 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
   # Adjust for special cases?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (special) {
-    if (is.element(type, c("eps", "postscript"))) {
+    if (is.element(type, c("eps", "postscript", "CairoPS"))) {
       sizes <- c("a4", "executive", "legal", "letter");
       dim <- getSpecialDimensions(opts, sizes);
     } else if (type == "xfig") {
       sizes <- c("a4", "legal", "letter");
       dim <- getSpecialDimensions(opts, sizes);
-    } else if (type == "pdf") {
+    } else if (is.element(type, c("pdf", "CairoPDF"))) {
       sizes <- c("a4", "a4r", "executive", "legal", "letter", "USr");
       dim <- getSpecialDimensions(opts, sizes);
     } else {
@@ -561,6 +583,7 @@ getDevOption <- function(type, name, default=NULL, inherits=TRUE, ..., old=TRUE)
 ############################################################################
 # HISTORY:
 # 2014-09-16
+# o Added support for regular expression matching for argument 'type'.
 # o BUG FIX: devOptions() returned the incorrect options for device
 #   types "eps", "jpg2" and "png2" if package was not attached.
 # 2014-09-15
