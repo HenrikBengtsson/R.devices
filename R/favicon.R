@@ -38,6 +38,17 @@
 #
 # \seealso{
 #   Internally, @see "grDevices::png" is used.
+#   %% Add HTML Favicon script
+#   %% toFavicon(plot(1, col="blue", bg="yellow",
+#   %%           pch=21, cex=4, lwd=4, axes=FALSE))
+#   \if{html}{\out{
+#    <script>
+#     var link = document.createElement('link');
+#     link.rel = 'icon';
+#     link.href = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAADFBMVEX9/v0AAP/9/v3//wBEQjoBAAAABHRSTlP//wD//gy7CwAAAGJJREFUOI3N0rESwCAIA9Ag///PXdoiBk0HhmbNO49DMETQCexNCSyFgdlGoO5DYOr9ThLgPosA7osIQP0sHuDOog8UI/ALa988wzdwXJRctf4s+d36YPTJ6aMd8ux3+QO4ABTtB85yDAh9AAAAAElFTkSuQmCC";
+#     document.getElementsByTagName('head')[0].appendChild(link);
+#    </script>
+#   }}
 # }
 #
 # @author
