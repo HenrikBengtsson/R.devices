@@ -68,9 +68,8 @@
 }
 
 \value{
-  Returns by default the so called \emph{fullname} of the generated
-  image file.  The fullname of an file is the filename without the
-  extension.
+  Returns by default the \code{\link{DevEvalProduct}}.
+  For \code{toFavicon()} the default return value is a \code{\link[base]{character}} string.
 }
 
 \details{
