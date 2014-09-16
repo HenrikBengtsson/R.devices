@@ -1,11 +1,13 @@
 #########################################################################/**
 # @RdocFunction favicon
 #
-# @title "FAVICON graphics device"
+# @title "Favicon graphics device"
 #
 # \description{
-#  Device driver for Encapsulated Postscript. This driver is the same as
-#  the postscript driver where some arguments have different default values.
+#  Device driver for PNG favicons (Favorite icon) also known as
+#  shortcut icon, Web site icon, tab icon or bookmark icon.
+#  This driver is the same as the png driver where some arguments
+#  have different default values.
 # }
 #
 # @synopsis
