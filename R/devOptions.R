@@ -61,7 +61,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig", "*"), custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE, options=list(), ..., reset=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig", "favicon", "*"), custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -74,6 +74,7 @@ devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "Cairo
     CairoWin=c("Cairo::CairoWin"),
     CairoX11=c("Cairo::CairoX11"),
     eps=c("eps", "grDevices::postscript"),
+    favicon=c("favicon", "grDevices::png"),
 ##    JavaGD=c("JavaGD::JavaGD"),
     jpeg=c("grDevices::jpeg"),
     jpeg2=c("jpeg2", "grDevices::bitmap", "grDevices::postscript"),
@@ -559,6 +560,8 @@ getDevOption <- function(type, name, default=NULL, inherits=TRUE, ..., old=TRUE)
 
 ############################################################################
 # HISTORY:
+# 2014-09-15
+# o Added "favicon" as a known type.
 # 2014-09-12
 # o Added support for global options via devOptions("*").
 # o BUG FIX: On Windows, devOptions() assumed that the 'grDevices'

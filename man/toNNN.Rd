@@ -45,8 +45,8 @@
   toEMF(name, ..., ext="emf")
   toWMF(name, ..., ext="wmf")
 
-  toFavicon(..., name="favicon", type="png", width=32L, height=width,
-                 par=list(mar=c(0,0,0,0), bg="transparent"))
+  toFavicon(..., name="favicon", ext="png",
+            field=getDevOption("favicon", "field", default="htmlscript"))
 
   % Interactive/screen devices
   toDefault(name, ...)
@@ -64,8 +64,7 @@
   \item{name}{A \code{\link[base]{character}} string specifying the name of the image file.}
   \item{...}{Additional arguments passed to \code{\link{devEval}}(), e.g.
      \code{tags} and \code{aspectRatio}.}
-  \item{ext}{A \code{\link[base]{character}} string specifying the filename extension.}
-  \item{width, height, type, par}{Passed to \code{\link{devEval}}().}
+  \item{ext, field}{Passed to \code{\link{devEval}}().}
 }
 
 \value{

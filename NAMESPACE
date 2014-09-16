@@ -53,6 +53,7 @@ export("devNew")
 export("devOptions")
 export("getDevOption")
 export("eps")
+export("favicon")
 export("jpeg2")
 export("png2")
 

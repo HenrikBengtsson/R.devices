@@ -8,6 +8,10 @@ o Added support for "global" device options to fall back on if no set
 o Now arguments 'sep', 'path', 'field' and 'force' for devEval() and
   the various toNnn() functions now utilizes getDevOption(), which
   is still backward compatibilty with the old style R options.
+o Added favicon() device, which is a wrapper for png() with bells
+  and whistles.  It has its own device options.  Updated toFavicon()
+  to use default argument field="htmlscript", which generates an
+  HTML script that dynamically sets the favicon.
 o CLEANUP: Dropped argument 'field' for toNnn(), because the default
   is now NULL which corresponds to returning a DevEvalProduct object.
   In turn, this object has the pathname as it's value, which was the
