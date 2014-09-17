@@ -285,7 +285,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Argument 'type':
   if (is.null(type)) {
-    type <- c(names(devAll()), "*");
+    type <- names(devList)
   }
 
   # Argument 'options':
@@ -320,7 +320,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
 
   # Argument 'type':
   if (missing(type) || length(type) == 0L) {
-    knownTypes <- c(names(devAll()), "*")
+    knownTypes <- names(devList)
     if (nopts > 0L) {
       throw("Cannot set device options. Argument 'type' is missing or NULL. Should be one of: ", paste(sprintf("'%s'", knownTypes), collapse=", "));
     }
@@ -368,7 +368,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     type <- findDeviceFunction(fcn=type);
   }
   if (is.character(type)) {
-    knownTypes <- c(names(devAll()), "*")
+    knownTypes <- names(devList)
     type <- match.arg(type, choices=knownTypes);
   }
 
