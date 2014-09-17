@@ -745,7 +745,7 @@ devAll <- function(interactiveOnly=FALSE, ...) {
 } # .devNextAvailable()
 
 
-.devTypeName <- function(types, pattern=FALSE, ...) {
+.devTypeName <- function(types, pattern=FALSE, knownTypes=names(devAll()), ...) {
   # Nothing todo?
   if (!is.character(types)) {
     return(types);
@@ -758,7 +758,6 @@ devAll <- function(interactiveOnly=FALSE, ...) {
 
   # Match to known set of device types by regular expression?
   if (pattern) {
-    knownTypes <- names(devAll());
     types <- as.list(types);
     for (kk in seq_along(types)) {
       typeKK <- types[[kk]];

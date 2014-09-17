@@ -71,6 +71,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   )
   ## All known and supported graphics devices on this system
   devList <- c(devList, devAll())
+  knownTypes <- names(devList)
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -320,7 +321,6 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
 
   # Argument 'type':
   if (missing(type) || length(type) == 0L) {
-    knownTypes <- names(devList)
     if (nopts > 0L) {
       throw("Cannot set device options. Argument 'type' is missing or NULL. Should be one of: ", paste(sprintf("'%s'", knownTypes), collapse=", "));
     }
@@ -333,7 +333,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     }
   } else if (is.character(type)) {
     # Expand by regexp matching, iff any
-    type <- .devTypeName(type, pattern=TRUE);
+    type <- .devTypeName(type, pattern=TRUE, knownTypes=knownTypes);
   }
 
 
@@ -368,7 +368,6 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     type <- findDeviceFunction(fcn=type);
   }
   if (is.character(type)) {
-    knownTypes <- names(devList)
     type <- match.arg(type, choices=knownTypes);
   }
 
