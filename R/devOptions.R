@@ -61,47 +61,16 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=c("png", "png2", "CairoPNG", "favicon", "bmp", "jpeg", "jpeg2", "CairoJPEG", "tiff", "CairoTIFF", "svg", "CairoSVG", "eps", "pdf", "cairo_pdf", "CairoPDF", "postscript", "cairo_ps", "CairoPS", "pictex", "xfig", "quartz", "win.metafile", "windows", "x11", "X11", "*"), custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE, options=list(), ..., reset=FALSE) {
+devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   devList <- list(
     ## Global device options
-    "*"=NA_character_,
-
-    ## grDevices package
-    bmp=c("grDevices::bmp"),
-    cairo_pdf=c("grDevices::cairo_pdf"),
-    cairo_ps=c("grDevices::cairo_ps"),
-    eps=c("R.devices::eps", "grDevices::postscript"),
-    favicon=c("R.devices::favicon", "grDevices::png"),
-    jpeg=c("grDevices::jpeg"),
-    jpeg2=c("R.devices::jpeg2", "grDevices::bitmap", "grDevices::postscript"),
-    pdf=c("grDevices::pdf"),
-    pictex=c("grDevices::pictex"),
-    png=c("grDevices::png"),
-    png2=c("R.devices::png2", "grDevices::bitmap", "grDevices::postscript"),
-    postscript=c("grDevices::postscript"),
-    quartz=c("grDevices::quartz"),
-    svg=c("grDevices::svg"),
-    tiff=c("grDevices::tiff"),
-    win.metafile=c("grDevices::win.metafile"),
-    windows=c("grDevices::windows"),
-    x11=c("grDevices::x11"),
-    X11=c("grDevices::X11"),
-    xfig=c("grDevices::xfig"),
-
-    ## Cairo package
-    CairoPDF  = c("Cairo::CairoPDF", "grDevices::pdf"),
-    CairoPS   = c("Cairo::CairoPS", "grDevices::postscript"),
-    CairoPNG  = c("Cairo::CairoPNG", "grDevices::png"),
-    CairoJPEG = c("Cairo::CairoJPEG", "grDevices::jpeg"),
-    CairoTIFF = c("Cairo::CairoTIFF", "grDevices::tiff"),
-    CairoSVG  = c("Cairo::CairoSVG", "grDevices::svg"),
-    CairoWin  = c("Cairo::CairoWin", "grDevices::windows"),
-    CairoX11  = c("Cairo::CairoX11", "grDevices::x11")
-##    JavaGD=c("JavaGD::JavaGD"),
-  );
+    "*"=NA_character_
+  )
+  ## All known and supported graphics devices on this system
+  devList <- c(devList, devAll())
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -314,6 +283,11 @@ devOptions <- function(type=c("png", "png2", "CairoPNG", "favicon", "bmp", "jpeg
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Argument 'type':
+  if (is.null(type)) {
+    type <- c(names(devAll()), "*");
+  }
+
   # Argument 'options':
   if (!is.list(options)) {
     throw("Argument 'options' must be a list: ", class(options)[1L]);
@@ -346,7 +320,7 @@ devOptions <- function(type=c("png", "png2", "CairoPNG", "favicon", "bmp", "jpeg
 
   # Argument 'type':
   if (missing(type) || length(type) == 0L) {
-    knownTypes <- eval(formals(devOptions)$type);
+    knownTypes <- c(names(devAll()), "*")
     if (nopts > 0L) {
       throw("Cannot set device options. Argument 'type' is missing or NULL. Should be one of: ", paste(sprintf("'%s'", knownTypes), collapse=", "));
     }
@@ -394,7 +368,8 @@ devOptions <- function(type=c("png", "png2", "CairoPNG", "favicon", "bmp", "jpeg
     type <- findDeviceFunction(fcn=type);
   }
   if (is.character(type)) {
-    type <- match.arg(type);
+    knownTypes <- c(names(devAll()), "*")
+    type <- match.arg(type, choices=knownTypes);
   }
 
   if (!is.element(type, names(devList))) {

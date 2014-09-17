@@ -2,7 +2,7 @@
 Package: R.devices
 ==================
 
-Version: 2.12.0 [2014-09-16]
+Version: 2.12.0 [2014-09-17]
 o DEVICES: Added support for all Cairo* devices of the Cairo package.
 o DEVICES: Added favicon() device, which is a wrapper for png() with
   bells and whistles.  It has its own device options.  Updated
@@ -19,6 +19,9 @@ o Now arguments 'sep', 'path', 'field' and 'force' for devEval() and
   is still backward compatibilty with the old style R options.
 o Now devIsInteractive() without arguments returns all known
   interactive devices.
+o ROBUSTNESS: Now package does a better job of checking whether a
+  particular device is supported on the current system, cf. 
+  capabilities() and Cairo::Cairo.capabilities().
 o CLEANUP: Dropped argument 'field' for toNnn(), because the default
   is now NULL which corresponds to returning a DevEvalProduct object.
   In turn, this object has the pathname as it's value, which was the

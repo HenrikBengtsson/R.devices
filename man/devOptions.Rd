@@ -19,11 +19,8 @@
 }
 
 \usage{
-devOptions(type=c("png", "png2", "CairoPNG", "favicon", "bmp", "jpeg", "jpeg2",
-  "CairoJPEG", "tiff", "CairoTIFF", "svg", "CairoSVG", "eps", "pdf", "cairo_pdf",
-  "CairoPDF", "postscript", "cairo_ps", "CairoPS", "pictex", "xfig",
-  "quartz", "win.metafile", "windows", "x11", "X11", "*"), custom=TRUE, special=TRUE,
-  inherits=FALSE, drop=TRUE, options=list(), ..., reset=FALSE)
+devOptions(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE,
+  options=list(), ..., reset=FALSE)
 }
 
 \arguments{

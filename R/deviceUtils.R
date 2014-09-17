@@ -531,6 +531,155 @@ devIsInteractive <- function(types, ...) {
 } # devIsInteractive()
 
 
+devAll <- function(interactiveOnly=FALSE, ...) {
+  supports <- function(type, pkg="grDevices") {
+    isFALSE <- function(x) identical(FALSE, unname(x))
+    capabilities <- function() character(0L)
+    if (isPackageInstalled(pkg)) {
+      ns <- getNamespace(pkg)
+      if (pkg == "Cairo") {
+        fcn <- get("Cairo.capabilities", envir=ns, mode="function")
+        capabilities <- function() {
+          res <- fcn()
+          names <- sprintf("Cairo%s", toupper(names(res)))
+          names <- gsub("WIN", "Win", names, fixed=TRUE)
+          names(res) <- names
+          res
+        }
+      } else if (pkg == "grDevices") {
+        capabilities <- base::capabilities
+      }
+    }
+    x <- capabilities()
+    !isFALSE(x[type])
+  }
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Setup all possible devices
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  res <- list()
+
+  ## grDevices
+  if (!interactiveOnly) {
+    res <- c(res, list(
+      bmp          = "grDevices::bmp",
+      jpeg         = "grDevices::jpeg",
+      pdf          = "grDevices::pdf",
+      pictex       = "grDevices::pictex",
+      png          = "grDevices::png",
+      postscript   = "grDevices::postscript",
+      quartz       = "grDevices::quartz",
+      svg          = c("grDevices::svg", "needs::cairo"),
+      cairo_pdf    = c("grDevices::cairo_pdf", "needs::cairo"),
+      cairo_ps     = c("grDevices::cairo_ps", "needs::cairo"),
+      tiff         = "grDevices::tiff",
+      win.metafile = "grDevices::win.metafile",
+      xfig         = "grDevices::xfig"
+    ))
+  }
+  res <- c(res, list(
+    windows    = "grDevices::windows",
+    x11        = "grDevices::x11",
+    X11        = "grDevices::X11"
+  ))
+
+  # R.devices
+  if (!interactiveOnly) {
+    res <- c(res, list(
+      eps     = c("R.devices::eps",
+                  "grDevices::postscript"),
+      favicon = c("R.devices::favicon",
+                  "grDevices::png"),
+      jpeg2   = c("R.devices::jpeg2",
+                  "grDevices::bitmap", "grDevices::postscript"),
+      png2    = c("R.devices::png2",
+                  "grDevices::bitmap", "grDevices::postscript")
+    ))
+  }
+
+  ## Cairo package
+  if (!interactiveOnly) {
+    res <- c(res, list(
+      CairoPDF  = c("Cairo::CairoPDF",
+                    "grDevices::pdf"),
+      CairoPS   = c("Cairo::CairoPS",
+                    "grDevices::postscript"),
+      CairoPNG  = c("Cairo::CairoPNG",
+                    "grDevices::png"),
+      CairoJPEG = c("Cairo::CairoJPEG",
+                    "grDevices::jpeg"),
+      CairoTIFF = c("Cairo::CairoTIFF",
+                    "grDevices::tiff"),
+      CairoSVG  = c("Cairo::CairoSVG",
+                    "grDevices::svg")
+    ))
+  }
+  res <- c(res, list(
+    CairoWin  = c("Cairo::CairoWin",
+                  "grDevices::windows"),
+    CairoX11  = c("Cairo::CairoX11",
+                  "grDevices::x11")
+  ))
+
+  ## JavaGD
+  ## JavaGD=c("JavaGD::JavaGD")
+
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Drop devices this system is not capable of
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  for (type in names(res)) {
+    # Assume it is supported, unless...
+    supported <- TRUE
+
+    for (fcn in res[[type]]) {
+      pattern <- "^(.+)::(.+)$"
+      pkg <- gsub(pattern, "\\1", fcn)
+      name <- gsub(pattern, "\\2", fcn)
+
+      if (pkg == "needs") {
+        if (!supports(name)) {
+          supported <- FALSE
+          break
+        }
+        next
+      }
+
+      if (!isPackageInstalled(pkg)) {
+        supported <- FALSE
+        break
+      }
+
+      ns <- getNamespace(pkg)
+      if (!exists(name, envir=ns, mode="function")) {
+        supported <- FALSE
+        break
+      }
+
+      if (!supports(type, pkg=pkg)) {
+        supported <- FALSE
+        break
+      }
+    } # for (fcn ...)
+
+    # Drop any 'needs::*'
+    res[[type]] <- grep("^needs::", res[[type]], value=TRUE, invert=TRUE)
+
+    # Not supported?
+    if (!supported) res[[type]] <- NULL
+  } # for (type ...)
+
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Order by name
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  o <- order(names(res))
+  res <- res[o]
+
+  res
+} # devAll()
+
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # BEGIN: Local functions
@@ -609,7 +758,7 @@ devIsInteractive <- function(types, ...) {
 
   # Match to known set of device types by regular expression?
   if (pattern) {
-    knownTypes <- eval(formals(devOptions)$type);
+    knownTypes <- names(devAll());
     types <- as.list(types);
     for (kk in seq_along(types)) {
       typeKK <- types[[kk]];
@@ -715,8 +864,11 @@ devIsInteractive <- function(types, ...) {
 # END: Local functions
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
 ############################################################################
 # HISTORY:
+# 2014-09-17
+# o Added devAll().
 # 2014-09-16
 # o Now devIsInteractive() without arguments returns all known
 #   interactive devices.
