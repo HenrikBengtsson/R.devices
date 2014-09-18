@@ -77,6 +77,12 @@ setMethodS3("as.character", "DevEvalProduct", function(x, ...) {
 }, private=TRUE)
 
 
+setMethodS3("view", "DevEvalProduct", function(object, ...) {})
+
+setMethodS3("!", "DevEvalProduct", function(x) {
+  view(x)
+}, appendVarArgs=FALSE)
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # BEGIN: PATCH until `[[.BasicObject` finds methods in namespaces
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -331,6 +337,20 @@ setMethodS3("getExtension", "DevEvalFileProduct", function(this, ...) {
   gsub(".*[.]([^.]*)$", "\\1", filename);
 }, private=TRUE)
 
+setMethodS3("view", "DevEvalFileProduct", function(object, ...) {
+  if (isFile(object)) {
+    path <- dirname(object)
+    pathname <- basename(object)
+    opwd <- getwd()
+    on.exit(setwd(opwd))
+    setwd(path)
+  } else {
+    pathname <- object
+  }
+  browseURL(pathname, ...)
+  invisible(object)
+})
+
 
 
 #########################################################################/**
@@ -437,6 +457,8 @@ setMethodS3("getData", "DevEvalFileProduct", function(this, mode=c("character", 
 
 ############################################################################
 # HISTORY:
+# 2014-09-17
+# o Added view() and !() to DevEvalProduct.
 # 2014-09-15
 # o BUG FIX: Now getPathname(..., relative=FALSE) returns the absolute
 #   pathname.
