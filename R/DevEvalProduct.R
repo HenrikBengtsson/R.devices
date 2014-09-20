@@ -338,16 +338,23 @@ setMethodS3("getExtension", "DevEvalFileProduct", function(this, ...) {
 }, private=TRUE)
 
 setMethodS3("view", "DevEvalFileProduct", function(object, ...) {
-  if (isFile(object)) {
-    path <- dirname(object)
-    pathname <- basename(object)
-    opwd <- getwd()
-    on.exit(setwd(opwd))
-    setwd(path)
-  } else {
-    pathname <- object
+  pathname <- object
+
+  # WORKAROUND: browseURL('foo/bar.html', browser=NULL), which in turn
+  # calls shell.exec('foo/bar.html'), does not work on Windows, because
+  # the OS expects backslashes.  [Should shell.exec() convert to
+  # backslashes?]  By temporarily setting the working directory to that
+  # of the file, this works around this issue.
+  # Borrowed from R.rsp. /HB 2014-09-19
+  if (isFile(pathname)) {
+    path <- dirname(pathname);
+    pathname <- basename(pathname);
+    opwd <- getwd();
+    on.exit(setwd(opwd));
+    setwd(path);
   }
   browseURL(pathname, ...)
+
   invisible(object)
 })
 
