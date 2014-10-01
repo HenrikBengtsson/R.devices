@@ -33,6 +33,12 @@ o CLEANUP: All old-style R options (e.g. 'devEval/args/field') have
   recommended to set them as devOptions("*", field=...) instead.
 
 
+Version: 2.11.5 [2014-09-30]
+o BUG FIX: devNew(x11) on Unix/Linux where the default 'width' or
+  'height' failed to be inferred would throw an error reporting
+  on "cannot coerce type 'closure' to vector of type 'character'".
+
+
 Version: 2.11.4 [2014-09-16]
 o ROBUSTNESS: Now withPar() also resets all the graphical parameters
   available upon entry even if no explicit ones were specified.  This
@@ -70,7 +76,7 @@ o Added support for devEval() to try multiple device types one-by-one
 
 
 Version: 2.10.0 [2014-08-29]
-o Changed default argument 'field' for toNnn() from "fullname" to
+o Changed default argument 'field' for toNNN() from "fullname" to
   "pathname" as in getOption("devEval/args/field", "pathname").
   This should work for most compilers including LaTeX, although
   for the latter it is preferred to use "fullname".  See the
@@ -117,7 +123,7 @@ o Added asDataURI() for converting an image file to an
 
 
 Version: 2.8.3 [2014-01-10]
-o DEVICES: Added toFavicon() for outputting figures as HTML favicons.
+o Added toFavicon() for outputting figures as HTML favicons.
 
 
 Version: 2.8.2 [2014-01-02]
@@ -226,11 +232,11 @@ o BUG FIX/ROBUSTNESS: Argument 'ext' of devEval() can now be inferred
 
 
 Version: 2.5.0 [2013-07-30]
-o DEVICES: Added support the 'win.metafile' (WMF) device type and added
-  toWMF() creating (extended) WMF files.  Since the file format is
-  *extended* WMF, which often has file extension *.emf, toEMF() was
-  also added.  toEMF() uses the same device driver as toWMF() with the
-  only difference that the file extension is *.emf instead of *.wmf.
+o Added support the 'win.metafile' (WMF) device type and added toWMF()
+  creating (extended) WMF files.  Since the file format is *extended*
+  WMF, which often has file extension *.emf, toEMF() was also added.
+  toEMF() uses the same device driver as toWMF() with the only
+  difference that the file extension is *.emf instead of *.wmf.
 o Now devOptions() can query the options of multiple device types.
   Added arguments 'options' and 'drop' to devOptions().
 o Now devEval() returns a list of class 'DevEvalFile'.
@@ -335,8 +341,8 @@ o The below change log shows the changes to the device methods while
 Version: 1.9.1 [2011-11-05]
 o Added devOptions().
 o Added default 'width' and 'height' values to eps().
-o DEVICES: Turned png2() and jpeg2() into plain functions without a
-  generic. This is consistent with how eps() is defined.
+o Turned png2() and jpeg2() into plain functions without a generic.
+  This is consistent with how eps() is defined.
 o GENERALIZATION: Now the default 'width' is inferred from
   devOptions() if needed.
 o DOCUMENTATION: Added an example to help(devEval).
@@ -431,9 +437,9 @@ o The default filename for eps() had extension *.ps not *.eps.
 
 
 Version: 0.7.6 [2006-02-15]
-o DEVICES: Since the png2() and jpeg2() devices are in this package,
-  the eps() device from R.graphics has been moved here for consistency.
+o Since the png2() and jpeg2() devices are in this package, the eps()
+  device from R.graphics has been moved here for consistency.
 
 
 Version: 0.6.0 [2005-09-24]
-o DEVICES: Added trial versions of jpeg2() and png2().
+o Added trial versions of jpeg2() and png2().
