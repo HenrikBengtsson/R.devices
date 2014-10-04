@@ -435,7 +435,9 @@ devDone <- function(which=dev.cur(), ...) {
     type <- tolower(names(which));
     type <- gsub(":.*", "", type);
 
-    isOnScreen <- is.element(type, tolower(devIsInteractive()));
+    knownInteractive <- deviceIsInteractive();
+    knownInteractive <- tolower(knownInteractive);
+    isOnScreen <- (is.element(type, knownInteractive));
     if (!isOnScreen)
       devOff(which);
   }
@@ -873,6 +875,9 @@ devAll <- local({
 
 ############################################################################
 # HISTORY:
+# 2014-09-30
+# o BUG FIX: devDone() would close some devices despite them being
+#   on screen/interactive devices, e.g. an x11 device.
 # 2014-09-17
 # o Added devAll().
 # 2014-09-16

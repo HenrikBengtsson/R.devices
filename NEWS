@@ -34,6 +34,8 @@ o CLEANUP: All old-style R options (e.g. 'devEval/args/field') have
 
 
 Version: 2.11.5 [2014-09-30]
+o BUG FIX: devDone() would close some devices despite them being
+  on screen/interactive devices, e.g. an x11 device.
 o BUG FIX: devNew(x11) on Unix/Linux where the default 'width' or
   'height' failed to be inferred would throw an error reporting
   on "cannot coerce type 'closure' to vector of type 'character'".
