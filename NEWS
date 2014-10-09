@@ -19,7 +19,6 @@ o Now arguments 'sep', 'path', 'field' and 'force' for devEval() and
   is still backward compatibilty with the old style R options.
 o Now devIsInteractive() without arguments returns all known
   interactive devices.
-o Added view() and !() to DevEvalProduct.
 o ROBUSTNESS: Now package does a better job of checking whether a
   particular device is supported on the current system, cf.
   capabilities() and Cairo::Cairo.capabilities().
@@ -34,6 +33,7 @@ o CLEANUP: All old-style R options (e.g. 'devEval/args/field') have
 
 
 Version: 2.11.5 [2014-09-30]
+o Added view() and !() to DevEvalProduct.
 o BUG FIX: devDone() would close some devices despite them being
   on screen/interactive devices, e.g. an x11 device.
 o BUG FIX: devNew(x11) on Unix/Linux where the default 'width' or
