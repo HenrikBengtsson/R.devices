@@ -11,12 +11,12 @@
 
 <%
 library("R.devices");
+options("devEval/args/field"="fullname") # Better for LaTeX
 R.rsp <- R.oo::Package("R.rsp")
 withCapture <- R.utils::withCapture
 hpaste <- R.utils::hpaste
 
 devOptions("png", width=840);
-devOptions("png", field="fullname") # Better for LaTeX
 options(width=85);
 options(digits=3);
 options(str=strOptions(strict.width="cut"));
@@ -181,9 +181,9 @@ tos <- sprintf("%s()", tos);
 The following \code{toNNN()} functions are currently available: <%=hpaste(sprintf("\\code{%s}", tos), maxHead=Inf, lastCollapse=", and ")%>.
 
 \subsection{Setting default output directory}
-All figures created by \code{devEval()/toNNN()} are by default written to the \file{figures/} directory (created if missing), which can be overridden by passing argument \code{path} to \code{devEval()}.  The default figure path can be change by setting "global" device option \code{"path"}, e.g.
+All figures created by \code{devEval()/toNNN()} are by default written to the \file{figures/} directory (created if missing), which can be overridden by passing argument \code{path} to \code{devEval()}.  The default figure path can be change by setting option \code{"devEval/args/path"}, which will be created if needed, e.g.
 \begin{rspVerbatim}
-devOptions("*", path="figures/col/")
+ options("devEval/args/path"="figures/col/")
 \end{rspVerbatim}
 
 \subsection{Names and comma-separated tags}
@@ -200,15 +200,11 @@ for (ar in c(0.6, 0.8)) \{
 \})
 \end{rspVerbatim}
 which creates six images files (\file{GaussianDensity,aspect=0.6,scale=2.eps}, \file{GaussianDensity,aspect=0.6,scale=3.eps}, ..., and \file{GaussianDensity,aspect=0.8,scale=4.eps}).
-To use a different separator use argument \code{sep}, or change the global device option, e.g.
-\begin{rspVerbatim}
-devOptions("*", sep="_")
-\end{rspVerbatim}
 
 \subsection{Overwriting existing figure files}
-By default, existing figure files created by \code{devEval()/toNNN()} are overwritten wihtout notice.  By passing argument \code{force=FALSE} to \code{devEval()}, existing figure files will be skipped.  To change the default, do:
+By default, existing figure files created by \code{devEval()/toNNN()} are overwritten wihtout notice.  By passing argument \code{force=FALSE} to \code{devEval()}, existing figure files will be skipped.  To change the default, set option \code{"devEval/args/force"}, e.g.
 \begin{rspVerbatim}
-devOptions("*", force=FALSE)
+ options("devEval/args/force"=FALSE)
 \end{rspVerbatim}
 Note that whenever a figure is skipped this way, it also means that none of the expressions in \code{devEval(..., \{<exprs>\})} are executed.  This will speed up the processing, but it also means that the rest of your code must not rely on such code being executed.
 

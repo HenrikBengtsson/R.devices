@@ -48,6 +48,3 @@ str(devOptions("png"))
 
 # Get individual device options
 print(getDevOption("png", "width"))
-
-opts1 <- R.devices::devOptions()
-print(opts1)

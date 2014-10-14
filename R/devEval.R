@@ -74,7 +74,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getDevOption(type, "sep", default=","), ..., ext=NULL, filename=NULL, path=getDevOption(type, "path", default="figures"), field=getDevOption(type, name="field"), onIncomplete=c("remove", "rename", "keep"), force=getDevOption(type, "force", default=TRUE), which=dev.cur(), .exprAsIs=FALSE) {
+devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","), ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"), field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename", "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur(), .exprAsIs=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Vectorized version
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,11 +91,6 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
   # Argument 'expr':
   hasExpr <- !missing(expr);
-
-
-  ## Expand device type names by regexp matching, iff any
-  type <- .devTypeName(type, pattern=TRUE);
-
 
   ## SPECIAL CASE: Handle calls like toNnn({ expr }) where the actual plot
   ## expression is actually passed via the first argument which is 'name'
@@ -172,7 +167,6 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   types <- unlist(strsplit(type, split="|", fixed=TRUE));
   types <- trim(types);
   types <- unique(types);
-
   if (length(types) > 1L) {
     res <- NULL;
     errors <- list(); # Record any errors
@@ -435,8 +429,9 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
   if (is.null(path)) {
     # Timestamp, e.g. 2011-03-10_041359.032
     timestamp <- format(Sys.time(), "%Y-%m-%d_%H%M%OS3", tz="");
-    path <- getDevOption("*", "path", default="figures")
+    path <- getOption("devEval/args/path", "figures/");
     path <- file.path(path, timestamp);
+    path <- getOption("devDump/args/path", path);
   }
 
   devEval(type=type, ..., path=path, envir=envir, field=field, which=which);
@@ -445,11 +440,6 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 
 ############################################################################
 # HISTORY:
-# 2014-09-16
-# o Added support regexpr device type names.
-# 2014-09-12
-# o Now arguments 'sep', 'path', 'field' and 'force' uses devOptions("*").
-#   If old-style R options are set they are used first.
 # 2014-09-11
 # o Now devEval(..., ext=NULL) does a better job of inferring the default
 #   filename extension from the device type.

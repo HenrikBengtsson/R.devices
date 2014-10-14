@@ -18,8 +18,6 @@
 #   \item{custom}{If @TRUE, also the default settings specific to this
 #      function is returned. For more details, see below.}
 #   \item{special}{A @logical.  For more details, see below.}
-#   \item{inherits}{If @TRUE, the global option is used if the
-#      type-specific is not set (or @NULL).}
 #   \item{drop}{If @TRUE and only one device type is queried, then
 #      a @list is returned, otherwise a @matrix.}
 #   \item{options}{Optional named @list of settings.}
@@ -61,17 +59,35 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE, options=list(), ..., reset=FALSE) {
+devOptions <- function(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps", "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg", "tiff", "win.metafile", "windows", "x11", "X11", "xfig"), custom=TRUE, special=TRUE, drop=TRUE, options=list(), ..., reset=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Local setups
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   devList <- list(
-    ## Global device options
-    "*"=NA_character_
-  )
-  ## All known and supported graphics devices on this system
-  devList <- c(devList, devAll())
-  knownTypes <- names(devList)
+    bmp=c("grDevices::bmp"),
+    cairo_pdf=c("grDevices::cairo_pdf"),
+    cairo_ps=c("grDevices::cairo_ps"),
+##    CairoPNG=c("Cairo::CairoPNG"),  ## If used, gets extension CairoPNG.
+    CairoWin=c("Cairo::CairoWin"),
+    CairoX11=c("Cairo::CairoX11"),
+    eps=c("R.devices::eps", "grDevices::postscript"),
+##    JavaGD=c("JavaGD::JavaGD"),
+    jpeg=c("grDevices::jpeg"),
+    jpeg2=c("R.devices::jpeg2", "grDevices::bitmap", "grDevices::postscript"),
+    pdf=c("grDevices::pdf"),
+    pictex=c("grDevices::pictex"),
+    png=c("grDevices::png"),
+    png2=c("R.devices::png2", "grDevices::bitmap", "grDevices::postscript"),
+    postscript=c("grDevices::postscript"),
+    quartz=c("grDevices::quartz"),
+    svg=c("grDevices::svg"),
+    tiff=c("grDevices::tiff"),
+    win.metafile=c("grDevices::win.metafile"),
+    windows=c("grDevices::windows"),
+    x11=c("grDevices::x11"),
+    X11=c("grDevices::X11"),
+    xfig=c("grDevices::xfig")
+  );
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -85,18 +101,9 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   }
 
 
-  # Global options; only used for its ability to reset them
-  "*.options" <- function(..., reset=FALSE) {
-    if (reset) {
-      devOptions(type="*", sep=",", path="figures", field=NULL, force=TRUE)
-    }
-  }
-
-
   # A template for a dummy device options function.
-  getNnnOptions <- function(type, fallbacks=FALSE, ...) {
+  getNnnOptions <- function(type, ...) {
     optList <- list(
-      "*"="*.options",
       eps="ps.options",
       jpeg2="ps.options",
       pdf="pdf.options",
@@ -104,17 +111,9 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
       postscript="ps.options",
       quartz="quartz.options",
       windows="windows.options",
-      x11="X11.options",
-      X11="x11.options"
-    );
-
-    if (fallbacks) {
-      optList <- c(optList, list(
-        "CairoPDF"="pdf.options",
-        "CairoPS"="ps.options",
-        "CairoX11"="x11.options"
-      ))
-    }
+      x11=c("x11.options", "X11.options"),
+      X11=c("X11.options", "x11.options")
+     );
 
     dummy <- function(...) { list(); }
 
@@ -122,19 +121,21 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
       return(dummy);
     }
 
-    key <- optList[[type]];
+    keys <- optList[[type]];
 
     # Sanity check
-    stopifnot(length(key) == 1L);
+    stopifnot(length(keys) >= 1L);
 
     # Does the nnn.function() already exists?
     envir <- getNamespace("grDevices");
-    if (exists(key, envir=envir, mode="function")) {
-      fcn <- get(key, envir=envir, mode="function");
-      return(fcn);
-    } else if (exists(key, mode="function")) {
-      fcn <- get(key, mode="function");
-      return(fcn);
+    for (key in keys) {
+      if (exists(key, envir=envir, mode="function")) {
+        fcn <- get(key, envir=envir, mode="function");
+        return(fcn);
+      } else if (exists(key, mode="function")) {
+        fcn <- get(key, mode="function");
+        return(fcn);
+      }
     }
 
     # If not, create either a real one or a dummy one...
@@ -284,11 +285,6 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # Argument 'type':
-  if (is.null(type)) {
-    type <- names(devList)
-  }
-
   # Argument 'options':
   if (!is.list(options)) {
     throw("Argument 'options' must be a list: ", class(options)[1L]);
@@ -297,12 +293,6 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   if (nopts > 0L && is.null(names(options))) {
     throw("Argument 'options' must be a named list.");
   }
-
-  # Argument 'inherits':
-  inherits <- as.logical(inherits);
-
-  # Argument 'reset':
-  reset <- as.logical(reset);
 
   # Additional arguments
   args <- list(...);
@@ -321,21 +311,18 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
 
   # Argument 'type':
   if (missing(type) || length(type) == 0L) {
+    knownTypes <- eval(formals(devOptions)$type);
     if (nopts > 0L) {
       throw("Cannot set device options. Argument 'type' is missing or NULL. Should be one of: ", paste(sprintf("'%s'", knownTypes), collapse=", "));
     }
 
-    res <- devOptions(type=knownTypes, custom=custom, special=special, inherits=inherits, drop=drop, reset=reset);
+    res <- devOptions(type=knownTypes, custom=custom, special=special, drop=drop, reset=reset);
     if (reset) {
       return(invisible(res));
     } else {
       return(res);
     }
-  } else if (is.character(type)) {
-    # Expand by regexp matching, iff any
-    type <- .devTypeName(type, pattern=TRUE, knownTypes=knownTypes);
   }
-
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Vectorized call?
@@ -347,7 +334,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
 
     # Support vector of 'type':s
     types <- type;
-    res <- lapply(types, FUN=devOptions, inherits=inherits, drop=TRUE);
+    res <- lapply(types, FUN=devOptions, drop=TRUE);
     fields <- lapply(res, FUN=function(opts) names(opts));
     fields <- unique(unlist(fields, use.names=FALSE));
     opts <- lapply(res, FUN=function(x) x[fields]);
@@ -368,15 +355,12 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     type <- findDeviceFunction(fcn=type);
   }
   if (is.character(type)) {
-    type <- match.arg(type, choices=knownTypes);
+    type <- .devTypeName(type);
+    type <- match.arg(type);
   }
 
   if (!is.element(type, names(devList))) {
     throw("Cannot query/modify device options. Unknown device: ", type);
-  }
-
-  if (inherits) {
-    throw("Argument inherits=TRUE is not yet supported.");
   }
 
 
@@ -422,7 +406,6 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   # Get builtin device options, if available
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Only for certain devices...
-  nnn.options <- getNnnOptions(type, fallbacks=TRUE);
   opts <- nnn.options();
 
 
@@ -433,7 +416,6 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   defArgs <- Reduce(append, defArgs);
   # Drop '...'
   defArgs <- defArgs[names(defArgs) != "..."];
-  # Drop missing
   # Drop overridden values
   defArgs <- defArgs[!duplicated(names(defArgs), fromLast=TRUE)];
 
@@ -475,13 +457,13 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   # Adjust for special cases?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (special) {
-    if (is.element(type, c("eps", "postscript", "CairoPS"))) {
+    if (is.element(type, c("eps", "postscript"))) {
       sizes <- c("a4", "executive", "legal", "letter");
       dim <- getSpecialDimensions(opts, sizes);
     } else if (type == "xfig") {
       sizes <- c("a4", "legal", "letter");
       dim <- getSpecialDimensions(opts, sizes);
-    } else if (is.element(type, c("pdf", "CairoPDF"))) {
+    } else if (type == "pdf") {
       sizes <- c("a4", "a4r", "executive", "legal", "letter", "USr");
       dim <- getSpecialDimensions(opts, sizes);
     } else {
@@ -510,25 +492,8 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   }
 } # devOptions()
 
-
-getDevOption <- function(type, name, default=NULL, inherits=TRUE, ..., old=TRUE) {
-  # BACKWARD COMPATIBILITY:
-  if (isTRUE(old)) old <- sprintf("devEval/args/%s", name)
-  if (is.character(old)) {
-    .importOldGlobalOption(name, from=old, remove=TRUE)
-  }
-
-  # Get options
-  if (is.character(type) && type != "*") {
-    value <- devOptions(type=type, ...)[[name]]
-  } else {
-    value <- NULL
-  }
-
-  # Fallback to global options?
-  if (is.null(value) && inherits) {
-    value <- devOptions(type="*", ...)[[name]]
-  }
+getDevOption <- function(type, name, default=NULL, ...) {
+  value <- devOptions(type=type, ...)[[name]]
 
   # Use default value?
   if (is.null(value)) value <- default
@@ -537,33 +502,12 @@ getDevOption <- function(type, name, default=NULL, inherits=TRUE, ..., old=TRUE)
 } # getDevOption()
 
 
-# BACKWARD COMPATIBILITY for old-style R options().
-.importOldGlobalOption <- function(name, from, remove=TRUE, ...) {
-  # Nothing to do?
-  if (!is.element(from, names(options()))) return()
-
-  # (a) Get old-style option value
-  opt <- options(from);
-
-  # (b) Assign to global device options instead
-  names(opt) <- name;
-  do.call(devOptions, args=list(type="*", options=opt));
-
-  # (c) Delete old-style option and never look back
-  if (remove) setOption(from, NULL);
-} # .importOldGlobalOption()
-
-
 ############################################################################
 # HISTORY:
 # 2014-09-16
-# o Added support for regular expression matching for argument 'type'.
 # o BUG FIX: devOptions() returned the incorrect options for device
 #   types "eps", "jpg2" and "png2" if package was not attached.
-# 2014-09-15
-# o Added "favicon" as a known type.
 # 2014-09-12
-# o Added support for global options via devOptions("*").
 # o BUG FIX: On Windows, devOptions() assumed that the 'grDevices'
 #   package was attached.
 # o BUG FIX: devOptions(type, name=NULL) did not assign the option NULL.

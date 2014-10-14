@@ -140,7 +140,9 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
           args$width <- width;
           args$height <- aspectRatio * width;
         } else {
-          warning("Argument 'aspectRatio' was ignored because none of 'width' and 'height' were given and 'width' could not be inferred from devOptions(\"", type, "\"): ", aspectRatio);
+          typeName <- .devTypeName(type)
+          if (is.function(typeName)) typeName <- "<a function>" else typeName <- sprintf('"%s"', typeName)
+          warning("Argument 'aspectRatio' was ignored because none of 'width' and 'height' were given and 'width' could not be inferred from devOptions(", typeName, "): ", aspectRatio);
         }
       } else if (!is.null(width)) {
         # Argument 'width' was specified but not 'height'
@@ -265,7 +267,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Default and user-specific parameters
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  parT <- getDevOption(type=type, name="par", old="devNew/args/par")
+  parT <- getOption("devNew/args/par", list());
   # Append
   parT <- c(parT, par);
   if (length(parT) > 0L) {

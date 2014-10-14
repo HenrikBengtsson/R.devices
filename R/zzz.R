@@ -20,13 +20,13 @@
   pkg <- Package(pkgname);
   assign(pkgname, pkg, envir=ns);
 
-  # Set default global options when package is loaded
-  devOptions("*", reset=TRUE)
+  Sys.setenv(FOO="hello")
 }
 
 
 .onAttach <- function(libname, pkgname) {
   startupMessage(get(pkgname, envir=getNamespace(pkgname)));
+  Sys.setenv(BAR="world")
 }
 
 
