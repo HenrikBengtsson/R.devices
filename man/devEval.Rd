@@ -19,11 +19,10 @@
 
 \usage{
 devEval(type=getOption("device"), expr, initially=NULL, finally=NULL,
-  envir=parent.frame(), name=NULL, tags=NULL, sep=getDevOption(type, "sep",
-  default = ","), ..., ext=NULL, filename=NULL, path=getDevOption(type, "path",
-  default = "figures"), field=getDevOption(type, name = "field"),
-  onIncomplete=c("remove", "rename", "keep"), force=getDevOption(type, "force",
-  default = TRUE), which=dev.cur(), .exprAsIs=FALSE)
+  envir=parent.frame(), name=NULL, tags=NULL, sep=getOption("devEval/args/sep", ","),
+  ..., ext=NULL, filename=NULL, path=getOption("devEval/args/path", "figures/"),
+  field=getOption("devEval/args/field", NULL), onIncomplete=c("remove", "rename",
+  "keep"), force=getOption("devEval/args/force", TRUE), which=dev.cur(), .exprAsIs=FALSE)
 }
 
 \arguments{

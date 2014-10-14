@@ -37,16 +37,17 @@
 }
 
 \usage{
-  toBMP(name, ...)
-  toPDF(name, ...)
-  toPNG(name, ...)
-  toSVG(name, ...)
-  toTIFF(name, ...)
-  toEMF(name, ..., ext="emf")
-  toWMF(name, ..., ext="wmf")
+  toBMP(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toEMF(name, ..., ext="emf", field=getOption("devEval/args/field", "pathname"))
+  toPDF(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toPNG(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toSVG(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toTIFF(name, ..., field=getOption("devEval/args/field", "pathname"))
+  toWMF(name, ..., ext="wmf", field=getOption("devEval/args/field", "pathname"))
+  %% toCairoPNG(name, ..., field=getOption("devEval/args/field", "pathname"))
 
-  toFavicon(..., name="favicon", ext="png",
-            field=getDevOption("favicon", "field", default="htmlscript"))
+  toFavicon(..., name="favicon", type="png", width=32L, height=width,
+                 par=list(mar=c(0,0,0,0), bg="transparent"))
 
   % Interactive/screen devices
   toDefault(name, ...)
@@ -64,7 +65,9 @@
   \item{name}{A \code{\link[base]{character}} string specifying the name of the image file.}
   \item{...}{Additional arguments passed to \code{\link{devEval}}(), e.g.
      \code{tags} and \code{aspectRatio}.}
-  \item{ext, field}{Passed to \code{\link{devEval}}().}
+  \item{ext}{A \code{\link[base]{character}} string specifying the filename extension.}
+  \item{field}{Passed to \code{\link{devEval}}().}
+  \item{width, height, type, par}{Passed to \code{\link{devEval}}().}
 }
 
 \value{

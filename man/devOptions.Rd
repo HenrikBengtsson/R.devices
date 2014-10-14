@@ -19,8 +19,10 @@
 }
 
 \usage{
-devOptions(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE,
-  options=list(), ..., reset=FALSE)
+devOptions(type=c("bmp", "cairo_pdf", "cairo_ps", "CairoWin", "CairoX11", "eps",
+  "jpeg", "jpeg2", "pdf", "pictex", "png", "png2", "postscript", "quartz", "svg",
+  "tiff", "win.metafile", "windows", "x11", "X11", "xfig"), custom=TRUE, special=TRUE,
+  drop=TRUE, options=list(), ..., reset=FALSE)
 }
 
 \arguments{
@@ -30,8 +32,6 @@ devOptions(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, drop=TRUE,
   \item{custom}{If \code{\link[base:logical]{TRUE}}, also the default settings specific to this
      function is returned. For more details, see below.}
   \item{special}{A \code{\link[base]{logical}}.  For more details, see below.}
-  \item{inherits}{If \code{\link[base:logical]{TRUE}}, the global option is used if the
-     type-specific is not set (or \code{\link[base]{NULL}}).}
   \item{drop}{If \code{\link[base:logical]{TRUE}} and only one device type is queried, then
      a \code{\link[base]{list}} is returned, otherwise a \code{\link[base]{matrix}}.}
   \item{options}{Optional named \code{\link[base]{list}} of settings.}
