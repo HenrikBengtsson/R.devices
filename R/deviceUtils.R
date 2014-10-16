@@ -549,15 +549,12 @@ devAll <- local({
     }
   })
 
-  if (isPackageInstalled("Cairo")) {
-    ns <- getNamespace("Cairo")
-    Cairo.capabilities <- get("Cairo.capabilities", envir=ns, mode="function")
-  }
-
   supports <- function(type, pkg="grDevices") {
     capabilities <- function() character(0L)
     if (isPackageInstalled(pkg)) {
       if (pkg == "Cairo") {
+        ns <- getNamespace("Cairo")
+        Cairo.capabilities <- get("Cairo.capabilities", envir=ns, mode="function")
         capabilities <- function() {
           res <- Cairo.capabilities()
           names <- sprintf("Cairo%s", toupper(names(res)))
