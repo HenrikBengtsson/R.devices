@@ -539,31 +539,46 @@ devAll <- local({
   # times either directly or indirectly by various functions.
   .devAll <- NULL
 
+  isFALSE <- function(x) identical(FALSE, unname(x))
+
+  base_capabilities <- local({
+    res <- base::capabilities()
+    function(force=FALSE) {
+      if (force) res <<- base::capabilities()
+      res
+    }
+  })
+
+  if (isPackageInstalled("Cairo")) {
+    ns <- getNamespace("Cairo")
+    Cairo.capabilities <- get("Cairo.capabilities", envir=ns, mode="function")
+  }
+
   supports <- function(type, pkg="grDevices") {
-    isFALSE <- function(x) identical(FALSE, unname(x))
     capabilities <- function() character(0L)
     if (isPackageInstalled(pkg)) {
-      ns <- getNamespace(pkg)
       if (pkg == "Cairo") {
-        fcn <- get("Cairo.capabilities", envir=ns, mode="function")
         capabilities <- function() {
-          res <- fcn()
+          res <- Cairo.capabilities()
           names <- sprintf("Cairo%s", toupper(names(res)))
           names <- gsub("WIN", "Win", names, fixed=TRUE)
           names(res) <- names
           res
         }
       } else if (pkg == "grDevices") {
-        capabilities <- base::capabilities
+        capabilities <- base_capabilities
       }
     }
     x <- capabilities()
     !isFALSE(x[type])
-  }
+  } # supports()
+
 
   function(force=FALSE, ...) {
     res <- .devAll
     if (force || is.null(res)) {
+      if (force) base_capabilities(force=TRUE)
+
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       # Setup all possible devices
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -875,6 +890,9 @@ devAll <- local({
 
 ############################################################################
 # HISTORY:
+# 2014-10-17
+# o SPEEDUP: Made devAll() memoize base::capabilities() results, which
+#   gives a significant speedup when for instance an X11 server times out.
 # 2014-09-30
 # o BUG FIX: devDone() would close some devices despite them being
 #   on screen/interactive devices, e.g. an x11 device.
