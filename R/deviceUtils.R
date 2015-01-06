@@ -253,10 +253,9 @@ devSet <- function(which=dev.next(), ...) {
   # Argument 'which':
   if (!is.numeric(which) || length(which) != 1L) {
     if (length(which) != 1L || !is.character(which)) {
-      require("digest") || throw("Package not loaded: digest");
       # To please R CMD check
-      digest <- NULL; rm(list="digest");
-      which <- digest(which);
+      requireNamespace("digest") || throw("Package not loaded: digest");
+      which <- digest::digest(which);
     }
 
     if (is.character(which)) {

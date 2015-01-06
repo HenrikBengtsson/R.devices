@@ -2,6 +2,9 @@
 Package: R.devices
 ==================
 
+o CLEANUP: Using requireNamespace() instead of require() internally.
+
+
 Version: 2.12.0 [2014-09-17]
 o DEVICES: Added support for all Cairo* devices of the Cairo package.
 o DEVICES: Added favicon() device, which is a wrapper for png() with
