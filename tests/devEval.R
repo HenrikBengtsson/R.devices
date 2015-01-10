@@ -63,6 +63,8 @@ types <- list(
   "png,jpg|x11|windows"        # == c("png", "jpg|x11|windows")
 )
 
+devList0 <- devList()
+
 for (type in types) {
   printf("Any of %s\n", paste(sQuote(type), collapse=" + "))
 
@@ -72,7 +74,12 @@ for (type in types) {
       plot(100:1)
     })
     printf("Result: %s (%s)\n\n", sQuote(res), attr(res, "type"))
+
+    devOff()
   }, error = function(ex) {
     printf("Failed: %s\n\n", sQuote(ex$message))
   })
 } # for (type ...)
+
+# Sanity check
+stopifnot(all.equal(devList(), devList0))
