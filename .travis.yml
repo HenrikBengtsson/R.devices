@@ -23,9 +23,11 @@ env:
     - R_BUILD_ARGS="--no-build-vignettes ${R_BUILD_ARGS}"
     - R_CHECK_ARGS="--no-build-vignettes ${R_CHECK_ARGS}"
 
+  # R versions r-builder [2] should test on (ignored by r-travis)
   matrix:
-    - RVERSION=latest
-#    - RVERSION=devel
+    - RVERSION=3.1.2
+    - RVERSION=devel
+
 
 before_install:
   - echo PKGR=$PKGR
