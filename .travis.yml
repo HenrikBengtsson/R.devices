@@ -18,6 +18,8 @@ env:
 ##    - R_BUILD_ARGS="--no-manual"
 ##    - R_CHECK_ARGS="--no-manual --as-cran"
 ##    - BOOTSTRAP_LATEX="true"
+  matrix:
+    - RVERSION=3.1.2
 
 before_install:
   - echo PKGR=$PKGR
@@ -37,8 +39,8 @@ script: $PKGR run_tests
 
 notifications:
   email:
-    on_success: travis_report@aroma-project.org
-    on_failure: travis_report@aroma-project.org
+    on_success: change
+    on_failure: change
 
 branches:
   except:
