@@ -23,8 +23,11 @@ env:
 
 before_install:
   - echo PKGR=$PKGR
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+  - if [ "$PKGR" == "./travis-tool.sh" ]; then
+    curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+  - if [ "$PKGR" == "./pkg-build.sh" ]; then
+    curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+    fi
   - chmod 755 $PKGR
   - $PKGR bootstrap
 ##  - (cd /tmp && curl -OL http://mirrors.ctan.org/macros/latex/contrib/xcolor.zip && cd /usr/share/texmf/tex/latex && sudo unzip /tmp/xcolor.zip && cd xcolor && sudo latex xcolor.ins && sudo texhash)
