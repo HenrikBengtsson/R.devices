@@ -12,12 +12,12 @@ env:
 # Use r-travis or r-builder?
     - PKGR="./travis-tool.sh"  # r-travis
 #    - PKGR="./pkg-build.sh"    # r-builder
-    - R_BUILD_ARGS="--no-build-vignettes --no-manual"
-    - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
-    - BOOTSTRAP_LATEX=""
-##    - R_BUILD_ARGS="--no-manual"
-##    - R_CHECK_ARGS="--no-manual --as-cran"
-##    - BOOTSTRAP_LATEX="true"
+    - BOOTSTRAP_LATEX=""  ## Very time consuming!
+    - R_BUILD_ARGS="--no-manual"
+    - R_CHECK_ARGS="--no-manual --as-cran"
+    - R_BUILD_ARGS="--no-build-vignettes ${R_BUILD_ARGS}"
+    - R_CHECK_ARGS="--no-build-vignettes ${R_CHECK_ARGS}"
+
   matrix:
     - RVERSION=3.1.2
 
@@ -30,7 +30,9 @@ before_install:
     fi
   - chmod 755 $PKGR
   - $PKGR bootstrap
-##  - (cd /tmp && curl -OL http://mirrors.ctan.org/macros/latex/contrib/xcolor.zip && cd /usr/share/texmf/tex/latex && sudo unzip /tmp/xcolor.zip && cd xcolor && sudo latex xcolor.ins && sudo texhash)
+  - if [ "BOOTSTRAP_LATEX" == "true" ]; then
+      (cd /tmp && curl -OL http://mirrors.ctan.org/macros/latex/contrib/xcolor.zip && cd /usr/share/texmf/tex/latex && sudo unzip /tmp/xcolor.zip && cd xcolor && sudo latex xcolor.ins && sudo texhash)
+    fi
 
 install:
 #  - $PKGR github_package testthat
