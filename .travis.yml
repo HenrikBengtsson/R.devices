@@ -55,7 +55,8 @@ install:
 script: $PKGR run_tests
 
 after_success:
-  - Rscript -e 'covr::coveralls()'
+  - $PKGR r_path
+  - $PKGR run_script -e 'covr::coveralls()'
 
 notifications:
   email:
