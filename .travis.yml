@@ -49,7 +49,7 @@ install:
 #  - $PKGR github_package testthat
 #  - $PKGR github_package assertthat
 #  - $PKGR install_r_binary r.methodss3 r.oo r.utils
-  - ./travis-tool.sh github_package jimhester/covr
+  - $PKGR github_package jimhester/covr
   - $PKGR install_deps
 
 script: $PKGR run_tests
