@@ -9,9 +9,9 @@ language: c
 
 env:
   global:
-# Use r-travis or r-builder?
-    - PKGR="./travis-tool.sh"  # r-travis
-#    - PKGR="./pkg-build.sh"    # r-builder
+    # Use r-travis [1] or r-builder [2]?
+#   - PKGR="./travis-tool.sh"  # r-travis
+    - PKGR="./pkg-build.sh"    # r-builder
     - R_BUILD_ARGS="--no-manual"
     - R_CHECK_ARGS="--no-manual --as-cran"
     # Need LaTeX?
