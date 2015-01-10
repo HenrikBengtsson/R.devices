@@ -4,6 +4,7 @@ language: c
 
 env:
   global:
+    - PKGR="./travis-tool.sh"
     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
     - BOOTSTRAP_LATEX=""
@@ -14,6 +15,7 @@ env:
 script: ./travis-tool.sh run_tests
 
 before_install:
+  - echo PKGR=$PKGR
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
