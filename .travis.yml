@@ -12,9 +12,12 @@ env:
 # Use r-travis or r-builder?
     - PKGR="./travis-tool.sh"  # r-travis
 #    - PKGR="./pkg-build.sh"    # r-builder
-    - BOOTSTRAP_LATEX=""  ## Very time consuming!
     - R_BUILD_ARGS="--no-manual"
     - R_CHECK_ARGS="--no-manual --as-cran"
+    # Need LaTeX?
+    - BOOTSTRAP_LATEX=""  ## Very time consuming!
+    # Skip building vignettes, which iff LaTeX-based are very
+    # time consuming because LaTeX needs to be installed
     - R_BUILD_ARGS="--no-build-vignettes ${R_BUILD_ARGS}"
     - R_CHECK_ARGS="--no-build-vignettes ${R_CHECK_ARGS}"
 
