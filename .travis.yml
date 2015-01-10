@@ -4,6 +4,8 @@
 # REFERENCES:
 # [1] r-travis: https://github.com/craigcitro/r-travis
 # [2] r-builder: https://github.com/metacran/r-builder
+#
+# Validate your .travis.yml file at http://lint.travis-ci.org/
 #----------------------------------------------------------------
 language: c
 
@@ -23,6 +25,8 @@ env:
 
   matrix:
     - RVERSION=3.1.2
+    - RVERSION=release
+    - RVERSION=devel
 
 before_install:
   - echo PKGR=$PKGR
