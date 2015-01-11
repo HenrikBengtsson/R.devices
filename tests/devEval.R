@@ -60,6 +60,8 @@ types <- list(
   "dummy|png|jpg|pdf",         # "Non-existing", PNG, JPG and then PDF
   "quartz|x11|windows",        # Any interactive device (depending on OS)
   c("png|jpg", "x11|windows"), # PNG or JPG and then x11 or windows
+  "eps|postscript|pdf",        # EPS, Postscript or PDF
+  "jpeg2|jpeg",                # JPEG via bitmap() or via jpeg()
   "png,jpg|x11|windows"        # == c("png", "jpg|x11|windows")
 )
 
