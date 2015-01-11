@@ -49,7 +49,8 @@ install:
 #  - $PKGR github_package testthat
 #  - $PKGR github_package assertthat
 #  - $PKGR install_r_binary r.methodss3 r.oo r.utils
-  - $PKGR github_package jimhester/covr
+#  - $PKGR github_package jimhester/covr
+  - $PKGR github_package HenrikBengtsson/covr
   - $PKGR install_deps
 
 script: $PKGR run_tests
