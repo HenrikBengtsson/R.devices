@@ -6,7 +6,7 @@
 # * r-travis: https://github.com/craigcitro/r-travis
 # * r-builder: https://github.com/metacran/r-builder
 # * covr: https://github.com/jimhester/covr 
-# * 
+# * Coveralls: https://coveralls.io/
 #
 # Validate your .travis.yml file at http://lint.travis-ci.org/
 #----------------------------------------------------------------
