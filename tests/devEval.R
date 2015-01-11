@@ -72,7 +72,7 @@ for (type in types) {
 
   # Use try-catch in case not supported on some test systems
   tryCatch({
-    res <- devEval(type, name="any", aspectRatio=2/3, {
+    res <- devEval(type, name="any", aspectRatio=2/3, scale=1.2, {
       plot(100:1)
     })
     printf("Result: %s (%s)\n\n", sQuote(res), attr(res, "type"))
@@ -85,3 +85,20 @@ for (type in types) {
 
 # Sanity check
 stopifnot(all.equal(devList(), devList0))
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Plot a parsed expression
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+expr <- substitute(plot(1:10))
+tryCatch({
+  res <- devEval("png|jpg", name="any", width=480L, height=480L, {
+    plot(100:1)
+  })
+  printf("Result: %s (%s)\n\n", sQuote(res), attr(res, "type"))
+
+  devOff()
+}, error = function(ex) {
+  printf("Failed: %s\n\n", sQuote(ex$message))
+})
+
