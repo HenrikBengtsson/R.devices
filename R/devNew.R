@@ -239,9 +239,21 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Open (new or existing) device
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # New or existing?  
   if (is.na(devIdx)) {
     # (a) New, i.e. call the device function
+    devList0 <- devList();
+
     res <- do.call(type, args=args);
+
+    # Make sure a new device was indeed opened.  This can happen
+    # for graphics devices that does not throw an error, but only
+    # a warning, e.g. quartz().
+    opened <- setdiff(devList(), devList0);
+    if (length(opened) == 0L) {
+      throw("Failed to open graphics device: ", type);
+    }
+
     # Retrieve the index of the recently opened device
     devIdx <- dev.cur();
   } else {

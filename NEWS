@@ -2,6 +2,11 @@
 Package: R.devices
 ==================
 
+o ROBUSTNESS: devNew("quartz", which="foo") could set the label of
+  device #1(!) when quartz devices was not supported.  This was
+  because quartz() only gives a warning (and not an error) when 
+  it is not supported, so the internal code thought the devices
+  was succesfully opened.
 o CLEANUP: Using requireNamespace() instead of require() internally.
 
 
