@@ -13,6 +13,8 @@ for (ff in fields) {
 }
 
 
+library("R.devices")
+
 # An empty file product
 na <- DevEvalFileProduct()
 print(na)
