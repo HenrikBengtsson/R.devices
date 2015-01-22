@@ -1,11 +1,38 @@
 library("R.devices")
+printf <- R.utils::printf
 
 .devTypeName <- R.devices:::.devTypeName
 
-types <- list(character(0L), "png", "jpg", c("png", "png", "jpeg"))
-for (type in types) {
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# By name
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+types <- list(empty=character(0L), png="png", jpg="jpg", mixed=c("png", "png", "jpeg"))
+for (name in names(types)) {
+  type <- types[[name]]
+  printf("%s: .devTypeName(%s): ", name, deparse(type))
   res <- .devTypeName(type)
-  print(res)
-  stopifnot(is.character(res));
-  stopifnot(is.character(names(res)));
+  printf("'%s'\n", deparse(res))
+  stopifnot(is.character(res))
+  stopifnot(is.character(names(res)))
 }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# By function (returns the same function)
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+types <- list(png=grDevices::png, jpg=grDevices::jpeg)
+for (name in names(types)) {
+  type <- types[[name]]
+  printf("%s: .devTypeName(%s): ", name, deparse(args(type)))
+  res <- .devTypeName(type)
+  printf("'%s'\n", deparse(args(res)))
+  stopifnot(is.function(res))
+  stopifnot(identical(res, type))
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Special cases
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Special case: Default device
+type <- getOption("device")

@@ -4,9 +4,14 @@ Package: R.devices
 
 o ROBUSTNESS: devNew("quartz", which="foo") could set the label of
   device #1(!) when quartz devices was not supported.  This was
-  because quartz() only gives a warning (and not an error) when 
+  because quartz() only gives a warning (and not an error) when
   it is not supported, so the internal code thought the devices
   was succesfully opened.
+o BUG FIX: devEval(type, ...) gave 'Error in strsplit (type, 
+  split = "|", fixed = TRUE' if type was a device function.  
+  Added package tests showing that it's possible to do
+  devEval(type=grDevices::png, ext="png", plot(1:10)) in addition
+  to devEval(type="png", ext="png", plot(1:10)).
 o CLEANUP: Using requireNamespace() instead of require() internally.
 
 

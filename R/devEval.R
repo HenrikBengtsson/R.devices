@@ -102,9 +102,11 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   ## and not via 'expr', e.g. toX11({ plot(1:3) }).
   if (!hasExpr) {
     # Was the expression passed implicitly via 'name' instead?
-    # In order to infer this, we have to inspect the parent frame:
+    # In order to infer this, we have to inspect 'name' in the
+    # parent frame:
     nameClass <- eval(expression(class(substitute(name))), envir=parent.frame());
-    if (is.element(nameClass, c("call", "{", "("))) {
+    isExpr <- is.element(nameClass, c("call", "{", "("))
+    if (isTRUE(isExpr)) {
       # This avoid the plot expression to be evaluated here.
       delayedAssign("expr", name);
       hasExpr <- TRUE;
@@ -166,12 +168,16 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # Sanity check
   stopifnot(length(type) == 1L);
 
+
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # (c) Use first successful device type among several options?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  types <- unlist(strsplit(type, split="|", fixed=TRUE));
-  types <- trim(types);
-  types <- unique(types);
+  types <- type
+  if (is.character(types)) {
+    types <- unlist(strsplit(types, split="|", fixed=TRUE));
+    types <- trim(types);
+    types <- unique(types);
+  }
 
   if (length(types) > 1L) {
     res <- NULL;
@@ -232,7 +238,6 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Sanity check
   stopifnot(length(type) == 1L);
-
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
@@ -445,6 +450,8 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 
 ############################################################################
 # HISTORY:
+# 2015-01-21
+# o BUG FIX: devEval(type=<device function>, ..., ext) did not work.
 # 2014-09-16
 # o Added support regexpr device type names.
 # 2014-09-12

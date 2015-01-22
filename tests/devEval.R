@@ -102,3 +102,65 @@ tryCatch({
   printf("Failed: %s\n\n", sQuote(ex$message))
 })
 
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Special cases
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# toX11({ plot(1:10) }) actually results in a call to
+# devEval(type="x11", name={ plot(1:10) }); note argument 'name'
+# and not 'expr'.  The following tests that devEval() recognizes
+# and handles this internally.
+
+## FIXME: The current solution evaluates 'name' internally
+## and therefore opens a interactive graphics device.
+if (interactive()) {
+   res <- toDefault({ plot(1:10) })
+   print(res)
+
+   ## FIX ME:
+   graphics.off()
+}
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Device type specified as a device functions
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+types <- list(
+  png=grDevices::png,
+  jpg=grDevices::jpeg
+)
+
+for (name in names(types)) {
+  cat("Device types: ", paste(sQuote(name), collapse=", "), "\n", sep="")
+  type <- types[[name]]
+  str(args(type))
+  devList0 <- devList()
+  res <- devEval(type, ext=name, name="multi", aspectRatio=2/3, {
+    plot(1:10)
+  })
+  print(res)
+  stopifnot(length(res) == length(type))
+  stopifnot(all.equal(devList(), devList0))
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Special case: Default device
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+cat("Device types: 'default'\n")
+type <- getOption("device")
+str(type)
+devList0 <- devList()
+res <- devEval(type, ext="default", name="multi", aspectRatio=2/3, {
+  plot(1:10)
+})
+print(res)
+wasInteractiveOpened <- (length(setdiff(devList(), devList0)) > 0L)
+if (wasInteractiveOpened) devOff()
+
+
+
+# Sanity checks
+print(devList())
+stopifnot(length(devList()) == 0L)
