@@ -74,7 +74,7 @@
 
 \details{
   Both \code{toEMF()} and \code{toWMF()} use the exact same graphics
-  device and settings.  They only differ by filename exension.
+  device (\code{win.metafile()}) and settings.  They only differ by filename exension.  The \code{win.metafile()} device function exists on Windows and may not be available on other operating systems; check the \pkg{grDevices} package.
 }
 
 \author{Henrik Bengtsson}
