@@ -372,7 +372,8 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
             }
 
             # Try to rename
-            for (kk in seq_len(999L)) {
+            maxTries <- 999L
+            for (kk in seq_len(maxTries)) {
               pathnameN <- sprintf(fmtstr, kk);
               if (isFile(pathnameN)) next;
               resT <- file.rename(pathname, pathnameN);
@@ -384,8 +385,8 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
             } # for (kk ...)
 
             # Failed to rename?
-            if (isFile(pathname)) {
-              throw("Failed to rename incomplete image file: ", pathname);
+            if (!isFile(pathnameN) && isFile(pathname)) {
+              throw(sprintf("Failed to rename incomplete image file (after %d tries): %s", pathname, kk));
             }
           } # if (onIncomplete == ...)
         } # if (!done && isFile(...))
@@ -451,6 +452,8 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 ############################################################################
 # HISTORY:
 # 2015-01-21
+# o BUG FIX: Renaming incomplete files gave an error if there were already
+#   files renamed for similar reasons.
 # o BUG FIX: devEval(type=<device function>, ..., ext) did not work.
 # 2014-09-16
 # o Added support regexpr device type names.

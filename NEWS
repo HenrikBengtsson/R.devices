@@ -2,13 +2,16 @@
 Package: R.devices
 ==================
 
+Version: 2.12.x [2015-01-21]
 o ROBUSTNESS: devNew("quartz", which="foo") could set the label of
   device #1(!) when quartz devices was not supported.  This was
   because quartz() only gives a warning (and not an error) when
   it is not supported, so the internal code thought the devices
   was succesfully opened.
-o BUG FIX: devEval(type, ...) gave 'Error in strsplit (type, 
-  split = "|", fixed = TRUE' if type was a device function.  
+o BUG FIX: Renaming incomplete files gave an error if there were
+  already files renamed for similar reasons.  Added package test.
+o BUG FIX: devEval(type, ...) gave 'Error in strsplit (type,
+  split = "|", fixed = TRUE' if type was a device function.
   Added package tests showing that it's possible to do
   devEval(type=grDevices::png, ext="png", plot(1:10)) in addition
   to devEval(type="png", ext="png", plot(1:10)).
