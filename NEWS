@@ -2,7 +2,12 @@
 Package: R.devices
 ==================
 
-Version: 2.12.x [2015-01-21]
+Version: 2.12.x [2015-02-02]
+o ROBUSTNESS: When calling devEval() on multiple devices then
+  underlying graphics device functions no longer gives an error
+  of unknown arguments, which means it is now possible to pass
+  device specific arguments also when in multi-device calls, e.g.
+  devEval(c("x11", "png"), res=100, { plot(1:10) }).
 o ROBUSTNESS: devNew("quartz", which="foo") could set the label of
   device #1(!) when quartz devices was not supported.  This was
   because quartz() only gives a warning (and not an error) when
