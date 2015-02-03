@@ -18,7 +18,8 @@
 }
 
 \usage{
-eps(file="Rplot\%03d.eps", width=7, height=7, horizontal=FALSE, paper="special", ...)
+eps(file="Rplot\%03d.eps", width=7, height=7, horizontal=FALSE, paper="special",
+  onefile=FALSE, ...)
 }
 
 \arguments{
@@ -28,6 +29,7 @@ eps(file="Rplot\%03d.eps", width=7, height=7, horizontal=FALSE, paper="special",
         otherwise a portrait file is created.}
   \item{paper}{A \code{\link[base]{character}} string specifying the paper type. Overrides
         the default of \code{postscript()}.}
+  \item{onefile}{Not used.}
   \item{...}{Other arguments accepted by \code{postscript()}.}
 }
 

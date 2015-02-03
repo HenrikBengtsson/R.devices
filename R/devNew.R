@@ -201,6 +201,51 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Acknowledge other default device arguments
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  dargs <- devOptions(type)
+  for (name in names(dargs)) {
+    ## For now, never set the default filename.
+    ## FIXME: Maybe in the future if someone really needs this.
+    ## /HB 2015-02-02
+    if (is.element(name, c("file", "filename"))) next;
+
+    value <- args[[name]]
+    if (is.null(value)) {
+      value <- dargs[[name]]
+      ## AD HOC: Supported values of multiple-choice arguments are
+      ## often specified as vectors in device function values (e.g.
+      ## (type=c("windows", "cairo", ...)) where the actual default
+      ## is often only the first value, e.g. type <- match.arg(type).
+      ## These default argument values are picked up by devOptions()
+      ## as 'language' objects (not character vectors).
+      ## For now, let's simply assume we can drop such values
+      ## because they don't change the default anyway. /HB 2015-02-02
+      ##
+      ## FIXME: Maybe this is an assumption that should be dealt with
+      ## by devOptions(), not here?!? /HB 2015-02-02
+      ##
+      ## Maybe it's even safer to compare the devOptions() value with
+      ## the originally/raw inferred default value and if they're
+      ## equal, we can skip using the devOptions() value.  That way
+      ## we are even safer. /HB 2015-02-02
+      if (is.language(value)) next;
+
+      args[[name]] <- value
+
+      if (getOption("R.devices::devNew/debug", FALSE)) {
+        R.utils::mstr(list(name=name, value0=dargs[[name]], value=args[[name]]))
+      }
+    }
+  }
+  dargs <- NULL  # Not needed anymore
+  dups <- names(args)[duplicated(names(args))]
+  if (length(dups) > 0L) {
+    throw("INTERNAL ERROR: Detected duplicated arguments: ", paste(sQuote(dups)), collapse=", ")
+  }
+
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Exclude 'file' and 'filename' arguments?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   isInteractive <- devIsInteractive(type);
@@ -245,20 +290,20 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Open (new or existing) device
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  typeT <- type
+  if (.allowUnknownArgs) {
+    # (b) Temporary append '...' to the device function to make it
+    #     allow for more "unknown" arguments
+    if (!is.function(type)) {
+      typeT <- get(type, mode="function", inherits=TRUE)
+    }
+    typeT <- appendVarArgs(typeT)
+  }
+
   # New or existing?
   if (is.na(devIdx)) {
     # (a) New, i.e. call the device function
     devList0 <- devList();
-
-    typeT <- type
-    if (.allowUnknownArgs) {
-      # (b) Temporary append '...' to the device function to make it
-      #     allow for more "unknown" arguments
-      if (!is.function(type)) {
-        typeT <- get(type, mode="function", inherits=TRUE)
-      }
-      typeT <- appendVarArgs(typeT)
-    }
 
     if (getOption("R.devices::devNew/debug", FALSE)) {
       call <- list("devNew", typeT=typeT, args=args)
@@ -282,8 +327,8 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
     dev <- devSet(devIdx);
 
     # Assert that the existing device is of the requested type
-    if (!.devEqualTypes(type, other=names(dev), args=args)) {
-      if (is.function(type)) type <- "<a function>";
+    if (!.devEqualTypes(typeT, other=names(dev), args=args)) {
+      if (is.function(typeT)) type <- "<a function>";
       throw(sprintf("Detected an existing devices with the requested label (which='%s'), but its device type is different from the requested type: '%s' != '%s'", names(devIdx), type, names(dev)));
     }
     # Make sure not to reset the device label below
@@ -311,6 +356,10 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
 
 ############################################################################
 # HISTORY:
+# 2015-02-02
+# o BUG FIX: devOptions() would be ignored for devices that do not
+#   have an explicit <type>.options() function.  Now devNew() takes
+#   care of this.
 # 2014-04-27
 # o Added support for (hidden) argument 'which' to devNew(), such that
 #   devNew(type, which=which) avoids opening a new device iff an existing
