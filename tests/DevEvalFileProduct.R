@@ -1,3 +1,6 @@
+## Record for cleanup
+oopts <- R.devices::devOptions("*")
+
 # Return the DevEvalProduct object by default
 R.devices::devOptions("*", field="*")
 
@@ -18,3 +21,7 @@ library("R.devices")
 # An empty file product
 na <- DevEvalFileProduct()
 print(na)
+
+
+## Cleanup
+R.devices::devOptions("*", field=oopts$field)
