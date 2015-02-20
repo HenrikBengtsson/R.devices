@@ -1,6 +1,6 @@
 <%@meta language="R-vignette" content="--------------------------------
 DIRECTIVES FOR R:
-\VignetteIndexEntry{R.devices overview}
+%\VignetteIndexEntry{R.devices overview}
 %\VignetteAuthor{Henrik Bengtsson}
 %\VignetteKeyword{devices}
 %\VignetteKeyword{graphics}
