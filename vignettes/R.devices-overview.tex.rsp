@@ -1,25 +1,27 @@
 <%@meta language="R-vignette" content="--------------------------------
-  DIRECTIVES FOR R:
-
-  %\VignetteIndexEntry{R.devices overview}
-  %\VignetteAuthor{Henrik Bengtsson}
-  %\VignetteKeyword{devices, graphics, plots, figures}
-  %\VignetteEngine{R.rsp::rsp}
+DIRECTIVES FOR R:
+\VignetteIndexEntry{R.devices overview}
+%\VignetteAuthor{Henrik Bengtsson}
+%\VignetteKeyword{devices}
+%\VignetteKeyword{graphics}
+%\VignetteKeyword{plots}
+%\VignetteKeyword{figures}
+%\VignetteEngine{R.rsp::rsp}
 --------------------------------------------------------------------"%>
 
 <% t0 <- Sys.time() %>
 
 <%
-library("R.devices");
+library("R.devices")
 R.rsp <- R.oo::Package("R.rsp")
 withCapture <- R.utils::withCapture
 hpaste <- R.utils::hpaste
 
-devOptions("png", width=840);
+devOptions("png", width=840)
 devOptions("png", field="fullname") # Better for LaTeX
-options(width=85);
-options(digits=3);
-options(str=strOptions(strict.width="cut"));
+options(width=85)
+options(digits=3)
+options(str=strOptions(strict.width="cut"))
 %>
 
 \documentclass[letter,12pt]{article}
@@ -174,9 +176,9 @@ toPNG("GaussianDensity,large", aspectRatio=0.6, scale=2, \{
 \})
 \end{rspVerbatim}
 <%
-envir <- getNamespace("R.devices");
-tos <- ls(pattern="^to[A-Z][a-zA-Z]+", envir=envir);
-tos <- sprintf("%s()", tos);
+envir <- getNamespace("R.devices")
+tos <- ls(pattern="^to[A-Z][a-zA-Z]+", envir=envir)
+tos <- sprintf("%s()", tos)
 %>
 The following \code{toNNN()} functions are currently available: <%=hpaste(sprintf("\\code{%s}", tos), maxHead=Inf, lastCollapse=", and ")%>.
 
@@ -240,7 +242,7 @@ By using RSP markup, image files can be included in for instance LaTeX, Sweave a
  \begin{center}
  \resizebox{0.70\textwidth}{!}{%
   \includegraphics{<%=toPDF("MyGaussianDensity", aspectRatio=0.6, {
-   curve(dnorm, from=-5, to=+5);
+   curve(dnorm, from=-5, to=+5)
   })%>}
  }%
  \end{center}
