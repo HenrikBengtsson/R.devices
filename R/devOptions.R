@@ -322,7 +322,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   # Argument 'type':
   if (missing(type) || length(type) == 0L) {
     if (nopts > 0L) {
-      throw("Cannot set device options. Argument 'type' is missing or NULL. Should be one of: ", paste(sprintf("'%s'", knownTypes), collapse=", "));
+      throw("Cannot set device options. Argument 'type' is missing or NULL. Should be one of: ", paste(sQuote(knownTypes), collapse=", "));
     }
 
     res <- devOptions(type=knownTypes, custom=custom, special=special, inherits=inherits, drop=drop, reset=reset);
@@ -342,7 +342,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (length(type) > 1L) {
     if (nopts > 0L) {
-      throw("Cannot set device options for more than one devices at the time: ", hpaste(sprintf("'%s'", type), collapse=", "));
+      throw("Cannot set device options for more than one devices at the time: ", hpaste(sQuote(type), collapse=", "));
     }
 
     # Support vector of 'type':s
@@ -368,7 +368,9 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     type <- findDeviceFunction(fcn=type);
   }
   if (is.character(type)) {
-    type <- match.arg(type, choices=knownTypes);
+    if (!is.element(type, knownTypes)) {
+      throw(sprintf("Device type %s is not known/supported on this operating system/platform. Supported devices types are: %s", sQuote(type), paste(sQuote(setdiff(knownTypes, "*")), collapse=", ")))
+    }
   }
 
   if (!is.element(type, names(devList))) {
