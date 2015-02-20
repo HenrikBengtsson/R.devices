@@ -368,7 +368,9 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     type <- findDeviceFunction(fcn=type);
   }
   if (is.character(type)) {
-    type <- match.arg(type, choices=knownTypes);
+    if (!is.element(type, knownTypes)) {
+      throw(sprintf("Device type %s is not a known/supported one on this operating system/platform. Supported devices types are: %s", sQuote(type), paste(sQuote(knownTypes), collapse=", ")))
+    }
   }
 
   if (!is.element(type, names(devList))) {
