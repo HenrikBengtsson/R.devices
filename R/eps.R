@@ -17,6 +17,7 @@
 #         otherwise a portrait file is created.}
 #   \item{paper}{A @character string specifying the paper type. Overrides
 #         the default of \code{postscript()}.}
+#   \item{onefile}{Not used.}
 #   \item{...}{Other arguments accepted by \code{postscript()}.}
 # }
 #
@@ -54,8 +55,9 @@
 # @keyword device
 # @keyword internal
 #*/#########################################################################
-eps <- function(file="Rplot%03d.eps", width=7, height=7, horizontal=FALSE, paper="special", ...) {
-  postscript(file=file, width=width, height=height, horizontal=horizontal, paper=paper, onefile=FALSE, ...);
+eps <- function(file="Rplot%03d.eps", width=7, height=7, horizontal=FALSE, paper="special", onefile=FALSE, ...) {
+  onefile <- FALSE
+  postscript(file=file, width=width, height=height, horizontal=horizontal, paper=paper, onefile=onefile, ...);
 }
 
 
