@@ -2,7 +2,7 @@
 Package: R.devices
 ==================
 
-Version: 2.12.x [2015-02-20]
+Version: 2.13.0 [2015-02-21]
 o ROBUSTNESS/TESTS: Package coverage 74% [was 64%].
 o ROBUSTNESS: When calling devEval() on multiple devices then
   underlying graphics device functions no longer gives an error
