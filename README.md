@@ -1,5 +1,6 @@
 # R package: R.devices
 
+
 ## Installation
 Package is available on [CRAN](http://cran.r-project.org/package=R.devices).  Install in R as:
 ```r
