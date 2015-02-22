@@ -17,6 +17,7 @@ env:
     - RENV="./pkg-build.sh"    # r-builder
     - R_BUILD_ARGS="--no-manual"
     - R_CHECK_ARGS="--no-manual --as-cran"
+    - _R_CHECK_CRAN_INCOMING_=TRUE
     - _R_CHECK_FORCE_SUGGESTS_=false
     # Need LaTeX? (very time consuming!)
     - BOOTSTRAP_LATEX=""
