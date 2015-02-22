@@ -17,6 +17,7 @@ pkg <- function() pd()$Package
 
 deps <- function(what=c("Depends", "Imports", "Suggests")) {
   deps <- unlist(pd()[what], use.names=FALSE)
+  if (length(deps) == 0) return("")
   deps <- unlist(strsplit(deps, split=","), use.names=FALSE)
   deps <- gsub("[(].*[)]", "", deps)
   deps <- gsub("[ \n\t]", "", deps)
