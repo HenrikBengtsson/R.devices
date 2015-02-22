@@ -7,6 +7,7 @@ Changes related to R/CRAN updates:
 * Registering S3 methods.
 * Using requireNamespace() instead of require().
 
+
 Follow up on 2015-02-21:
 * Dropped 'This package...' from Description.
 
