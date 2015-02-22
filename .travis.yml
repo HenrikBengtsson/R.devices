@@ -13,10 +13,10 @@ language: c
 
 env:
   global:
-    # Use r-travis or r-builder?
     - RENV="./pkg-build.sh"    # r-builder
     - R_BUILD_ARGS="--no-manual"
     - R_CHECK_ARGS="--no-manual --as-cran"
+    - _R_CHECK_CRAN_INCOMING_=TRUE
     - _R_CHECK_FORCE_SUGGESTS_=false
     # Need LaTeX? (very time consuming!)
     - BOOTSTRAP_LATEX=""
@@ -24,7 +24,6 @@ env:
     # time consuming because LaTeX needs to be installed
 #    - R_BUILD_ARGS="--no-build-vignettes ${R_BUILD_ARGS}"
 #    - R_CHECK_ARGS="--no-build-vignettes ${R_CHECK_ARGS}"
-    - _R_CHECK_CRAN_INCOMING_=TRUE
 
   # R versions r-builder should test on (ignored by r-travis)
   matrix:
