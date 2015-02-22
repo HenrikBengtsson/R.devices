@@ -1,3 +1,82 @@
+<%------------------------------------------------------------------------
+ Usage:
+ yml <- R.rsp::rfile(".travis.yml.rsp")
+ ------------------------------------------------------------------------%>
+<%
+pd <- local({
+  pd <- NULL
+  function() {
+    if (is.null(pd)) {
+      pd <<- as.list(as.data.frame(read.dcf("DESCRIPTION"), stringsAsFactors=FALSE))
+    }
+    pd
+  }
+})
+
+pkg <- function() pd()$Package
+
+deps <- function(what=c("Depends", "Imports", "Suggests")) {
+  deps <- unlist(pd()[what], use.names=FALSE)
+  deps <- unlist(strsplit(deps, split=","), use.names=FALSE)
+  deps <- gsub("[(].*[)]", "", deps)
+  deps <- gsub("[ \n\t]", "", deps)
+  deps <- setdiff(deps, c("R", "base", "datasets", "graphics", "grDevices", "methods", "parallel", "stats", "tcltk", "tools", "utils"))
+  sort(deps)
+}
+
+cran <- local({
+  pkgs <- NULL
+  function() {
+    if (is.null(pkgs)) {
+      repos <- "http://cran.r-project.org"
+      data <- available.packages(contriburl=contrib.url(repos, "source"))
+      pkgs <<- rownames(data)
+    }
+    pkgs
+  }
+})
+
+bioc <- local({
+  pkgs <- NULL
+  function() {
+    if (is.null(pkgs)) {
+      repos <- "http://www.bioconductor.org/packages/devel/bioc/"
+      data <- available.packages(contriburl=contrib.url(repos, "source"))
+      pkgs <<- rownames(data)
+    }
+    pkgs
+  }
+})
+
+deps_on_cran <- function(...) {
+  deps <- deps(...)
+  deps[deps %in% cran()]
+}
+
+deps_on_bioc <- function(...) {
+  deps <- deps(...)
+  deps[deps %in% bioc()]
+}
+
+deps_elsewhere <- function(...) {
+  deps <- deps(...)
+  deps[!deps %in% c(cran(), bioc())]
+}
+
+install_cran <- function(...) {
+  pkgs <- deps_on_cran(...)
+  if (length(pkgs) > 0L) {
+    sprintf(" - $RENV install_r %s", paste(pkgs, collapse=" "))
+  } else ""
+}
+
+install_bioc <- function(...) {
+  pkgs <- deps_on_bioc(...)
+  if (length(pkgs) > 0L) {
+    sprintf(" - $RENV install_bioc %s", paste(pkgs, collapse=" "))
+  } else ""
+}
+%>
 #----------------------------------------------------------------
 # Travis-CI configuration for R packages
 #
@@ -45,10 +124,10 @@ before_install:
     fi
 
 install:
- - $RENV install_r base64enc R.methodsS3 R.oo R.utils
-
- - $RENV install_r Cairo digest R.rsp
-
+<%= install_cran(c("Depends", "Imports")) %>
+<%= install_bioc(c("Depends", "Imports")) %>
+<%= install_cran("Suggests") %>
+<%= install_bioc("Suggests") %>
 
 script:
   - $RENV run_build

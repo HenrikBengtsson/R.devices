@@ -30,10 +30,11 @@
   To cite this package, please use:
 \preformatted{
 @Manual{,
-  title = {R.devices: Unified handling of graphics devices},
+  title = {R.devices: Unified Handling of Graphics Devices},
   author = {Henrik Bengtsson},
-  year = {2014},
-  note = {R package version 2.12.0},
+  year = {2015},
+  note = {R package version 2.13.0},
+  url = {https://github.com/HenrikBengtsson/R.devices},
 }
 }
 }

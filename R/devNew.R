@@ -113,6 +113,12 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # Arguments to be passed to the device function
   args <- list(...);
 
+  ## Secret argument from devEval(), which is intended to be used when
+  ## multiple devices are used and not all accepts the same arguments.
+  .allowUnknownArgs <- args$.allowUnknownArgs
+  if (is.null(.allowUnknownArgs)) .allowUnknownArgs <- FALSE
+  args$.allowUnknownArgs <- NULL
+
   # Drop 'width' and 'height', iff NULL (=treat as non-specified/missing)
   args$width <- args$width;
   args$height <- args$height;
@@ -239,9 +245,36 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Open (new or existing) device
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # New or existing?
   if (is.na(devIdx)) {
     # (a) New, i.e. call the device function
-    res <- do.call(type, args=args);
+    devList0 <- devList();
+
+    typeT <- type
+    if (.allowUnknownArgs) {
+      # (b) Temporary append '...' to the device function to make it
+      #     allow for more "unknown" arguments
+      if (!is.function(type)) {
+        typeT <- get(type, mode="function", inherits=TRUE)
+      }
+      typeT <- appendVarArgs(typeT)
+    }
+
+    if (getOption("R.devices::devNew/debug", FALSE)) {
+      call <- list("devNew", typeT=typeT, args=args)
+      R.utils::mstr(call)
+    }
+
+    res <- do.call(typeT, args=args);
+
+    # Make sure a new device was indeed opened.  This can happen
+    # for graphics devices that does not throw an error, but only
+    # a warning, e.g. quartz().
+    opened <- setdiff(devList(), devList0);
+    if (length(opened) == 0L) {
+      throw("Failed to open graphics device: ", type);
+    }
+
     # Retrieve the index of the recently opened device
     devIdx <- dev.cur();
   } else {

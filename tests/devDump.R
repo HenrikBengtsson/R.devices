@@ -54,5 +54,5 @@ if (interactive()) {
 
   # Close all opened devices
   devOff(idxs)
-} # if (interacthive())
+} # if (interactive())
 

@@ -72,9 +72,11 @@
   For \code{toFavicon()} the default return value is a \code{\link[base]{character}} string.
 }
 
-\details{
+\section{Windows Metafile Format}{
   Both \code{toEMF()} and \code{toWMF()} use the exact same graphics
-  device and settings.  They only differ by filename exension.
+  device (\code{win.metafile()}) and settings.  They only differ by
+  filename exension.  The \code{win.metafile()} device function exists
+  on Windows only; see the \pkg{grDevices} package for more details.
 }
 
 \author{Henrik Bengtsson}

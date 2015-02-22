@@ -37,7 +37,7 @@
 #     overwritten, otherwise not.}
 #   \item{which}{A @vector of devices to be copied.  Only applied if
 #     argument \code{expr} is missing.}
-#   \item{.exprAsIs}{(Internal use only).}
+#   \item{.exprAsIs, .allowUnknownArgs}{(Internal use only).}
 # }
 #
 # \value{
@@ -74,7 +74,7 @@
 # @keyword device
 # @keyword utilities
 #*/###########################################################################
-devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getDevOption(type, "sep", default=","), ..., ext=NULL, filename=NULL, path=getDevOption(type, "path", default="figures"), field=getDevOption(type, name="field"), onIncomplete=c("remove", "rename", "keep"), force=getDevOption(type, "force", default=TRUE), which=dev.cur(), .exprAsIs=FALSE) {
+devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL, envir=parent.frame(), name=NULL, tags=NULL, sep=getDevOption(type, "sep", default=","), ..., ext=NULL, filename=NULL, path=getDevOption(type, "path", default="figures"), field=getDevOption(type, name="field"), onIncomplete=c("remove", "rename", "keep"), force=getDevOption(type, "force", default=TRUE), which=dev.cur(), .exprAsIs=FALSE, .allowUnknownArgs=FALSE) {
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Vectorized version
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -92,6 +92,12 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # Argument 'expr':
   hasExpr <- !missing(expr);
 
+  # Argument '.allowUnknownArgs':
+  ## If TRUE, it tells devNew() that it's ok to silently ignore
+  ## arguments not recognized by certain device functions.
+  ## Used when multiple device types are used in one devEval() call.
+  .allowUnknownArgs <- as.logical(.allowUnknownArgs);
+
 
   ## Expand device type names by regexp matching, iff any
   type <- .devTypeName(type, pattern=TRUE);
@@ -102,9 +108,11 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   ## and not via 'expr', e.g. toX11({ plot(1:3) }).
   if (!hasExpr) {
     # Was the expression passed implicitly via 'name' instead?
-    # In order to infer this, we have to inspect the parent frame:
+    # In order to infer this, we have to inspect 'name' in the
+    # parent frame:
     nameClass <- eval(expression(class(substitute(name))), envir=parent.frame());
-    if (is.element(nameClass, c("call", "{", "("))) {
+    isExpr <- is.element(nameClass, c("call", "{", "("))
+    if (isTRUE(isExpr)) {
       # This avoid the plot expression to be evaluated here.
       delayedAssign("expr", name);
       hasExpr <- TRUE;
@@ -125,7 +133,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     for (kk in seq_along(which)) {
       idx <- which[kk];
       devSet(idx);
-      res[[kk]] <- devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=idx);
+      res[[kk]] <- devEval(type=type, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=idx, .allowUnknownArgs=TRUE);
     } # for (idx ...)
     names(res) <- names(which);
     return(res);
@@ -147,12 +155,12 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
 
       # Evaluate 'expr' once per graphics device
       res <- lapply(types, FUN=function(type) {
-        devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, .exprAsIs=TRUE);
+        devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, .exprAsIs=TRUE, .allowUnknownArgs=TRUE);
       });
     } else {
       # Evaluate 'expr' once per output device
       res <- lapply(types, FUN=function(type) {
-        devEval(type=type,            initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=which);
+        devEval(type=type,            initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=which, .allowUnknownArgs=TRUE);
       });
     } # if (hasExpr)
     names(res) <- types;
@@ -166,12 +174,16 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # Sanity check
   stopifnot(length(type) == 1L);
 
+
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # (c) Use first successful device type among several options?
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  types <- unlist(strsplit(type, split="|", fixed=TRUE));
-  types <- trim(types);
-  types <- unique(types);
+  types <- type
+  if (is.character(types)) {
+    types <- unlist(strsplit(types, split="|", fixed=TRUE));
+    types <- trim(types);
+    types <- unique(types);
+  }
 
   if (length(types) > 1L) {
     res <- NULL;
@@ -187,7 +199,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
       # Evaluate 'expr' once per graphics device
       for (type in types) {
         tryCatch({
-          res <- devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, .exprAsIs=TRUE);
+          res <- devEval(type=type, expr=expr, initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, .exprAsIs=TRUE, .allowUnknownArgs=TRUE);
           attr(res, "type") <- type;
           break
         }, error = function(ex) {
@@ -198,7 +210,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
       # Evaluate 'expr' once per output device
       for (type in types) {
         tryCatch({
-          res <- devEval(type=type,            initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=which);
+          res <- devEval(type=type,            initially=NULL, finally=NULL, envir=envir, name=nameOrg, tags=tags, sep=sep, ..., ext=ext, filename=filename, path=path, field=field, onIncomplete=onIncomplete, force=force, which=which, .allowUnknownArgs=TRUE);
           attr(res, "type") <- type;
           break
         }, error = function(ex) {
@@ -232,7 +244,6 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Sanity check
   stopifnot(length(type) == 1L);
-
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments
@@ -299,8 +310,6 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # Argument 'force':
   force <- Arguments$getLogical(force);
 
-
-
   devIdx <- NULL;
   if (!isInteractive) {
     # Make sure the currently open device, iff any, is still the active
@@ -332,9 +341,9 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   if (force || isInteractive || !isFile(pathname)) {
     # Open device
     if (isInteractive) {
-      devIdx <- devNew(type, which=fullname, ...);
+      devIdx <- devNew(type, which=fullname, ..., .allowUnknownArgs=.allowUnknownArgs);
     } else {
-      devIdx <- devNew(type, pathname, ...);
+      devIdx <- devNew(type, pathname, ..., .allowUnknownArgs=.allowUnknownArgs);
 
       on.exit({
         # Make sure to close the device (the same that was opened),
@@ -367,7 +376,8 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
             }
 
             # Try to rename
-            for (kk in seq_len(999L)) {
+            maxTries <- 999L
+            for (kk in seq_len(maxTries)) {
               pathnameN <- sprintf(fmtstr, kk);
               if (isFile(pathnameN)) next;
               resT <- file.rename(pathname, pathnameN);
@@ -379,8 +389,8 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
             } # for (kk ...)
 
             # Failed to rename?
-            if (isFile(pathname)) {
-              throw("Failed to rename incomplete image file: ", pathname);
+            if (!isFile(pathnameN) && isFile(pathname)) {
+              throw(sprintf("Failed to rename incomplete image file (after %d tries): %s", pathname, kk));
             }
           } # if (onIncomplete == ...)
         } # if (!done && isFile(...))
@@ -445,6 +455,16 @@ devDump <- function(type=c("png", "pdf"), ..., path=NULL, envir=parent.frame(), 
 
 ############################################################################
 # HISTORY:
+# 2015-02-01
+# o ROBUSTNESS: When calling devEval() on multiple devices then
+#   underlying graphics device functions no longer gives an error
+#   of unknown arguments, which means it is now possible to pass
+#   device specific arguments also when in multi-device calls, e.g.
+#   devEval(c("x11", "png"), res=100, { plot(1:10) }).
+# 2015-01-21
+# o BUG FIX: Renaming incomplete files gave an error if there were already
+#   files renamed for similar reasons.
+# o BUG FIX: devEval(type=<device function>, ..., ext) did not work.
 # 2014-09-16
 # o Added support regexpr device type names.
 # 2014-09-12

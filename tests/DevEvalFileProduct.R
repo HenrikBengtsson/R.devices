@@ -11,3 +11,10 @@ fields <- c("name", "fullname", "filename", "pathname", "dataURI")
 for (ff in fields) {
   cat(sprintf("%s: %s\n", ff, substring(res[[ff]], 1, 50)))
 }
+
+
+library("R.devices")
+
+# An empty file product
+na <- DevEvalFileProduct()
+print(na)

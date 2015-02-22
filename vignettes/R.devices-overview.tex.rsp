@@ -1,25 +1,27 @@
 <%@meta language="R-vignette" content="--------------------------------
-  DIRECTIVES FOR R:
-
-  %\VignetteIndexEntry{R.devices overview}
-  %\VignetteAuthor{Henrik Bengtsson}
-  %\VignetteKeyword{devices, graphics, plots, figures}
-  %\VignetteEngine{R.rsp::rsp}
+DIRECTIVES FOR R:
+%\VignetteIndexEntry{R.devices overview}
+%\VignetteAuthor{Henrik Bengtsson}
+%\VignetteKeyword{devices}
+%\VignetteKeyword{graphics}
+%\VignetteKeyword{plots}
+%\VignetteKeyword{figures}
+%\VignetteEngine{R.rsp::rsp}
 --------------------------------------------------------------------"%>
 
 <% t0 <- Sys.time() %>
 
 <%
-library("R.devices");
+library("R.devices")
 R.rsp <- R.oo::Package("R.rsp")
 withCapture <- R.utils::withCapture
 hpaste <- R.utils::hpaste
 
-devOptions("png", width=840);
+devOptions("png", width=840)
 devOptions("png", field="fullname") # Better for LaTeX
-options(width=85);
-options(digits=3);
-options(str=strOptions(strict.width="cut"));
+options(width=85)
+options(digits=3)
+options(str=strOptions(strict.width="cut"))
 %>
 
 \documentclass[letter,12pt]{article}
@@ -118,7 +120,7 @@ png("GaussianDensity.png", width=480, height=0.6*480)
 curve(dnorm, from=-5, to=+5)
 dev.off()
 \end{rspVerbatim}
-Changing output formats is not only tedious but also error prone, e.g. you may forget to change the filename extension or create images with ridiculously large or small dimensions.
+Changing output formats is not only tedious but also error prone, e.g. you may forget to change the filename extension or create images with ridiculously large or small dimensions because units are not the same across devices types.
 
 
 \subsection{devEval()}
@@ -142,7 +144,7 @@ devEval("png", name="GaussianDensity,large", aspectRatio=0.6, scale=2, \{
 \})
 \end{rspVerbatim}
 creates a PNG file named \file{GaussianDensity,large.png} that is 960 pixels wide and 576 pixels tall.
-Note also how in none of the above examples there is a need for closing the device via \code{dev.new()}, which is sometimes forgotten, particularly by newcomers to R.  The graphical device opened is also guaranteed to be closed by \code{devEval()} regardless of errors or interrupts (Section~\ref{secRobust}).
+Note also how in none of the above examples there is a need for closing the device via \code{dev.off()}, which is sometimes forgotten, particularly by newcomers to R.  The graphical device opened is also guaranteed to be closed by \code{devEval()} regardless of errors or interrupts (Section~\ref{secRobust}).
 
 
 
@@ -157,7 +159,7 @@ creates image files \file{GaussianDensity.pdf}, \file{GaussianDensity.png}, and 
 
 
 \subsection{Creating one image file trying different device types}
-Some image formats, or more precisely some device types, are only supported on certain systems.  If that is the case, and several different image formats work equally, \code{devEval()} can be used to generate an image file based on the first supported device type.  For instance,
+Some image formats, or more precisely some device types, are only supported on certain systems.  If that is the case, and it does not matter exactly which of many image formats is used, then \code{devEval()} can be used to generate an image file based on the first supported device type.  For instance,
 \begin{rspVerbatim}
 devEval("png|pdf|eps", name="GaussianDensity", aspectRatio=0.6, {
   curve(dnorm, from=-5, to=+5)
@@ -174,9 +176,9 @@ toPNG("GaussianDensity,large", aspectRatio=0.6, scale=2, \{
 \})
 \end{rspVerbatim}
 <%
-envir <- getNamespace("R.devices");
-tos <- ls(pattern="^to[A-Z][a-zA-Z]+", envir=envir);
-tos <- sprintf("%s()", tos);
+envir <- getNamespace("R.devices")
+tos <- ls(pattern="^to[A-Z][a-zA-Z]+", envir=envir)
+tos <- sprintf("%s()", tos)
 %>
 The following \code{toNNN()} functions are currently available: <%=hpaste(sprintf("\\code{%s}", tos), maxHead=Inf, lastCollapse=", and ")%>.
 
@@ -200,13 +202,13 @@ for (ar in c(0.6, 0.8)) \{
 \})
 \end{rspVerbatim}
 which creates six images files (\file{GaussianDensity,aspect=0.6,scale=2.eps}, \file{GaussianDensity,aspect=0.6,scale=3.eps}, ..., and \file{GaussianDensity,aspect=0.8,scale=4.eps}).
-To use a different separator use argument \code{sep}, or change the global device option, e.g.
+To use a different separator specify argument \code{sep}, or change the global device option, e.g.
 \begin{rspVerbatim}
 devOptions("*", sep="_")
 \end{rspVerbatim}
 
 \subsection{Overwriting existing figure files}
-By default, existing figure files created by \code{devEval()/toNNN()} are overwritten wihtout notice.  By passing argument \code{force=FALSE} to \code{devEval()}, existing figure files will be skipped.  To change the default, do:
+By default, existing figure files created by \code{devEval()/toNNN()} are overwritten without notice.  By passing argument \code{force=FALSE} to \code{devEval()}, existing figure files will be skipped.  To change the default, do:
 \begin{rspVerbatim}
 devOptions("*", force=FALSE)
 \end{rspVerbatim}
@@ -240,7 +242,7 @@ By using RSP markup, image files can be included in for instance LaTeX, Sweave a
  \begin{center}
  \resizebox{0.70\textwidth}{!}{%
   \includegraphics{<%=toPDF("MyGaussianDensity", aspectRatio=0.6, {
-   curve(dnorm, from=-5, to=+5);
+   curve(dnorm, from=-5, to=+5)
   })%>}
  }%
  \end{center}
