@@ -7,6 +7,9 @@ Changes related to R/CRAN updates:
 * Registering S3 methods.
 * Using requireNamespace() instead of require().
 
+Follow up on 2015-02-21:
+* Dropped 'This package...' from Description.
+
 
 ## Notes not sent to CRAN
 R.devices 2.13.0 and its 7 reverse-dependent packages(*) have been verified using `R CMD build` and `R CMD check --as-cran` on
