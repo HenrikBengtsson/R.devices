@@ -43,6 +43,8 @@ export("R.devices")
 
 export("withPar")
 
+export("capabilitiesX11")
+
 export("devDump")
 export("devEval")
 export("devIsOpen")

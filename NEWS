@@ -2,7 +2,8 @@
 Package: R.devices
 ==================
 
-Version: 2.13.0-9000 [2015-07-01]
+Version: 2.13.0-9000 [2015-09-10]
+o Add capabilitiesX11().
 o Explicit import of 'utils' and 'graphics' functions.
 
 
