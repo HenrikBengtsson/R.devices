@@ -36,7 +36,7 @@ capabilitiesX11(...)
 \author{Henrik Bengtsson}
 
 \seealso{
- \code{\link{also}} base::capabilities
+ \code{\link[base]{capabilities}}()
 }
 
 

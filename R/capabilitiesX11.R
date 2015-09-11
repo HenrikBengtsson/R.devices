@@ -25,7 +25,7 @@
 # @author
 #
 # \seealso{
-#  @seealso base::capabilities
+#  @see base::capabilities
 # }
 #
 # @keyword device
@@ -36,5 +36,5 @@ capabilitiesX11 <- function(...) {
   cmd <- "cat(capabilities('X11'))"
   args <- c(..., "-e", dQuote(cmd))
   value <- system2(bin, args=args, stdout=TRUE)
-  as.logical(value)
+  isTRUE(as.logical(value))
 }
