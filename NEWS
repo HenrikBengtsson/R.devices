@@ -2,9 +2,11 @@
 Package: R.devices
 ==================
 
-Version: 2.13.0-9000 [2015-09-10]
+Version: 2.13.0-9000 [2015-09-21]
 o Add capabilitiesX11().
 o Explicit import of 'utils' and 'graphics' functions.
+o BUG FIX: devOptions(grDevices::png) returned devOptions("favicon")
+  not devOptions("png").
 
 
 Version: 2.13.0 [2015-02-21]

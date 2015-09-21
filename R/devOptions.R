@@ -266,18 +266,23 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
 
 
   findDeviceFunction <- function(fcn, ...) {
-    types <- names(devList);
+    types <- names(devList)
 
+    ## (i) Scan primary device functions
     for (type in types) {
-      devs <- getDeviceFunctions(type, default=NULL);
-      for (dev in devs) {
-        if (identical(fcn, dev)) {
-          return(type);
-        }
-      }
-    } # for (type ...)
+      devs <- getDeviceFunctions(type, default=NULL)
+      if (identical(fcn, devs[[1]])) return(type)
+    }
 
-    "<function>";
+    ## (ii) Scan non-primary device functions
+    for (type in types) {
+      devs <- getDeviceFunctions(type, default=NULL)
+      for (dev in devs[-1]) {
+        if (identical(fcn, dev)) return(type)
+      }
+    }
+
+    "<function>"
   } # findDeviceFunction()
 
 
