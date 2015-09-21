@@ -1,3 +1,5 @@
+message("*** devIndexOf() ...")
+
 library("R.devices")
 
 .devIndexOf <- R.devices:::.devIndexOf
@@ -9,3 +11,5 @@ for (label in labels) {
   stopifnot(is.integer(res));
   stopifnot(is.character(names(res)));
 }
+
+message("*** devIndexOf() ... DONE")

@@ -1,3 +1,5 @@
+message("*** favicon() ...")
+
 library("R.devices")
 
 dataURI <- toFavicon({
@@ -7,3 +9,5 @@ dataURI <- toFavicon({
   points(1/2,6/2, pch=21, cex=21, lwd=80, col="#FFFFFF")
 })
 print(dataURI)
+
+message("*** favicon() ... DONE")

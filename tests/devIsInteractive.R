@@ -1,3 +1,5 @@
+message("*** devIsInteractive() ...")
+
 library("R.devices")
 
 types <- list(c(), "png", "x11", c("png", "jpeg", "png", "x11"))
@@ -11,3 +13,4 @@ for (types in types) {
   stopifnot(all(names(res) == types))
 }
 
+message("*** devIsInteractive() ... DONE")

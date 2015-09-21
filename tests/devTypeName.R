@@ -1,3 +1,5 @@
+message("*** devTypeName() ...")
+
 library("R.devices")
 printf <- R.utils::printf
 
@@ -36,3 +38,5 @@ for (name in names(types)) {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Special case: Default device
 type <- getOption("device")
+
+message("*** devTypeName() ... DONE")

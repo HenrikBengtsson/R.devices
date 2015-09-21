@@ -1,3 +1,5 @@
+message("*** devSet() ...")
+
 library("R.devices")
 
 set.seed(0xBEEF)
@@ -38,3 +40,6 @@ devOff(idxs)
 
 # Sanity check
 stopifnot(all.equal(devList(), devList0))
+
+message("*** devSet() ... DONE")
+

@@ -1,3 +1,5 @@
+message("*** devOptions() ...")
+
 # Without attaching package
 opts0 <- R.devices::devOptions()
 print(opts0)
@@ -69,3 +71,4 @@ for (name in names(fcns)) {
   }
 }
 
+message("*** devOptions() ... DONE")

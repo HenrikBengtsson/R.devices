@@ -1,3 +1,5 @@
+message("*** devEval() ...")
+
 library("R.devices")
 library("R.utils")
 graphics.off()
@@ -164,3 +166,5 @@ if (wasInteractiveOpened) devOff()
 # Sanity checks
 print(devList())
 stopifnot(length(devList()) == 0L)
+
+message("*** devEval() ... DONE")
