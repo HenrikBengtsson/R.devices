@@ -36,8 +36,4 @@ R.devices have been verified using `R CMD check --as-cran` on:
 
 It has also verified using the <http://win-builder.r-project.org/> service.
 
-Moreover, the updates cause no issues for any of the following
-1 reverse dependency on CRAN, which have been tested with
-`R CMD check --as-cran`: future 0.4.0
-
 Moreover, the updates cause no issues for any of the following 7 reverse dependencies on CRAN and Bioconductor: aroma.affymetrix 2.13.2, aroma.core 2.13.1, babel 0.2-6, matrixStats 0.14.2, MPAgenomics 1.1.2, PSCBS 0.45.1 and R.rsp 0.20.0
