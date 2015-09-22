@@ -1,3 +1,5 @@
+message("*** devOptions() ...")
+
 # Without attaching package
 opts0 <- R.devices::devOptions()
 print(opts0)
@@ -51,3 +53,22 @@ print(getDevOption("png", "width"))
 
 opts1 <- R.devices::devOptions()
 print(opts1)
+
+## Assert devOptions(<function>) equals devOptions(<name>)
+## Identify all "primitive" functions
+fcns <- lapply(R.devices:::devAll(), FUN=`[`, 1L)
+for (name in names(fcns)) {
+  fcn <- fcns[[name]]
+  cat(sprintf("Asserting devOptions('%s') == devOptions(%s) ...\n", name, fcn))
+  fcn <- eval(parse(text=fcn))
+  optsName <- devOptions(name)
+  optsFcn <- devOptions(fcn)
+  res <- all.equal(optsFcn, optsName)
+  if (!isTRUE(res)) {
+    str(list(name=name, fcn=fcn, byName=optsName, byFcn=optsFcn))
+    print(res)
+    stop(!all.equal(optsFcn, optsName))
+  }
+}
+
+message("*** devOptions() ... DONE")

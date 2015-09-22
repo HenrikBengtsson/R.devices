@@ -1,3 +1,5 @@
+message("*** devIsOpen() ...")
+
 library("R.devices")
 
 for (which in list(c(), 1L, 1:5)) {
@@ -9,3 +11,4 @@ for (which in list(c(), 1L, 1:5)) {
   stopifnot(length(res) == length(which))
 }
 
+message("*** devIsOpen() ... DONE")

@@ -1,3 +1,5 @@
+message("*** devList() ...")
+
 library("R.devices")
 
 res <- devList()
@@ -25,5 +27,5 @@ print(label)
 
 try(devGetLabel(which=10L))
 
-
+message("*** devList() ... DONE")
 

@@ -1,3 +1,5 @@
+message("*** devDump() ...")
+
 library("R.devices")
 graphics.off()
 
@@ -56,3 +58,5 @@ if (interactive()) {
   devOff(idxs)
 } # if (interactive())
 
+
+message("*** devDump() ... DONE")

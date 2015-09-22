@@ -2,6 +2,14 @@
 Package: R.devices
 ==================
 
+Version: 2.13.1 [2015-09-21]
+o Add capabilitiesX11().
+o Explicit import of 'utils' and 'graphics' functions.
+o BUG FIX: toX11() gave error "Device type 'X11' is not known/supported".
+o BUG FIX: devOptions(grDevices::png) returned devOptions("favicon")
+  not devOptions("png").
+
+
 Version: 2.13.0 [2015-02-21]
 o ROBUSTNESS/TESTS: Package coverage 74% [was 64%].
 o ROBUSTNESS: When calling devEval() on multiple devices then

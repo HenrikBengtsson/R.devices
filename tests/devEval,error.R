@@ -1,3 +1,5 @@
+message("*** devEval() - errors ...")
+
 library("R.devices")
 hpaste <- R.utils::hpaste
 graphics.off()
@@ -60,3 +62,5 @@ for (kk in 1:5) {
 # Sanity checks
 print(devList())
 stopifnot(length(devList()) == 0L)
+
+message("*** devEval() - errors ... DONE")

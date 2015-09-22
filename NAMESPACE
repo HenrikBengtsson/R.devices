@@ -29,6 +29,9 @@ importFrom("R.utils", "isPackageInstalled")
 importFrom("R.utils", "isPackageLoaded")
 importFrom("base64enc", "dataURI")
 
+importFrom("graphics", "par")
+importFrom("utils", "browseURL")
+
 # Import from grDevices
 import("grDevices")
 
@@ -39,6 +42,8 @@ import("grDevices")
 export("R.devices")
 
 export("withPar")
+
+export("capabilitiesX11")
 
 export("devDump")
 export("devEval")

@@ -1,3 +1,5 @@
+message("*** withPar() ...")
+
 library("R.devices")
 
 x <- 1
@@ -45,3 +47,4 @@ withPar({
 })
 stopifnot(all.equal(par(), opar))
 
+message("*** withPar() ... DONE")
