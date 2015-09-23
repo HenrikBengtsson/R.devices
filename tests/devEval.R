@@ -95,7 +95,7 @@ for (type in types) {
     })
     printf("Result: %s (%s)\n\n", sQuote(res), attr(res, "type"))
 
-    devOff()
+    if (length(devList()) > 0) devOff()
   }, error = function(ex) {
     printf("Failed: %s\n\n", sQuote(ex$message))
   })
@@ -119,7 +119,7 @@ tryCatch({
   })
   printf("Result: %s (%s)\n\n", sQuote(res), attr(res, "type"))
 
-  devOff()
+  if (length(devList()) > 0) devOff()
 }, error = function(ex) {
   printf("Failed: %s\n\n", sQuote(ex$message))
 })
