@@ -5,7 +5,7 @@ Imports:
   grDevices,
   R.methodsS3 (>= 1.7.0),
   R.oo (>= 1.19.0),
-  R.utils (>= 2.1.0),
+  R.utils (>= 2.2.0),
   base64enc (>= 0.1-2)
 Suggests:
   digest (>= 0.6.8),
