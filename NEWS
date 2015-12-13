@@ -2,8 +2,8 @@
 Package: R.devices
 ==================
 
-Version: 2.13.1-9000 [2015-09-23]
-o ...
+Version: 2.13.1-9000 [2015-12-13]
+o Package requires R (>= 2.13.0), because of R.methodsS3.
 
 
 Version: 2.13.1 [2015-09-21]
