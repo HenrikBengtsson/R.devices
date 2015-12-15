@@ -41,5 +41,24 @@ devOff(idxs)
 # Sanity check
 stopifnot(all.equal(devList(), devList0))
 
+
+# Open several devices using labels
+labels <- c("A", "B", "C", "D")
+
+for (rev in c(FALSE, TRUE)) {
+  for (label in labels) devSet(label)
+
+  if (rev) labels <- rev(labels)
+  for (label in labels) {
+    devOff(label)
+    left <- devList()
+    stopifnot(!is.element(label, names(left)))
+  }
+}
+
+# Sanity check
+stopifnot(all.equal(devList(), devList0))
+
+
 message("*** devSet() ... DONE")
 

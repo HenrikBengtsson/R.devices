@@ -747,7 +747,7 @@ devAll <- local({
       throw("No such device: ", paste(labels[is.na(idxs)], collapse=", "));
   }
 
-  idxs;
+  devList[idxs]
 } # .devIndexOf()
 
 
