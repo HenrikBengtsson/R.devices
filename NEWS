@@ -2,6 +2,15 @@
 Package: R.devices
 ==================
 
+Version: 2.13.2 [2015-12-16]
+o Package requires R (>= 2.14.0), because of requireNamespace().
+o ROBUSTNESS: Increased package test coverage from 72% to 87%.
+o BUG FIX: devSetLabel(which, label) gave an error if `which`
+  was a label.
+o BUG FIX: Closing devices by their labels gave an error if
+  they where not opened in ordered.
+
+
 Version: 2.13.1 [2015-09-21]
 o Add capabilitiesX11().
 o Explicit import of 'utils' and 'graphics' functions.

@@ -4,6 +4,10 @@ library("R.devices")
 library("R.utils")
 graphics.off()
 
+png <- grDevices::png
+jpeg <- grDevices::jpeg
+tiff <- grDevices::tiff
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Various types of single and multiple device outputs
@@ -39,7 +43,7 @@ message("*** devEval() - single and multiple device outputs ... DONE")
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # With 'initially' and 'finally' expression
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-message("*** devEval() - initally and finally ...")
+message("*** devEval() - initially and finally ...")
 
 devList0 <- devList()
 devEval(c("png", "jpg"), name="count", {
@@ -60,7 +64,7 @@ stopifnot(all.equal(devList(), devList0))
 print(devList())
 stopifnot(length(devList()) == 0L)
 
-message("*** devEval() - initally and finally ... DONE")
+message("*** devEval() - initially and finally ... DONE")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -95,7 +99,7 @@ for (type in types) {
     })
     printf("Result: %s (%s)\n\n", sQuote(res), attr(res, "type"))
 
-    devOff()
+    if (length(devList()) > 0) devOff()
   }, error = function(ex) {
     printf("Failed: %s\n\n", sQuote(ex$message))
   })
@@ -119,7 +123,7 @@ tryCatch({
   })
   printf("Result: %s (%s)\n\n", sQuote(res), attr(res, "type"))
 
-  devOff()
+  if (length(devList()) > 0) devOff()
 }, error = function(ex) {
   printf("Failed: %s\n\n", sQuote(ex$message))
 })
@@ -147,9 +151,7 @@ if (interactive()) {
    graphics.off()
 }
 
-
 message("*** toDefault(<expr>) ... DONE")
-
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

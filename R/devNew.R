@@ -265,7 +265,7 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
       R.utils::mstr(call)
     }
 
-    res <- do.call(typeT, args=args);
+    do.call(typeT, args=args)
 
     # Make sure a new device was indeed opened.  This can happen
     # for graphics devices that does not throw an error, but only

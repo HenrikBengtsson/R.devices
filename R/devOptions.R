@@ -421,7 +421,20 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     do.call("setDevOptions", args=c(list(.type=type), options));
 
     # Only for certain devices...
-    do.call("nnn.options", args=options);
+    # (a) Try to set all options at once
+    ok <- tryCatch({
+      do.call("nnn.options", args=options);
+      TRUE
+    }, error = function(ex) FALSE)
+
+    # (b) Otherwise, try to set them one by one
+    if (!ok) {
+      for (kk in seq_along(options)) {
+        res <- tryCatch({
+          do.call("nnn.options", args=options[kk]);
+        }, error = function(ex) {})
+      }
+    }
   }
 
 

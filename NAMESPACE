@@ -93,6 +93,7 @@ export("DevEvalFileProduct")
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # DevEvalFileProduct
 S3method("as.character", "DevEvalFileProduct")
+S3method("getData", "DevEvalFileProduct")
 S3method("getDataURI", "DevEvalFileProduct")
 S3method("getExtension", "DevEvalFileProduct")
 S3method("getFilename", "DevEvalFileProduct")

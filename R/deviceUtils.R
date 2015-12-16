@@ -193,7 +193,7 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
   if (is.numeric(which)) {
     idx <- which;
   } else {
-    idx <- .devIndexOf(which);
+    idx <- .devListIndexOf(which);
   }
 
   # Unknown devices?
@@ -206,7 +206,7 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
   # Update the label
   if (is.null(label))
     label <- "";
-  names(devList)[which] <- label;
+  names(devList)[idx] <- label
 
   assign(".Devices", devList, envir=baseenv());
 }
@@ -259,11 +259,15 @@ devSet <- function(which=dev.next(), ...) {
     }
 
     if (is.character(which)) {
-      args$label <- which;
-      which <- .devIndexOf(which, error=FALSE);
+      args$label <- which
+      idx <- .devListIndexOf(which, error=FALSE)
       # If not existing, open the next available one
-      if (is.na(which))
-        which <- .devNextAvailable();
+      if (is.na(idx)) {
+        which <- .devNextAvailable()
+      } else {
+        devList <- devList(dropNull=FALSE)
+        which <- devList[[idx]]
+      }
     }
   }
 
@@ -729,7 +733,8 @@ devAll <- local({
   devList;
 } # .devList()
 
-.devIndexOf <- function(labels, error=TRUE) {
+## Gets the devList() index of a device by label
+.devListIndexOf <- function(labels, error=TRUE) {
   # Nothing to do?
   if (length(labels) == 0L) {
     res <- integer(0L);
@@ -747,8 +752,8 @@ devAll <- local({
       throw("No such device: ", paste(labels[is.na(idxs)], collapse=", "));
   }
 
-  idxs;
-} # .devIndexOf()
+  idxs
+} # .devListIndexOf()
 
 
 .devNextAvailable <- function() {
@@ -857,14 +862,24 @@ devAll <- local({
 
      # (d) Check if temporarily opening the requested type actually
      # creates a device matching the existing one.
-     do.call(type, args=args);
-     on.exit(dev.off(), add=TRUE);
-     typeT <- names(dev.cur());
+     typeT <- tryCatch({
+       local({
+         do.call(type, args=args)
+         on.exit(dev.off(), add=TRUE)
+       })
+       names(dev.cur())
+     }, error=FALSE)
+     if (identical(typeT, FALSE)) return(FALSE)
 
      if (is.function(other)) {
-       do.call(other, args=args);
-       on.exit(dev.off(), add=TRUE);
-       other <- names(dev.cur());
+       other <- tryCatch({
+         local({
+           do.call(other, args=args)
+           on.exit(dev.off(), add=TRUE)
+           names(dev.cur())
+         })
+       }, error=FALSE)
+       if (identical(other, FALSE)) return(FALSE)
      }
 
      res <- (typeT == other);
@@ -886,6 +901,8 @@ devAll <- local({
 
 ############################################################################
 # HISTORY:
+# 2015-12-15
+# o CLARIFICATION: Renamed .devIndexOf() to .devListIndexOf().
 # 2014-10-17
 # o SPEEDUP: Made devAll() memoize base::capabilities() results, which
 #   gives a significant speedup when for instance an X11 server times out.
