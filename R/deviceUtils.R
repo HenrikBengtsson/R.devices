@@ -879,7 +879,7 @@ devAll <- local({
            names(dev.cur())
          })
        }, error=FALSE)
-       if (identical(res, FALSE)) return(res)
+       if (identical(other, FALSE)) return(FALSE)
      }
 
      res <- (typeT == other);
