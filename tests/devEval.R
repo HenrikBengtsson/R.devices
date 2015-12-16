@@ -150,15 +150,27 @@ if (interactive()) {
 message("*** toDefault(<expr>) ... DONE")
 
 
-message("*** devEval(<expr>) ...")
-oopts <- options(device=grDevices::png)
-res <- devEval({ plot(1:10) })
-print(res)
-options(oopts)
-## FIX ME:
-graphics.off()
-message("*** devEval(<expr>) ... DONE")
+## message("*** devEval(<expr>) ...")
+## oopts <- options(device=grDevices::png)
+## res <- devEval(type="png", name={ plot(1:10) })
+## print(res)
+## options(oopts)
+## ## FIX ME:
+## graphics.off()
+## message("*** devEval(<expr>) ... DONE")
 
+
+message("*** devEval('x|y|z') ... ")
+types <- c("png", "jpeg", "tiff")
+types <- na.omit(capabilities()[types])
+if (length(types > 1)) {
+  types <- paste(names(types), collapse="|")
+  print(types)
+  res <- devEval(types, name="any", width=480L, height=480L, {
+    plot(100:1)
+  })
+}
+message("*** devEval('x|y|z') ... DONE")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
