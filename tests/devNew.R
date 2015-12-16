@@ -79,4 +79,43 @@ devOff()
 
 message("*** devNew() - errors ... DONE")
 
+message("*** devOff() ... ")
+
+## Open and close device
+idx0 <- devNew()
+idx1 <- devOff(idx0)
+str(idx1)
+
+## Close same device again (should silently return)
+idx2 <- devOff(idx0)
+str(idx2)
+
+stopifnot(identical(idx2, idx1))
+
+## Close many devices
+idx3 <- devOff(2:5)
+str(idx3)
+
+message("*** devOff() ... DONE")
+
+
+message("*** devDone() ... ")
+
+## Open and close device
+idx0 <- devNew()
+idx1 <- devDone(idx0)
+str(idx1)
+
+## Close same device again (should silently return)
+idx2 <- devDone(idx0)
+str(idx2)
+
+stopifnot(identical(idx2, idx1))
+
+## Close many devices
+idx3 <- devDone(1:5)
+str(idx3)
+
+message("*** devDone() ... DONE")
+
 message("*** devNew() ... DONE")
