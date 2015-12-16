@@ -6,9 +6,7 @@ Version: 2.13.1-9000 [2015-12-15]
 o Package requires R (>= 2.13.0), because of R.methodsS3.
 o ROBUSTNESS: Increased package test coverage from 72% to 78%.
 o BUG FIX: Closing devices by their labels gave an error if
-  they where not opened in ordered.  This was because internal
-  .devIndexOf() returned the element index among the currently
-  opened devices not the index of the device.
+  they where not opened in ordered.
 
 
 Version: 2.13.1 [2015-09-21]
