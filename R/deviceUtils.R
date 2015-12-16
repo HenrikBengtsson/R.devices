@@ -862,14 +862,24 @@ devAll <- local({
 
      # (d) Check if temporarily opening the requested type actually
      # creates a device matching the existing one.
-     do.call(type, args=args);
-     on.exit(dev.off(), add=TRUE);
-     typeT <- names(dev.cur());
+     typeT <- tryCatch({
+       local({
+         do.call(type, args=args)
+         on.exit(dev.off(), add=TRUE)
+       })
+       names(dev.cur())
+     }, error=FALSE)
+     if (identical(typeT, FALSE)) return(FALSE)
 
      if (is.function(other)) {
-       do.call(other, args=args);
-       on.exit(dev.off(), add=TRUE);
-       other <- names(dev.cur());
+       other <- tryCatch({
+         local({
+           do.call(other, args=args)
+           on.exit(dev.off(), add=TRUE)
+           names(dev.cur())
+         })
+       }, error=FALSE)
+       if (identical(res, FALSE)) return(res)
      }
 
      res <- (typeT == other);
