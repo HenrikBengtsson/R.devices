@@ -4,6 +4,10 @@ library("R.devices")
 library("R.utils")
 graphics.off()
 
+png <- grDevices::png
+jpeg <- grDevices::jpeg
+tiff <- grDevices::tiff
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Various types of single and multiple device outputs
