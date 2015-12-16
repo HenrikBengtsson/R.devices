@@ -10,7 +10,7 @@ R.devices::devOptions("*", field="*")
 
 message("*** DevEvalFileProduct - image file ...")
 
-p <- R.devices::toPNG("foo", tags=c("a", "b"), aspectRatio=0.7, {
+p <- R.devices::toEPS("foo", tags=c("a", "b"), aspectRatio=0.7, {
   plot(1:10)
 })
 print(p)
