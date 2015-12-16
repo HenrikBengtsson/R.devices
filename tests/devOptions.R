@@ -71,4 +71,76 @@ for (name in names(fcns)) {
   }
 }
 
+message("*** devOptions() for each type ...")
+types <- rownames(devOptions())
+cat("All known types:\n")
+print(types)
+
+for (type in types) {
+  message(sprintf("*** devOptions('%s') for each type ...", type))
+  opts <- devOptions(type)
+  str(opts)
+  message(sprintf("*** devOptions('%s') for each type ... DONE", type))
+}
+
+message("*** devOptions() for each type ... DONE")
+
+
+message("*** devOptions(drop=FALSE) ...")
+
+opts <- devOptions("png", drop=TRUE)
+str(opts)
+stopifnot(is.list(opts))
+stopifnot(is.null(dim(opts)))
+
+opts <- devOptions("png", drop=FALSE)
+str(opts)
+stopifnot(is.list(opts))
+stopifnot(!is.null(dim(opts)))
+
+message("*** devOptions(drop=FALSE) ... DONE")
+
+message("*** devOptions(reset=TRUE) ...")
+
+## Reset all
+opts <- devOptions()
+print(opts)
+opts0 <- devOptions(reset=TRUE)
+print(opts0)
+
+## Reset one device
+opts <- devOptions("png")
+width <- getDevOption("png", "width")
+devOptions("png", width=2*width)
+stopifnot(getDevOption("png", "width") == 2*width)
+devOptions("png", reset=TRUE)
+stopifnot(getDevOption("png", "width") == width)
+
+## Reset "*"
+opts <- devOptions("*")
+path <- getDevOption("*", "path")
+devOptions("*", path="foo")
+stopifnot(getDevOption("*", "path") == "foo")
+devOptions("*", reset=TRUE)
+stopifnot(getDevOption("*", "path") == path)
+
+
+message("*** devOptions(reset=TRUE) ... DONE")
+
+
+message("*** devOptions() - errors ...")
+
+res <- try(devOptions(type=character(0L), width=32L))
+stopifnot(inherits(res, "try-error"))
+
+message("*** devOptions() - errors ... DONE")
+
+
+message("*** devOptions() - odds'n'ends ...")
+
+devOptions(type=character(0L), reset=FALSE)
+devOptions(type=character(0L), reset=TRUE)
+
+message("*** devOptions() - odds'n'ends ... DONE")
+
 message("*** devOptions() ... DONE")
