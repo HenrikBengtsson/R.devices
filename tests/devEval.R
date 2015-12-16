@@ -147,8 +147,17 @@ if (interactive()) {
    graphics.off()
 }
 
-
 message("*** toDefault(<expr>) ... DONE")
+
+
+message("*** devEval(<expr>) ...")
+oopts <- options(device=grDevices::png)
+res <- devEval({ plot(1:10) })
+print(res)
+options(oopts)
+## FIX ME:
+graphics.off()
+message("*** devEval(<expr>) ... DONE")
 
 
 
