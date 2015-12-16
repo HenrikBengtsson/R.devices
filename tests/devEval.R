@@ -39,7 +39,7 @@ message("*** devEval() - single and multiple device outputs ... DONE")
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # With 'initially' and 'finally' expression
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-message("*** devEval() - initally and finally ...")
+message("*** devEval() - initially and finally ...")
 
 devList0 <- devList()
 devEval(c("png", "jpg"), name="count", {
@@ -60,7 +60,7 @@ stopifnot(all.equal(devList(), devList0))
 print(devList())
 stopifnot(length(devList()) == 0L)
 
-message("*** devEval() - initally and finally ... DONE")
+message("*** devEval() - initially and finally ... DONE")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
