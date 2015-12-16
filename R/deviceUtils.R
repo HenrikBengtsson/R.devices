@@ -193,7 +193,7 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
   if (is.numeric(which)) {
     idx <- which;
   } else {
-    idx <- .devListIndexOf(which)
+    idx <- .devListIndexOf(which);
   }
 
   # Unknown devices?
@@ -206,7 +206,7 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
   # Update the label
   if (is.null(label))
     label <- "";
-  names(devList)[which] <- label;
+  names(devList)[idx] <- label
 
   assign(".Devices", devList, envir=baseenv());
 }
