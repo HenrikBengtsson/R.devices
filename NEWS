@@ -4,7 +4,7 @@ Package: R.devices
 
 Version: 2.13.1-9000 [2015-12-15]
 o Package requires R (>= 2.13.0), because of R.methodsS3.
-o ROBUSTNESS: Increased package test coverage from 72% to 85%.
+o ROBUSTNESS: Increased package test coverage from 72% to 87%.
 o BUG FIX: devSetLabel(which, label) gave an error if `which`
   was a label.
 o BUG FIX: Closing devices by their labels gave an error if
