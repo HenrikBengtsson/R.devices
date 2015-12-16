@@ -2,8 +2,8 @@
 Package: R.devices
 ==================
 
-Version: 2.13.1-9000 [2015-12-15]
-o Package requires R (>= 2.13.0), because of R.methodsS3.
+Version: 2.13.2 [2015-12-16]
+o Package requires R (>= 2.14.0), because of requireNamespace().
 o ROBUSTNESS: Increased package test coverage from 72% to 87%.
 o BUG FIX: devSetLabel(which, label) gave an error if `which`
   was a label.
