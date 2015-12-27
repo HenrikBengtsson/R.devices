@@ -313,7 +313,7 @@ devSet <- function(which=dev.next(), ...) {
   }
 
   # Open the device
-  res <- do.call("devNew", args=args);
+  res <- do.call(devNew, args=args);
 
   invisible(res);
 } # devSet()

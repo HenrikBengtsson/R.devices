@@ -2,6 +2,10 @@
 Package: R.devices
 ==================
 
+Version: 2.13.2-9000 [2015-12-27]
+o ...
+
+
 Version: 2.13.2 [2015-12-16]
 o Package requires R (>= 2.14.0), because of requireNamespace().
 o ROBUSTNESS: Increased package test coverage from 72% to 87%.
