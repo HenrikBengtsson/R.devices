@@ -44,6 +44,7 @@ export("R.devices")
 export("withPar")
 
 export("capabilitiesX11")
+export("capturePlot")
 
 export("devDump")
 export("devEval")

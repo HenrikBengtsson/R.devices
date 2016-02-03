@@ -2,8 +2,11 @@
 Package: R.devices
 ==================
 
-Version: 2.13.2-9000 [2015-12-27]
-o ...
+Version: 2.13.2-9000 [2016-02-03]
+o Added capturePlot() making it possible to capture low-level
+  plot commands using grDevices::recordPlot() such that the
+  plot can be displayed / regenerated elsewhere, e.g. in a
+  different / future R session.  Requires R (>= 3.3.0).
 
 
 Version: 2.13.2 [2015-12-16]
