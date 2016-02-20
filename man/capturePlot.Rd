@@ -56,7 +56,7 @@ g <- capturePlot({
 print(g)
 
 ## Display with a 2/3 height-to-width aspect ratio
-toDefault(aspectRatio=2/3, { print(g) })
+##toDefault(aspectRatio=2/3, { print(g) })
 
 ## Redraw to many output formats
 devEval(c("png", "eps", "pdf"), aspectRatio=2/3, print(g))
