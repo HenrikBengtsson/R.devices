@@ -27,6 +27,13 @@
 #   For conveniency, the object is also replayed when \code{print()}:ed.
 # }
 #
+# \details{
+#   Note that plot dimensions/aspect ratios are not recorded.  This
+#   means that one does not have to worry about those when recording
+#   the plot.  Instead, they are specified when setting up the graphics
+#   device(s) in which the recorded plot is replayed (see example).
+# }
+#
 # @examples "../incl/capturePlot.Rex"
 #
 # @author
@@ -48,14 +55,11 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
   stopifnot(getRversion() >= "3.3.0")
   expr <- substitute(expr)
 
-  pathname <- tempfile()
-  type(pathname, ...)
-  on.exit({
-   dev.off()
-   file.remove(pathname)
-  })
-  dev.control("enable")
+  ## Plot to /dev/null file (or NUL on Windows)
+  type(nullfile(), ...)
+  on.exit(dev.off())
 
+  dev.control("enable")
   eval(expr, envir=envir)
   recordPlot()
 }

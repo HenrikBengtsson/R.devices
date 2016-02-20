@@ -38,6 +38,13 @@ capturePlot(expr, envir=parent.frame(), type=pdf, ...)
   For conveniency, the object is also replayed when \code{print()}:ed.
 }
 
+\details{
+  Note that plot dimensions/aspect ratios are not recorded.  This
+  means that one does not have to worry about those when recording
+  the plot.  Instead, they are specified when setting up the graphics
+  device(s) in which the recorded plot is replayed (see example).
+}
+
 \examples{
 if (getRversion() >= "3.3.0") {
 
@@ -48,8 +55,11 @@ g <- capturePlot({
 ## Display
 print(g)
 
+## Display with a 2/3 height-to-width aspect ratio
+toDefault(aspectRatio=2/3, { print(g) })
+
 ## Redraw to many output formats
-devEval(c("png", "eps", "pdf"), print(g))
+devEval(c("png", "eps", "pdf"), aspectRatio=2/3, print(g))
 
 } ## if (getRversion() >= "3.3.0")
 }
