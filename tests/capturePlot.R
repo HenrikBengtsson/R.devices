@@ -14,7 +14,7 @@ if (getRversion() >= "3.3.0") {
   print(g)
 
   ## Display with a 2/3 aspect ratio
-##  toDefault(aspectRatio=2/3, print(g))
+  toDefault(aspectRatio=2/3, print(g))
 
   ## Redraw to many output formats
   devEval(c("png", "eps", "pdf"), aspectRatio=2/3, print(g))
