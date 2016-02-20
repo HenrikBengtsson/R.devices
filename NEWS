@@ -7,6 +7,8 @@ o Added capturePlot() making it possible to capture low-level
   plot commands using grDevices::recordPlot() such that the
   plot can be displayed / regenerated elsewhere, e.g. in a
   different / future R session.  Requires R (>= 3.3.0).
+o BUG FIX: devEval(pdf, ...) without explicit argument 'ext'
+  would give an error.
 
 
 Version: 2.13.2 [2015-12-16]
