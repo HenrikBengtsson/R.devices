@@ -17,7 +17,7 @@
 #   \item{type}{The type of graphics device used in the background.
 #    The choice should not matter since the result should be identical
 #    regardless.}
-#  \item{...}{Not used.}
+#  \item{...}{Additional arguments passed to the graphics device.}
 # }
 #
 # \value{
@@ -49,7 +49,7 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
   expr <- substitute(expr)
 
   pathname <- tempfile()
-  type(pathname)
+  type(pathname, ...)
   on.exit({
    dev.off()
    file.remove(pathname)

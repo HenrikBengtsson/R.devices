@@ -28,7 +28,7 @@ capturePlot(expr, envir=parent.frame(), type=pdf, ...)
   \item{type}{The type of graphics device used in the background.
    The choice should not matter since the result should be identical
    regardless.}
- \item{...}{Not used.}
+ \item{...}{Additional arguments passed to the graphics device.}
 }
 
 \value{
