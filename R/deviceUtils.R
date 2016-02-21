@@ -717,7 +717,7 @@ devAll <- local({
 
   labels <- names(devList);
   if (is.null(labels)) {
-    labels <- paste("Device", seq(along=devList), sep=" ");
+    labels <- paste("Device", seq_along(devList), sep=" ");
     names(devList) <- labels;
     assign(".Devices", devList, envir=baseenv());
   } else {
