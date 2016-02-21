@@ -26,13 +26,7 @@ install:
 
 build_script:
   - echo Current directory=%CD%
-
-
-
-  - travis-tool.sh install_r R.rsp
-
   - travis-tool.sh install_r base64enc R.methodsS3 R.oo R.utils
-
   - travis-tool.sh install_r Cairo digest R.rsp
 
 test_script:
