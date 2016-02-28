@@ -790,7 +790,7 @@ devAll <- local({
       idxs <- grep(pattern, knownTypes);
       if (length(idxs) > 0L) {
         typesKK <- knownTypes[idxs];
-        names(typesKK) <- rep(typeKK, length=length(typesKK));
+        names(typesKK) <- rep(typeKK, times=length(typesKK));
         types[[kk]] <- typesKK;
       } else {
         names(types[[kk]]) <- typeKK;
