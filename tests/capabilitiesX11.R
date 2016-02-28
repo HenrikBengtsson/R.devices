@@ -6,7 +6,7 @@ print(res)
 res2 <- R.devices::capabilitiesX11()
 stopifnot(identical(res2, res))
 
-res3 <-R.devices::capabilitiesX11(reset=TRUE)
+res3 <- R.devices::capabilitiesX11(reset=TRUE)
 print(res3)
 
 message("*** capabilitiesX11() ... DONE")
