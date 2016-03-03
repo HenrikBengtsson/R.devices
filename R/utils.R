@@ -1,4 +1,6 @@
 nullfile <- function() {
-  if (.Platform$OS.type == "windows") return("NUL")
-  "/dev/null"
+  switch(.Platform$OS.type,
+    windows="NUL",
+    "dev/null"
+  )
 }
