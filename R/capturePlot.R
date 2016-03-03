@@ -52,7 +52,10 @@
 # @keyword device
 #*/###########################################################################
 capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
-  stopifnot(getRversion() >= "3.3.0")
+  if (getRversion() < "3.3.0") {
+    throw(sprintf("Insufficient R version. R.devices::capturePlot() requires R (>= 3.3.0): ", getRversion()))
+  }
+
   expr <- substitute(expr)
 
   ## Plot to /dev/null file (or NUL on Windows)
