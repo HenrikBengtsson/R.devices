@@ -9,6 +9,7 @@ o Added capturePlot() making it possible to capture low-level
   different / future R session.  Requires R (>= 3.3.0).
 o BUG FIX: devEval(pdf, ...) without explicit argument 'ext'
   would give an error.
+o Package test coverage is 91%.
 
 
 Version: 2.13.2 [2015-12-16]
