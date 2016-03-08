@@ -9,7 +9,19 @@
 # https://ci.appveyor.com/tools/validate-yaml 
 #----------------------------------------------------------------
 environment:
-  _R_CHECK_FORCE_SUGGESTS_: false
+  global:
+    _R_CHECK_FORCE_SUGGESTS_: false
+
+  matrix:
+  - R_VERSION: oldrel
+  - R_ARCH: x64
+
+  - R_VERSION: release
+  - R_ARCH: x64
+
+  - R_VERSION: devel
+  - R_ARCH: i386
+  - R_ARCH: x64
 
 # DO NOT CHANGE the "init" and "install" sections below
 
