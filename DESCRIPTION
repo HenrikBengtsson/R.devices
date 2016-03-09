@@ -3,14 +3,14 @@ Version: 2.14.0-9000
 Depends: R (>= 2.14.0)
 Imports:
   grDevices,
-  R.methodsS3 (>= 1.7.0),
-  R.oo (>= 1.19.0),
+  R.methodsS3 (>= 1.7.1),
+  R.oo (>= 1.20.0),
   R.utils (>= 2.2.0),
   base64enc (>= 0.1-2)
 Suggests:
   digest (>= 0.6.8),
   Cairo (>= 1.5-6),
-  R.rsp (>= 0.20.0)
+  R.rsp (>= 0.21.0)
 VignetteBuilder: R.rsp
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))

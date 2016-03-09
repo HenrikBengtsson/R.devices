@@ -53,7 +53,7 @@
 #*/###########################################################################
 capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
   if (getRversion() < "3.3.0") {
-    throw(sprintf("Insufficient R version. R.devices::capturePlot() requires R (>= 3.3.0): ", getRversion()))
+    throw("Insufficient R version. R.devices::capturePlot() requires R (>= 3.3.0): ", getRversion())
   }
 
   expr <- substitute(expr)
