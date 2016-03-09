@@ -418,12 +418,12 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   # Assign user arguments, iff possible
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (nopts > 0L) {
-    do.call("setDevOptions", args=c(list(.type=type), options));
+    do.call(setDevOptions, args=c(list(.type=type), options));
 
     # Only for certain devices...
     # (a) Try to set all options at once
     ok <- tryCatch({
-      do.call("nnn.options", args=options);
+      do.call(nnn.options, args=options);
       TRUE
     }, error = function(ex) FALSE)
 
@@ -431,7 +431,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     if (!ok) {
       for (kk in seq_along(options)) {
         res <- tryCatch({
-          do.call("nnn.options", args=options[kk]);
+          do.call(nnn.options, args=options[kk]);
         }, error = function(ex) {})
       }
     }

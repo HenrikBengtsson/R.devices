@@ -18,6 +18,7 @@ for (name in names(fcns)) {
   tryCatch({
     toFcn(name=name, { plot(1:10) })
   }, error = function(ex) {
+    print(ex)
   })
   message(sprintf("*** %s() ... DONE", name))
 }

@@ -313,7 +313,7 @@ devSet <- function(which=dev.next(), ...) {
   }
 
   # Open the device
-  res <- do.call("devNew", args=args);
+  res <- do.call(devNew, args=args);
 
   invisible(res);
 } # devSet()
@@ -717,7 +717,7 @@ devAll <- local({
 
   labels <- names(devList);
   if (is.null(labels)) {
-    labels <- paste("Device", seq(along=devList), sep=" ");
+    labels <- paste("Device", seq_along(devList), sep=" ");
     names(devList) <- labels;
     assign(".Devices", devList, envir=baseenv());
   } else {
@@ -790,7 +790,7 @@ devAll <- local({
       idxs <- grep(pattern, knownTypes);
       if (length(idxs) > 0L) {
         typesKK <- knownTypes[idxs];
-        names(typesKK) <- rep(typeKK, length=length(typesKK));
+        names(typesKK) <- rep(typeKK, times=length(typesKK));
         types[[kk]] <- typesKK;
       } else {
         names(types[[kk]]) <- typeKK;
@@ -809,8 +809,11 @@ devAll <- local({
 } # .devTypeName()
 
 .devTypeExt <- function(types, ...) {
-  types <- as.character(types);
-  exts <- types;
+  if (is.function(types)) {
+    types <- .devTypeNameFromFunction(types)
+  }
+  types <- as.character(types)
+  exts <- types
 
   ## Cairo package
   pattern <- "^Cairo(JPEG|PDF|PNG|PS|SVG|TIFF)$";
@@ -833,6 +836,17 @@ devAll <- local({
 
   exts
 } # .devTypeExt()
+
+
+.devTypeNameFromFunction <- function(fcn, knownTypes=R.devices:::devAll(), ...) {
+  stopifnot(length(fcn) == 1, is.function(fcn))
+  knownFcns <- lapply(knownTypes, FUN=function(x) eval(parse(text=x[1])))
+  name <- NULL
+  for (name in names(knownFcns)) {
+    if (identical(fcn, knownFcns[[name]])) return(name)
+  }
+  NA_character_
+} # .devTypeNameFromFunction()
 
 
 .devEqualTypes <- (function() {

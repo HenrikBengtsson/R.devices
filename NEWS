@@ -2,6 +2,16 @@
 Package: R.devices
 ==================
 
+Version: 2.14.0 [2016-03-08]
+o Added capturePlot() making it possible to capture low-level
+  plot commands using grDevices::recordPlot() such that the
+  plot can be displayed / regenerated elsewhere, e.g. in a
+  different / future R session.  Requires R (>= 3.3.0).
+o BUG FIX: devEval(pdf, ...) without explicit argument 'ext'
+  would give an error.
+o Package test coverage is 91%.
+
+
 Version: 2.13.2 [2015-12-16]
 o Package requires R (>= 2.14.0), because of requireNamespace().
 o ROBUSTNESS: Increased package test coverage from 72% to 87%.

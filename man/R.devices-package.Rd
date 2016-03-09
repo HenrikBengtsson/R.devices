@@ -32,8 +32,8 @@
 @Manual{,
   title = {R.devices: Unified Handling of Graphics Devices},
   author = {Henrik Bengtsson},
-  year = {2015},
-  note = {R package version 2.13.2},
+  year = {2016},
+  note = {R package version 2.14.0},
   url = {https://github.com/HenrikBengtsson/R.devices},
 }
 }

@@ -169,7 +169,7 @@ for (name in names(types)) {
   type <- types[[name]]
   str(args(type))
   devList0 <- devList()
-  res <- devEval(type, ext=name, name="multi", aspectRatio=2/3, {
+  res <- devEval(type, name="multi", tags="function", aspectRatio=2/3, {
     plot(1:10)
   })
   print(res)
@@ -189,7 +189,7 @@ cat("Device types: 'default'\n")
 type <- getOption("device")
 str(type)
 devList0 <- devList()
-res <- devEval(type, ext="default", name="multi", aspectRatio=2/3, {
+res <- devEval(type, name="default", aspectRatio=2/3, {
   plot(1:10)
 })
 print(res)
