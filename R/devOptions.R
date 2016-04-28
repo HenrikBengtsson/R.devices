@@ -374,7 +374,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   }
   if (is.character(type)) {
     if (!is.element(type, knownTypes)) {
-      throw(sprintf("Device type %s is not known/supported on this operating system/platform. Supported devices types are: %s", sQuote(type), paste(sQuote(setdiff(knownTypes, "*")), collapse=", ")))
+      throw(sprintf("Device type %s is not known/supported on this operating system/platform. Supported device types are: %s", sQuote(type), paste(sQuote(setdiff(knownTypes, "*")), collapse=", ")))
     }
   }
 
