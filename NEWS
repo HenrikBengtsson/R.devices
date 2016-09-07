@@ -2,6 +2,10 @@
 Package: R.devices
 ==================
 
+Version: 2.14.0-9000 [2016-09-06]
+o ...
+
+
 Version: 2.14.0 [2016-03-08]
 o Added capturePlot() making it possible to capture low-level
   plot commands using grDevices::recordPlot() such that the

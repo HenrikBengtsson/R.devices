@@ -450,7 +450,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   # Get (nested) device formals
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   defArgs <- lapply(rev(devs), FUN=formals);
-  defArgs <- Reduce(append, defArgs);
+  defArgs <- Reduce(c, defArgs);
   # Drop '...'
   defArgs <- defArgs[names(defArgs) != "..."];
   # Drop missing
@@ -485,7 +485,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
   idxsB <- idxsB[!sapply(optsT[idxsB], FUN=is.symbol)];
   optsB <- optsT[idxsB];
 
-  opts <- append(optsA, optsB);
+  opts <- c(optsA, optsB);
 
   # Drop overridden values
   opts <- opts[!duplicated(names(opts), fromLast=TRUE)];
