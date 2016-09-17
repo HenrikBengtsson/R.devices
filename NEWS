@@ -2,8 +2,11 @@
 Package: R.devices
 ==================
 
-Version: 2.14.0-9000 [2016-09-06]
-o ...
+Version: 2.14.0-9000 [2016-09-17]
+o Added as.architecture() for recordedplot objects to make it
+  easy to coerce between 32-bit and 64-bit versions of a serialized
+  recorded plot (e.g. via capturePlot()) so that it can be replotted
+  everywhere.
 
 
 Version: 2.14.0 [2016-03-08]
