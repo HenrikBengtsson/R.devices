@@ -10,6 +10,7 @@ if (getRversion() >= "3.3.0") {
     plot(1:10)
   })
 
+  saveRDS(g, file="capturePlot.recordedplot.Rbin")
   ## Display
   print(g)
 
