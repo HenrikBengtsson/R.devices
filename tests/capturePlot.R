@@ -10,7 +10,15 @@ if (getRversion() >= "3.3.0") {
     plot(1:10)
   })
 
+  ## Record for troubleshooting
   saveRDS(g, file="capturePlot.recordedplot.Rbin")
+
+  ## Replay
+  print(architecture(g))
+
+  ## Replay
+  replayPlot(g)
+
   ## Display
   print(g)
 
