@@ -34,6 +34,19 @@
 #   device(s) in which the recorded plot is replayed (see example).
 # }
 #
+# \section{Replaying / replotting on a different architecture}{
+#  In order to replay a \code{recordedplot} object, it has to be replayed
+#  on an architecture that is compatible with the one who created the
+#  object.
+#  If this is not the case, then \code{\link[grDevices]{replayPlot}()}
+#  will generate an error.  The \code{\link{as.architecture}()} function
+#  of this package tries to coerce between different architectures,
+#  such that one can replay across architectures using
+#  \code{replayPlot(as.architectures(g))}.
+#  For convenience, the recored plot returned by \code{capturePlot()}
+#  is automatically coerced when \code{print()}:ed.
+# }
+#
 # @examples "../incl/capturePlot.Rex"
 #
 # @author
@@ -64,5 +77,31 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
 
   dev.control("enable")
   eval(expr, envir=envir)
-  recordPlot()
+  g <- recordPlot()
+  class(g) <- c("RecordedPlot", class(g))
+  g
+}
+
+
+#' Automatically replays a recorded plot
+#'
+#' This is identical to the \code{\link[grDevices:replayPlot]{print}()}
+#' method available in \pkg{grDevices}, but before print it also tries
+#' to coerce the architecture internal data structure to that of the
+#' current machine such that it is possible to, for instance, replay a
+#' plot generated on a 32-bit machine on a 64-bit machine.
+#' 
+#' @param x A recorded plot of class \code{recordedplot}.
+#'
+#' @return Returns \code{x} invisibly.
+#'
+#' @seealso Internally, \code{\link{as.architecture}()} is used
+#' to coerce to the current architecture.
+#'
+#' @export
+#' @keywords internal
+print.RecordedPlot <- function(x, ...) {
+  try(x <- as.architecture(x))
+  replayPlot(x)
+  invisible(x)
 }
