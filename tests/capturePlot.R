@@ -48,7 +48,7 @@ message("*** capturePlot() - as.architecture() ... DONE")
 
 if (getRversion() >= "3.3.0") {
   g <- capturePlot({
-    plot(10:1)
+    plot(1:10)
   })
 
   system <- attr(g, "system")
