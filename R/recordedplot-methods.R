@@ -4,7 +4,8 @@
 #' @param ... (optional) Additional arguments passed to the underlying method.
 #'
 #' @return
-#' \code{architecture()} returns a named list with character element \code{arch},
+#' \code{architecture()} returns a named list with
+#'     character element \code{ostype} and \code{arch},
 #'     integer element \code{ptrsize}, and character element \code{endian}.
 #'     These elements take a missing values if they could not be inferred.
 #'
@@ -14,6 +15,7 @@ architecture <- function(x, ...) {
   UseMethod("architecture")
 }
 
+#' @param ostype A character string, e.g. \code{"unix"} and \code{"windows"}.
 #' @param arch A character string, e.g. \code{"i386"}, \code{"i686"} and \code{"x86_64"}.
 #' @param ptrsize The target pointer size - either \code{4L} or \code{8L}.
 #' @param endian The target endianess - either \code{"little"} or \code{"big"}.
@@ -24,7 +26,7 @@ architecture <- function(x, ...) {
 #'
 #' @rdname architecture
 #' @export
-as.architecture <- function(x, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
+as.architecture <- function(x, ostype=.Platform$OS.type, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
   UseMethod("as.architecture")
 }
 
@@ -55,7 +57,7 @@ architecture.RecordedPlot <- function(x, ...) {
   endian <- system$endian
   if (is.null(ptrsize)) endian <- NA_character_
 
-  list(arch=arch, ptrsize=ptrsize, endian=endian)
+  list(ostype=ostype, arch=arch, ptrsize=ptrsize, endian=endian)
 } ## architecture() for RecordedPlot
 
 
@@ -79,13 +81,13 @@ architecture.recordedplot <- function(x, ...) {
   ## Endian is unknown by default
   endian <- NA_character_
 
-  list(arch=arch, ptrsize=ptrsize, endian=endian)
+  list(ostype=ostype, arch=arch, ptrsize=ptrsize, endian=endian)
 } ## architecture() for recordedplot
 
 
 
 #' @export
-as.architecture.recordedplot <- function(x, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
+as.architecture.recordedplot <- function(x, ostype=.Platform$OS.type, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
   stopifnot(is.character(arch), length(arch) == 1)
   stopifnot(ptrsize %in% c(4L, 8L))
   stopifnot(is.character(endian), length(endian) == 1, (is.na(endian) || endian %in% c("little", "big")))

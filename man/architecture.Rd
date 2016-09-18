@@ -7,13 +7,15 @@
 \usage{
 architecture(x, ...)
 
-as.architecture(x, arch = R.version$arch, ptrsize = .Machine$sizeof.pointer,
-  endian = .Platform$endian, ...)
+as.architecture(x, ostype = .Platform$OS.type, arch = R.version$arch,
+  ptrsize = .Machine$sizeof.pointer, endian = .Platform$endian, ...)
 }
 \arguments{
 \item{x}{The object to be coerced.}
 
 \item{...}{(optional) Additional arguments passed to the underlying method.}
+
+\item{ostype}{A character string, e.g. \code{"unix"} and \code{"windows"}.}
 
 \item{arch}{A character string, e.g. \code{"i386"}, \code{"i686"} and \code{"x86_64"}.}
 
@@ -22,7 +24,8 @@ as.architecture(x, arch = R.version$arch, ptrsize = .Machine$sizeof.pointer,
 \item{endian}{The target endianess - either \code{"little"} or \code{"big"}.}
 }
 \value{
-\code{architecture()} returns a named list with character element \code{arch},
+\code{architecture()} returns a named list with
+    character element \code{ostype} and \code{arch},
     integer element \code{ptrsize}, and character element \code{endian}.
     These elements take a missing values if they could not be inferred.
 
