@@ -7,7 +7,7 @@
 \usage{
 architecture(x, ...)
 
-as.architecture(x, ptrsize = .Machine$sizeof.pointer,
+as.architecture(x, arch = R.version$arch, ptrsize = .Machine$sizeof.pointer,
   endian = .Platform$endian, ...)
 }
 \arguments{
@@ -15,13 +15,15 @@ as.architecture(x, ptrsize = .Machine$sizeof.pointer,
 
 \item{...}{(optional) Additional arguments passed to the underlying method.}
 
+\item{arch}{A character string, e.g. \code{"i386"}, \code{"i686"} and \code{"x86_64"}.}
+
 \item{ptrsize}{The target pointer size - either \code{4L} or \code{8L}.}
 
 \item{endian}{The target endianess - either \code{"little"} or \code{"big"}.}
 }
 \value{
-\code{architecture()} returns a named list with
-    integer element \code{ptrsize} and character element \code{endian}.
+\code{architecture()} returns a named list with character element \code{arch},
+    integer element \code{ptrsize}, and character element \code{endian}.
     These elements take a missing values if they could not be inferred.
 
 \code{as.architecture()} returns a coerced version of \code{x}.

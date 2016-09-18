@@ -4,8 +4,8 @@
 #' @param ... (optional) Additional arguments passed to the underlying method.
 #'
 #' @return
-#' \code{architecture()} returns a named list with
-#'     integer element \code{ptrsize} and character element \code{endian}.
+#' \code{architecture()} returns a named list with character element \code{arch},
+#'     integer element \code{ptrsize}, and character element \code{endian}.
 #'     These elements take a missing values if they could not be inferred.
 #'
 #' @aliases as.architecture
@@ -14,6 +14,7 @@ architecture <- function(x, ...) {
   UseMethod("architecture")
 }
 
+#' @param arch A character string, e.g. \code{"i386"}, \code{"i686"} and \code{"x86_64"}.
 #' @param ptrsize The target pointer size - either \code{4L} or \code{8L}.
 #' @param endian The target endianess - either \code{"little"} or \code{"big"}.
 #'
@@ -23,7 +24,7 @@ architecture <- function(x, ...) {
 #'
 #' @rdname architecture
 #' @export
-as.architecture <- function(x, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
+as.architecture <- function(x, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
   UseMethod("as.architecture")
 }
 
@@ -51,7 +52,8 @@ architecture.recordedplot <- function(x, ...) {
 
 
 #' @export
-as.architecture.recordedplot <- function(x, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
+as.architecture.recordedplot <- function(x, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
+  stopifnot(is.null(arch) || (is.character(arch) && length(arch) == 1))
   stopifnot(ptrsize %in% c(4L, 8L))
   endian <- match.arg(endian, choices=c("little", "big"))
 
