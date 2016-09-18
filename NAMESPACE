@@ -118,6 +118,7 @@ S3method("!", "DevEvalProduct")
 
 
 S3method(architecture,recordedplot)
+S3method(architecture,RecordedPlot)
 S3method(as.architecture,recordedplot)
 export(architecture)
 export(as.architecture)

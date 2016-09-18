@@ -30,7 +30,40 @@ as.architecture <- function(x, arch=R.version$arch, ptrsize=.Machine$sizeof.poin
 
 
 #' @export
+architecture.RecordedPlot <- function(x, ...) {
+  system <- attr(x, "system")
+  if (is.null(system)) return(NextMethod("architecture"))
+
+  arch <- system$arch
+  if (is.null(arch)) arch <- NA_character_
+  
+  ptrsize <- system$ptrsize
+  if (is.null(ptrsize)) {
+    ## Default pointer size is 8 bytes (64-bit)
+    gpar_raw <- gpar(x)
+    n <- length(gpar_raw)
+    known_sizes <- c("32 bit"=35956L, "64 bit"=35992L)
+    if (n == known_sizes["32 bit"]) {
+      ptrsize <- 4L
+    } else if (n == known_sizes["64 bit"]) {
+      ptrsize <- 8L
+    } else {
+      ptrsize <- NA_integer_
+    }
+  }
+  
+  endian <- system$endian
+  if (is.null(ptrsize)) endian <- NA_character_
+
+  list(arch=arch, ptrsize=ptrsize, endian=endian)
+} ## architecture() for RecordedPlot
+
+
+#' @export
 architecture.recordedplot <- function(x, ...) {
+  ## Architecture label is unknown by default
+  arch <- NA_character_
+
   ## Default pointer size is 8 bytes (64-bit)
   gpar_raw <- gpar(x)
   n <- length(gpar_raw)
@@ -43,12 +76,9 @@ architecture.recordedplot <- function(x, ...) {
     ptrsize <- NA_integer_
   }
 
-  ## Assume source endian is 'little' 
-  endian <- "little"
+  ## Endian is unknown by default
+  endian <- NA_character_
 
-  ## Architecture label is unknown by default
-  arch <- NA_character_
-  
   list(arch=arch, ptrsize=ptrsize, endian=endian)
 } ## architecture() for recordedplot
 
@@ -56,26 +86,15 @@ architecture.recordedplot <- function(x, ...) {
 
 #' @export
 as.architecture.recordedplot <- function(x, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
-  stopifnot(is.character(arch) && length(arch) == 1)
+  stopifnot(is.character(arch), length(arch) == 1)
   stopifnot(ptrsize %in% c(4L, 8L))
-  endian <- match.arg(endian, choices=c("little", "big"))
+  stopifnot(is.character(endian), length(endian) == 1, (is.na(endian) || endian %in% c("little", "big")))
 
   ## Default pointer size is 8 bytes (64-bit)
   arch <- architecture(x)
-  if (is.na(arch$ptrsize)) {
-     known_sizes <- c("32 bit"=35956L, "64 bit"=35992L)
-     stop(sprintf("Failed to infer architecture.  The size of the %s structure is not among the known ones (%s): %d bytes", sQuote("gpar"), paste(sprintf("%s: %s bytes", names(known_sizes), known_sizes), collapse=", "), length(gpar(x))))
-  }
 
   ## Nothing to do?
   if (!is.na(arch) && !is.na(arch$arch) && arch == arch$arch) return(x)
-
-  ## Nothing to do?
-  if (ptrsize == arch$ptrsize && endian == arch$endian) return(x)
-
-  if (endian != arch$endian) {
-    stop(sprintf("NON-IMPLEMENTED FEATURE: Don't know how to coerce from %s to %s endianess", sQuote(arch$endian), sQuote(endian)))
-  }
 
   ## SPECIAL: Source and target architectures are known
   ## to be compatible even though their ptrsizes differ
@@ -84,6 +103,19 @@ as.architecture.recordedplot <- function(x, arch=R.version$arch, ptrsize=.Machin
     return(x)
   }
 
+  ## Endianess?
+  if (is.na(endian) || is.na(arch$endian) || endian != arch$endian) {
+    stop(sprintf("NON-IMPLEMENTED FEATURE: Don't know how to coerce from %s to %s endianess", sQuote(arch$endian), sQuote(endian)))
+  }
+
+  ## Pointer size, i.e. 32-bit or 64-bit address space?
+  if (is.na(arch$ptrsize)) {
+     known_sizes <- c("32 bit"=35956L, "64 bit"=35992L)
+     stop(sprintf("Failed to infer architecture.  The size of the %s structure is not among the known ones (%s): %d bytes", sQuote("gpar"), paste(sprintf("%s: %s bytes", names(known_sizes), known_sizes), collapse=", "), length(gpar(x))))
+  }
+
+  ## Nothing to do?
+  if (ptrsize == arch$ptrsize && endian == arch$endian) return(x)
 
   ## Coerce 'gpar' structure
   pad64pos <- c(cex=29, crt=53, lwd=325, ps=389, srt=405,
