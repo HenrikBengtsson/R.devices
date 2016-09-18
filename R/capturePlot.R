@@ -95,10 +95,11 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
 #' Automatically replays a recorded plot
 #'
 #' This is identical to the \code{\link[grDevices:replayPlot]{print}()}
-#' method available in \pkg{grDevices}, but before print it also tries
-#' to coerce the architecture internal data structure to that of the
-#' current machine such that it is possible to, for instance, replay a
-#' plot generated on a 32-bit machine on a 64-bit machine.
+#' method available in \pkg{grDevices}, but if replaying the plot gives
+#' an error it will also try to replay it after coercing the data structure
+#' to match the architecture of the current machine.  This will make it
+#' possible to, for instance, replay a plot generated on a 32-bit machine
+#' on a 64-bit machine.
 #' 
 #' @param x A recorded plot of class \code{recordedplot}.
 #'
@@ -110,7 +111,16 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
 #' @export
 #' @keywords internal
 print.RecordedPlot <- function(x, ...) {
-  try(x <- as.architecture(x))
-  replayPlot(x)
+  ## First, try without coercion
+  res <- tryCatch({
+    replayPlot(x)
+  }, error = identity)
+
+  ## If that didn't work, then try to coerce
+  if (inherits(res, "simpleError")) {
+    x <- as.architecture(x)
+    replayPlot(x)
+  }
+  
   invisible(x)
 }

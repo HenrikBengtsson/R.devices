@@ -36,6 +36,9 @@ architecture.RecordedPlot <- function(x, ...) {
   system <- attr(x, "system")
   if (is.null(system)) return(NextMethod("architecture"))
 
+  ostype <- system$ostype
+  if (is.null(ostype)) ostype <- NA_character_
+
   arch <- system$arch
   if (is.null(arch)) arch <- NA_character_
   
@@ -63,10 +66,15 @@ architecture.RecordedPlot <- function(x, ...) {
 
 #' @export
 architecture.recordedplot <- function(x, ...) {
+  ## OS type is unknown by default
+  ostype <- NA_character_
+  
   ## Architecture label is unknown by default
   arch <- NA_character_
 
-  ## Default pointer size is 8 bytes (64-bit)
+  ## Guess pointer size for size of 'gpar' element
+  ## NOTE: This is not always a correct guess, but
+  ##       it's better than nothing. /HB 2016-09-18
   gpar_raw <- gpar(x)
   n <- length(gpar_raw)
   known_sizes <- c("32 bit"=35956L, "64 bit"=35992L)
@@ -111,8 +119,8 @@ as.architecture.recordedplot <- function(x, ostype=.Platform$OS.type, arch=R.ver
   }
 
   ## Pointer size, i.e. 32-bit or 64-bit address space?
+  known_sizes <- c("32 bit"=35956L, "64 bit"=35992L)
   if (is.na(arch$ptrsize)) {
-     known_sizes <- c("32 bit"=35956L, "64 bit"=35992L)
      stop(sprintf("Failed to infer architecture.  The size of the %s structure is not among the known ones (%s): %d bytes", sQuote("gpar"), paste(sprintf("%s: %s bytes", names(known_sizes), known_sizes), collapse=", "), length(gpar(x))))
   }
 
@@ -135,10 +143,9 @@ as.architecture.recordedplot <- function(x, ostype=.Platform$OS.type, arch=R.ver
   }
 
   attr(gpar, "pkgName") <- pkgName
-  gpar(x) <- gpar
 
-  arch2 <- architecture(x)
-  stopifnot(arch2$ptrsize == ptrsize, arch2$endian == endian)
+  ## Keep the result only if padded to a known length
+  if (length(gpar) %in% known_sizes) gpar(x) <- gpar
 
   x
 } ## as.architecture() for recordedplot
@@ -163,3 +170,20 @@ gpar <- function(x) {
   x[[idx]] <- value
   invisible(x)
 } ## gpar<-()
+
+#' @export
+as.architecture.RecordedPlot <- function(x, ...) {
+  y <- NextMethod("as.architecture")
+  system <- attr(x, "system")
+  if (is.null(system)) return(y)
+
+  ## Update 'system' attribute
+  attr(y, "system") <- NULL
+  arch <- architecture(y)
+  if (is.na(arch$ostype)) arch$ostype <- system$ostype
+  if (is.na(arch$ptrsize)) arch$ptrsize <- system$ptrsize
+  if (is.na(arch$endian)) arch$endian <- system$endian
+  attr(y, "system") <- arch
+  
+  y
+}

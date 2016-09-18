@@ -14,10 +14,11 @@ Returns \code{x} invisibly.
 }
 \description{
 This is identical to the \code{\link[grDevices:replayPlot]{print}()}
-method available in \pkg{grDevices}, but before print it also tries
-to coerce the architecture internal data structure to that of the
-current machine such that it is possible to, for instance, replay a
-plot generated on a 32-bit machine on a 64-bit machine.
+method available in \pkg{grDevices}, but if replaying the plot gives
+an error it will also try to replay it after coercing the data structure
+to match the architecture of the current machine.  This will make it
+possible to, for instance, replay a plot generated on a 32-bit machine
+on a 64-bit machine.
 }
 \seealso{
 Internally, \code{\link{as.architecture}()} is used
