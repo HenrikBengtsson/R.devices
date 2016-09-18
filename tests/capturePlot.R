@@ -8,7 +8,7 @@ str(getOption("device"))
 message("*** capturePlot() - as.architecture() ...")
 
 path <- system.file("exdata", package="R.devices")
-pattern <- "^capturePlot,.*[.]recordedplot[.]Rbin$"
+pattern <- "^capturePlot,.*[.]rds$"
 pathnames <- dir(path=path, pattern=pattern, full.names=TRUE)
 
 for (kk in seq_along(pathnames)) {
@@ -56,7 +56,7 @@ if (getRversion() >= "3.3.0") {
 
   ## Record for troubleshooting
   tags <- sprintf("%s=%s", names(system), system)
-  pathname <- sprintf("capturePlot,%s.recordedplot.Rbin", paste(tags, collapse=","))
+  pathname <- sprintf("capturePlot,%s.rds", paste(tags, collapse=","))
   saveRDS(g, file=pathname)
 
   ## Replay
