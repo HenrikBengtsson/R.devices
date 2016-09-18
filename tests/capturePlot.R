@@ -40,7 +40,7 @@ for (kk in seq_along(pathnames)) {
   str(arch_2)
 
   if (getRversion() >= "3.3.0") {
-    try(replayPlot(g))
+    try(replayPlot(g_2))
   }
 } ## for (kk ...)
 
