@@ -79,8 +79,12 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
   eval(expr, envir=envir)
   g <- recordPlot()
 
-  ## Record architecture details (helps troubleshooting)
-  attr(g, "system") <- list(ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian)
+  ## Record details of machine's architecture (helps troubleshooting)
+  attr(g, "system") <- list(
+    arch=R.version$arch,
+    ptrsize=.Machine$sizeof.pointer,
+    endian=.Platform$endian
+  )
 
   class(g) <- c("RecordedPlot", class(g))
   

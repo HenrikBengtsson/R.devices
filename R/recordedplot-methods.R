@@ -70,18 +70,18 @@ as.architecture.recordedplot <- function(x, ptrsize=.Machine$sizeof.pointer, end
   }
 
   ## Coerce 'gpar' structure
-  pad64pos <- c(cex=28, crt=52, lwd=324, ps=388, srt=404,
-                heights=596, plt=35484, mar=35548, mex=35620)
+  pad64pos <- c(cex=29, crt=53, lwd=325, ps=389, srt=405,
+                heights=597, plt=35485, mar=35549, mex=35621)
   gpar <- gpar(x)
   pkgName <- attr(gpar, "pkgName")
-  
+
   if (arch$ptrsize == 8L && ptrsize == 4L) {
     ## 64-bit -> 32-bit
     drop <- rep(pad64pos, each=4L) + 0:3
     gpar <- gpar[-drop]
   } else if (arch$ptrsize == 4L && ptrsize == 8L) {
     ## 32-bit -> 64-bit
-    for (pos in pad64pos) gpar <- append(gpar, raw(4L), after=pos)
+    for (pos in pad64pos) gpar <- append(gpar, raw(4L), after=pos-1L)
   }
 
   attr(gpar, "pkgName") <- pkgName
@@ -89,7 +89,7 @@ as.architecture.recordedplot <- function(x, ptrsize=.Machine$sizeof.pointer, end
 
   arch2 <- architecture(x)
   stopifnot(arch2$ptrsize == ptrsize, arch2$endian == endian)
-  
+
   x
 } ## as.architecture() for recordedplot
 
