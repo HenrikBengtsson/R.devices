@@ -46,14 +46,17 @@ architecture.recordedplot <- function(x, ...) {
   ## Assume source endian is 'little' 
   endian <- "little"
 
-  list(ptrsize=ptrsize, endian=endian)
+  ## Architecture label is unknown by default
+  arch <- NA_character_
+  
+  list(arch=arch, ptrsize=ptrsize, endian=endian)
 } ## architecture() for recordedplot
 
 
 
 #' @export
 as.architecture.recordedplot <- function(x, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
-  stopifnot(is.null(arch) || (is.character(arch) && length(arch) == 1))
+  stopifnot(is.character(arch) && length(arch) == 1)
   stopifnot(ptrsize %in% c(4L, 8L))
   endian <- match.arg(endian, choices=c("little", "big"))
 
@@ -65,11 +68,22 @@ as.architecture.recordedplot <- function(x, arch=R.version$arch, ptrsize=.Machin
   }
 
   ## Nothing to do?
+  if (!is.na(arch) && !is.na(arch$arch) && arch == arch$arch) return(x)
+
+  ## Nothing to do?
   if (ptrsize == arch$ptrsize && endian == arch$endian) return(x)
 
   if (endian != arch$endian) {
     stop(sprintf("NON-IMPLEMENTED FEATURE: Don't know how to coerce from %s to %s endianess", sQuote(arch$endian), sQuote(endian)))
   }
+
+  ## SPECIAL: Source and target architectures are known
+  ## to be compatible even though their ptrsizes differ
+  if (all(c(arch, arch$arch) %in% c("i386", "x86_64"))) {
+    # i386 (e.g. 32-bit Windows) <-> x86_64 (64-bit Linux)
+    return(x)
+  }
+
 
   ## Coerce 'gpar' structure
   pad64pos <- c(cex=29, crt=53, lwd=325, ps=389, srt=405,
