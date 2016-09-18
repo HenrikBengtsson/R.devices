@@ -81,6 +81,7 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
 
   ## Record details of machine's architecture (helps troubleshooting)
   attr(g, "system") <- list(
+    ostype=.Platform$OS.type,
     arch=R.version$arch,
     ptrsize=.Machine$sizeof.pointer,
     endian=.Platform$endian
