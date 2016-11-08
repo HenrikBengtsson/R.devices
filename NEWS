@@ -2,6 +2,16 @@
 Package: R.devices
 ==================
 
+Version: 2.15.0 [2016-11-07]
+o Printing a plot recorded by capturePlot() now automatically falls
+  back to replaying it coerced to the current machine's architecture
+  if the default replay fails.
+o Added as.architecture() for recordedplot objects to make it
+  easy to coerce between 32-bit and 64-bit versions of a serialized
+  recorded plot (e.g. via capturePlot()) so that it can be replotted
+  everywhere.
+
+
 Version: 2.14.0 [2016-03-08]
 o Added capturePlot() making it possible to capture low-level
   plot commands using grDevices::recordPlot() such that the

@@ -45,6 +45,19 @@ capturePlot(expr, envir=parent.frame(), type=pdf, ...)
   device(s) in which the recorded plot is replayed (see example).
 }
 
+\section{Replaying / replotting on a different architecture}{
+ In order to replay a \code{recordedplot} object, it has to be replayed
+ on an architecture that is compatible with the one who created the
+ object.
+ If this is not the case, then \code{\link[grDevices]{replayPlot}()}
+ will generate an \emph{Incompatible graphics state} error.
+ The \code{\link{as.architecture}()} function of this package tries
+ to coerce between different architectures, such that one can replay
+ across architectures using \code{replayPlot(as.architectures(g))}.
+ For convenience, the recored plot returned by \code{capturePlot()}
+ is automatically coerced when \code{print()}:ed.
+}
+
 \examples{
 if (getRversion() >= "3.3.0") {
 

@@ -115,3 +115,12 @@ S3method("getTags", "DevEvalProduct")
 S3method("getType", "DevEvalProduct")
 S3method("view", "DevEvalProduct")
 S3method("!", "DevEvalProduct")
+
+
+S3method(architecture,recordedplot)
+S3method(architecture,RecordedPlot)
+S3method(as.architecture,recordedplot)
+S3method(as.architecture,RecordedPlot)
+export(architecture)
+export(as.architecture)
+S3method(print,RecordedPlot)

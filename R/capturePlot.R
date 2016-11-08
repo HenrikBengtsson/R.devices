@@ -34,6 +34,19 @@
 #   device(s) in which the recorded plot is replayed (see example).
 # }
 #
+# \section{Replaying / replotting on a different architecture}{
+#  In order to replay a \code{recordedplot} object, it has to be replayed
+#  on an architecture that is compatible with the one who created the
+#  object.
+#  If this is not the case, then \code{\link[grDevices]{replayPlot}()}
+#  will generate an \emph{Incompatible graphics state} error.
+#  The \code{\link{as.architecture}()} function of this package tries
+#  to coerce between different architectures, such that one can replay
+#  across architectures using \code{replayPlot(as.architectures(g))}.
+#  For convenience, the recored plot returned by \code{capturePlot()}
+#  is automatically coerced when \code{print()}:ed.
+# }
+#
 # @examples "../incl/capturePlot.Rex"
 #
 # @author
@@ -53,7 +66,7 @@
 #*/###########################################################################
 capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
   if (getRversion() < "3.3.0") {
-    throw(sprintf("Insufficient R version. R.devices::capturePlot() requires R (>= 3.3.0): ", getRversion()))
+    throw("Insufficient R version. R.devices::capturePlot() requires R (>= 3.3.0): ", getRversion())
   }
 
   expr <- substitute(expr)
@@ -64,5 +77,51 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
 
   dev.control("enable")
   eval(expr, envir=envir)
-  recordPlot()
+  g <- recordPlot()
+
+  ## Record details of machine's architecture (helps troubleshooting)
+  attr(g, "system") <- list(
+    ostype=.Platform$OS.type,
+    arch=R.version$arch,
+    ptrsize=.Machine$sizeof.pointer,
+    endian=.Platform$endian
+  )
+
+  class(g) <- c("RecordedPlot", class(g))
+  
+  g
+}
+
+
+#' Automatically replays a recorded plot
+#'
+#' This is identical to the \code{\link[grDevices:replayPlot]{print}()}
+#' method available in \pkg{grDevices}, but if replaying the plot gives
+#' an error it will also try to replay it after coercing the data structure
+#' to match the architecture of the current machine.  This will make it
+#' possible to, for instance, replay a plot generated on a 32-bit machine
+#' on a 64-bit machine.
+#' 
+#' @param x A recorded plot of class \code{recordedplot}.
+#'
+#' @return Returns \code{x} invisibly.
+#'
+#' @seealso Internally, \code{\link{as.architecture}()} is used
+#' to coerce to the current architecture.
+#'
+#' @export
+#' @keywords internal
+print.RecordedPlot <- function(x, ...) {
+  ## First, try without coercion
+  res <- tryCatch({
+    replayPlot(x)
+  }, error = identity)
+
+  ## If that didn't work, then try to coerce
+  if (inherits(res, "simpleError")) {
+    x <- as.architecture(x)
+    replayPlot(x)
+  }
+  
+  invisible(x)
 }
