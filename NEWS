@@ -5,6 +5,9 @@ Package: R.devices
 Version: 2.15.0-9000 [2016-11-08]
 o TESTS: Don't test as.architecture() on recordedplot objects that
   require coercion between endianess, which is yet not supported.
+o BUG FIX: Calling devNew(type, ..., aspectRatio) with 'type' being
+  a function and neither width nor height could be inferred from the
+  devices type generated an error when trying to generate a warning.
 
 
 Version: 2.15.0 [2016-11-07]

@@ -49,35 +49,45 @@ for (kk in seq_along(pathnames)) {
 
 message("*** capturePlot() - as.architecture() ... DONE")
 
+message("*** capturePlot() - capture and replay ...")
+
 if (getRversion() >= "3.3.0") {
+  message("- capture")
   g <- capturePlot({
     plot(1:10)
   })
 
+  message("- system information")
   system <- attr(g, "system")
   print(system)
 
+  message("- saving")
   ## Record for troubleshooting
   tags <- sprintf("%s=%s", names(system), system)
   pathname <- sprintf("capturePlot,%s.rds", paste(tags, collapse=","))
   saveRDS(g, file=pathname)
 
-  ## Replay
+  message("- architecture")
   print(architecture(g))
 
+  message("- replay")
   ## Replay
   replayPlot(g)
 
+  message("- display")
   ## Display
   print(g)
 
+  message("- toDefault()")
   ## Display with a 2/3 aspect ratio
   toDefault(aspectRatio=2/3, print(g))
 
+  message("- devEval()")
   ## Redraw to many output formats
   devEval(c("png", "eps", "pdf"), aspectRatio=2/3, print(g))
 
 } ## if (getRversion() >= "3.3.0")
 
+message("*** capturePlot() - capture and replay ... DONE")
 
 message("*** capturePlot() ... DONE")
