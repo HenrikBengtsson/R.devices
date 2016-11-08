@@ -2,6 +2,10 @@
 Package: R.devices
 ==================
 
+Version: 2.15.0-9000 [2016-11-08]
+o ...
+
+
 Version: 2.15.0 [2016-11-07]
 o Printing a plot recorded by capturePlot() now automatically falls
   back to replaying it coerced to the current machine's architecture
