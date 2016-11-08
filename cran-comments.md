@@ -1,55 +1,63 @@
-# CRAN submission R.devices 2.14.0
-on 2016-03-08
+# CRAN submission R.devices 2.15.0
+on 2016-11-07
 
-Note to CRAN (same comment was done for 2.13.2):
+I've verified that this submission causes *no* issues for
+any of the 8 reverse (non-recursive) package dependencies
+available on CRAN and Bioconductor.
 
-It is not clear to my why package tests in `tests/devEval.R`
-causes a _core dump_ on Solaris.  The core dump occurs when it tries
-to open an X11 device.  The test checks for X11 support via
-`capabilities()["X11"]`.  If not supported, then X11-related tests are
-skipped.  This core dump appeared with previous versions of R.devices
-as well (started since I added conditional X11 tests) meaning it has
-been report as an ERROR on Solaris for several months now.  For full
-`R CMD check` output on Solaris, please see
-https://cran.r-project.org/web/checks/check_results_R.devices.html
+On Windows there is the following false-positive error:
+
+Found the following (possibly) invalid URLs:
+  URL: https://www.stat.auckland.ac.nz/~paul/Reports/DisplayList/dl-record.html
+    From: man/capturePlot.Rd
+    Status: Error
+    Message: libcurl error code 35
+    error:14077410:SSL routines:SSL23_GET_SERVER_HELLO:sslv3 alert
+	handshake failure
 
 Thanks in advance
+
 
 
 ## Notes not sent to CRAN
 The package has been verified using `R CMD check --as-cran` on:
 
-* Platform x86_64-unknown-linux-gnu (64-bit) [Travis CI]:
-  - R version 3.1.3 (2015-03-09)
-  - R version 3.2.2 (2015-08-14)
-  - R Under development (unstable) (2016-03-07 r70284)
+* Platform x86_64-apple-darwin13.4.0 (64-bit) [Travis CI]:
+  - R 3.2.4 Revised (2016-03-16 r70336)
+  - R version 3.3.2 (2016-10-31)
   
+* Platform x86_64-unknown-linux-gnu (64-bit) [Travis CI]:
+  - R version 3.2.5 (2016-04-14)
+  - R version 3.3.1 (2016-06-21)
+  - R Under development (unstable) (2016-11-07 r71636)
+  
+* Platform x86_64-pc-linux-gnu (64-bit) [r-hub]:
+  - R Under development (unstable) (2016-10-30 r71610)
+
+* Platform i686-pc-linux-gnu (32-bit):
+  - R version 3.3.2 (2016-10-31)
+
 * Platform x86_64-pc-linux-gnu (64-bit):
-  - R version 2.14.0 (2011-10-31)
+  - R version 2.15.3 (2013-03-01)
   - R version 3.1.3 (2015-03-09)
-  - R version 3.2.4 RC (2016-03-07 r70284)
-  - R Under development (unstable) (2016-03-05 r70278)
+  - R version 3.3.2 (2016-10-31)
+  - R version 3.3.2 Patched (2016-11-04 r71626)
 
 * Platform i386-w64-mingw32 (32-bit) [Appveyor CI]:
-  - R Under development (unstable) (2016-03-07 r70284)
+  - R version 3.3.2 (2016-10-31)
+  - R Under development (unstable) (2016-11-06 r71633)
 
 * Platform x86_64-w64-mingw32/x64 (64-bit) [Appveyor CI]:
-  - R version 3.2.3 (2015-12-10)
-  - R Under development (unstable) (2016-03-07 r70284)
+  - R version 3.3.2 (2016-10-31)
+  - R Under development (unstable) (2016-11-06 r71633)
+
+* Platform x86_64-w64-mingw32 (64-bit) [rhub]:
+  - R version 3.2.5 (2016-04-14) (*)
 
 * Platform x86_64-w64-mingw32/x64 (64-bit) [win-builder]:
-  - R version 3.2.3 Patched (2016-02-04 r70085)
-  - R Under development (unstable) (2016-03-07 r70284)
+  - R version 3.3.2 (2016-10-31) (*)
+  - R Under development (unstable) (2016-09-13 r71239) (*)
 
-* Platform x86_64-w64-mingw32/x64 (64-bit):
-  - R version 3.2.3 (2015-12-10)
-  - R version 3.2.4 RC (2016-03-02 r70278)
-  - R Under development (unstable) (2016-03-07 r70284)
 
-It has also verified using the <http://win-builder.r-project.org/> service.
-
-Moreover, the updates cause no issues for any of the following
-7 reverse dependencies on CRAN and Bioconductor:
-MPAgenomics 1.1.2, PSCBS 0.61.0, R.rsp 0.21.0,
-aroma.affymetrix 3.0.0, aroma.core 3.0.0, babel 0.2-6 and
-matrixStats 0.50.1.
+(*) Gives an URL check error, which most likely due to the remote webserver,
+    cf.  https://stat.ethz.ch/pipermail/r-devel/2016-November/073353.html
