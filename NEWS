@@ -3,7 +3,8 @@ Package: R.devices
 ==================
 
 Version: 2.15.0-9000 [2016-11-08]
-o ...
+o TESTS: Don't test as.architecture() on recordedplot objects that
+  require coercion between endianess, which is yet not supported.
 
 
 Version: 2.15.0 [2016-11-07]
