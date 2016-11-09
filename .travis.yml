@@ -28,12 +28,8 @@ matrix:
       r: devel
     - os: osx
       r: oldrel
-      r_github_packages:
-      - HenrikBengtsson/R.utils
     - os: osx
       r: release
-      r_github_packages:
-      - HenrikBengtsson/R.utils
     
 notifications:
   email:
