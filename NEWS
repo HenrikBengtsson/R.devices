@@ -2,6 +2,14 @@
 Package: R.devices
 ==================
 
+Version: 2.15.1 [2016-11-09]
+o TESTS: Don't test as.architecture() on recordedplot objects that
+  require coercion between endianess, which is yet not supported.
+o BUG FIX: Calling devNew(type, ..., aspectRatio) with 'type' being
+  a function and neither width nor height could be inferred from the
+  devices type generated an error when trying to generate a warning.
+
+
 Version: 2.15.0 [2016-11-07]
 o Printing a plot recorded by capturePlot() now automatically falls
   back to replaying it coerced to the current machine's architecture

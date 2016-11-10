@@ -146,7 +146,8 @@ devNew <- function(type=getOption("device"), ..., scale=1, aspectRatio=1, par=NU
           args$width <- width;
           args$height <- aspectRatio * width;
         } else {
-          warning("Argument 'aspectRatio' was ignored because none of 'width' and 'height' were given and 'width' could not be inferred from devOptions(\"", type, "\"): ", aspectRatio);
+	  typeT <- if (is.character(type)) dQuote(type) else "<function>"
+          warning("Argument 'aspectRatio' was ignored because none of 'width' and 'height' were given and 'width' could not be inferred from devOptions(", typeT, "): ", aspectRatio);
         }
       } else if (!is.null(width)) {
         # Argument 'width' was specified but not 'height'
