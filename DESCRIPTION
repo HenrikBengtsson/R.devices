@@ -11,7 +11,7 @@ Imports:
 Suggests:
     digest (>= 0.6.10),
     Cairo (>= 1.5-9),
-    R.rsp (>= 0.30.0)
+    R.rsp (>= 0.40.0)
 VignetteBuilder: R.rsp
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
