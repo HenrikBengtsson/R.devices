@@ -82,6 +82,7 @@ export("toX11")
 export("toCairoWin")
 export("toCairoX11")
 ##export("toJavaGD")
+export("toRStudioGD")
 
 export("asDataURI")
 
