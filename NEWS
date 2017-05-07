@@ -1,11 +1,12 @@
 Package: R.devices
 ==================
 
-Version: 2.15.1-9000 [2017-05-06]
+Version: 2.15.1-9000 [2017-05-07]
 
 NEW FEATURES:
 
- o Add support for RStudio's RStudioGD device.
+ o Add support for RStudio's RStudioGD device, e.g. toRStudioGD() and devEval()
+   with type = "RStudioGD".
  
  
 Version: 2.15.1 [2016-11-09]
