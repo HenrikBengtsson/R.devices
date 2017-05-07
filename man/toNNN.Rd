@@ -61,12 +61,12 @@
   %% toJavaGD(name, ...)
 
   % Interactive/screen device for RStudio
-  toRStudioGD(name, ...)
+  toRStudioGD(name, ..., .allowUnknownArgs = TRUE)
 }
 
 \arguments{
   \item{name}{A \code{\link[base]{character}} string specifying the name of the image file.}
-  \item{...}{Additional arguments passed to \code{\link{devEval}}(), e.g.
+  \item{..., .allowUnknownArgs}{Additional arguments passed to \code{\link{devEval}}(), e.g.
      \code{tags} and \code{aspectRatio}.}
   \item{ext, field}{Passed to \code{\link{devEval}}().}
 }
