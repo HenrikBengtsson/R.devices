@@ -19,6 +19,7 @@
 \alias{toTIFF}
 \alias{toWMF}
 \alias{toFavicon}
+\alias{toRStudioGD}
 \alias{asDataURI}
 
 % Interactive/screen devices
@@ -58,6 +59,9 @@
   toCairoWin(name, ...)
   toCairoX11(name, ...)
   %% toJavaGD(name, ...)
+
+  % Interactive/screen device for RStudio
+  toRStudioGD(name, ...)
 }
 
 \arguments{

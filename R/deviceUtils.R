@@ -640,6 +640,11 @@ devAll <- local({
                       "grDevices::x11")
       ))
 
+      ## RStudio devices
+      res <- c(res, list(
+        RStudioGD  = c("tools:rstudio::RStudioGD", "grDevices::png")
+      ))
+      
       ## JavaGD
       ## JavaGD=c("JavaGD::JavaGD")
 
@@ -662,6 +667,14 @@ devAll <- local({
               break
             }
             next
+          } else if (pkg == "tools:rstudio") {
+            supported <- FALSE
+            pos <- match(pkg, search())
+            if (!is.na(pos)) {
+              env <- pos.to.env(pos)
+              supported <- exists("RStudioGD", envir=env, mode="function")
+            }
+            break
           }
 
           if (!isPackageInstalled(pkg)) {
