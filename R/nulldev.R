@@ -19,7 +19,7 @@
 # }
 #
 # \details{
-#   The null graphics device opens a regular \link[grDevices]{postscript} device
+#   The null graphics device opens a regular \link[grDevices]{pdf} device
 #   and directs its output to the null file, which is \code{/dev/null} unless
 #   on Windows where it is \code{NUL}.
 # }
@@ -38,6 +38,6 @@
 # @keyword internal
 #*/#########################################################################
 nulldev <- function(file = nullfile(), ...) {
-  type <- getOption("R.devices.nulldev", "postscript")
+  type <- getOption("R.devices.nulldev", "pdf")
   do.call(type, args = list(nullfile()))
 }

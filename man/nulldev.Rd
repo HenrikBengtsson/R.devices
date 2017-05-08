@@ -30,7 +30,7 @@ nulldev(file=nullfile(), ...)
 }
 
 \details{
-  The null graphics device opens a regular \link[grDevices]{png} device
+  The null graphics device opens a regular \link[grDevices]{pdf} device
   and directs its output to the null file, which is \code{/dev/null} unless
   on Windows where it is \code{NUL}.
 }
