@@ -292,10 +292,14 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     }
 
     # Argument 'filename' & 'path':
-    if (is.null(filename)) {
-      filename <- sprintf("%s.%s", fullname, ext);
+    if (ext == "nulldev") {
+      pathname <- nullfile()
+    } else {
+      if (is.null(filename)) {
+        filename <- sprintf("%s.%s", fullname, ext)
+      }
+      pathname <- Arguments$getWritablePathname(filename, path=path)
     }
-    pathname <- Arguments$getWritablePathname(filename, path=path);
   }
 
 

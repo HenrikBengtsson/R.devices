@@ -18,8 +18,9 @@ types <- list(
   character(0L),
   "png",
   "jpg",
+  "nulldev",
   c("png", "png", "jpeg"),
-  "png,jpg,pdf"
+  "png,nulldev,pdf"
 )
 
 for (type in types) {
@@ -79,7 +80,8 @@ types <- list(
   c("png|jpg", "x11|windows"), # PNG or JPG and then x11 or windows
   "eps|postscript|pdf",        # EPS, Postscript or PDF
   "jpeg2|jpeg",                # JPEG via bitmap() or via jpeg()
-  "png,jpg|x11|windows"        # == c("png", "jpg|x11|windows")
+  "png,jpg|x11|windows",       # == c("png", "jpg|x11|windows")
+  "nulldev|jpeg"               # NULL devices, otherwise jpeg
 )
 
 if (!capabilitiesX11()) {
@@ -161,7 +163,8 @@ message("*** devEval(<fcn>) ...")
 
 types <- list(
   png=grDevices::png,
-  jpg=grDevices::jpeg
+  jpg=grDevices::jpeg,
+  nulldev=R.devices::nulldev
 )
 
 for (name in names(types)) {

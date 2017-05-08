@@ -1,6 +1,10 @@
 nullfile <- function() {
   switch(.Platform$OS.type,
-    windows="NUL",
+    windows = "NUL",
     "/dev/null"
   )
+}
+
+is_nullfile <- function(file) {
+  normalizePath(file) == nullfile()
 }

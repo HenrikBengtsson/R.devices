@@ -315,13 +315,14 @@ setMethodS3("getFullname", "DevEvalFileProduct", function(this, ...) {
 # }
 #*/###########################################################################
 setMethodS3("getPathname", "DevEvalFileProduct", function(this, relative=TRUE, ...) {
-  pathname <- as.character(unclass(this), ...);
+  pathname <- as.character(unclass(this), ...)
+  if (is_nullfile(pathname)) return(pathname)
   if (relative) {
-    pathname <- getRelativePath(pathname);
+    pathname <- getRelativePath(pathname)
   } else {
-    pathname <- getAbsolutePath(pathname);
+    pathname <- getAbsolutePath(pathname)
   }
-  pathname;
+  pathname
 })
 
 setMethodS3("getFilename", "DevEvalFileProduct", function(this, ...) {

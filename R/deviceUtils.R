@@ -608,6 +608,8 @@ devAll <- local({
 
       # R.devices
       res <- c(res, list(
+        nulldev = c("R.devices::nulldev",
+                    "grDevices::png", "grDevices::postscript"),
         eps     = c("R.devices::eps",
                     "grDevices::postscript"),
         favicon = c("R.devices::favicon",
@@ -642,7 +644,8 @@ devAll <- local({
 
       ## RStudio devices
       res <- c(res, list(
-        RStudioGD  = c("tools:rstudio::RStudioGD", "grDevices::png")
+        RStudioGD  = c("tools:rstudio::RStudioGD",
+                       "grDevices::png")
       ))
       
       ## JavaGD

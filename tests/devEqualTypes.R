@@ -38,4 +38,8 @@ message("*** devEqualTypes(png, 'non-existing') ...")
 res <- devEqualTypes(png, "non-existing")
 stopifnot(!res)
 
+message("*** devEqualTypes(nulldev, 'nulldev') ...")
+res <- devEqualTypes(nulldev, "nulldev")
+stopifnot(res)
+
 message("*** devEqualTypes() ... DONE")
