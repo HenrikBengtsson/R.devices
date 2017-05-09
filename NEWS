@@ -8,10 +8,9 @@ NEW FEATURES:
  o Add support for RStudio's RStudioGD device, e.g. toRStudioGD() and devEval()
    with type = "RStudioGD".
 
- o Added a "null" graphics device that voids all graphics output.  The
-   basic device function is nulldev(), which can also be opened using
-   devNew("nulldev").  devEval("nulldev", <expr>) and toNullDev(<expr>)
-   evaluate the expression while dropping any plot output.
+ o Added a "null" graphics device, nulldev(), that voids all graphics output.
+   It may also be opened by devNew("nulldev").  devEval("nulldev", <expr>) and
+   toNullDev(<expr>) evaluate the expression while dropping any plot output.
 
 
 Version: 2.15.1 [2016-11-09]
