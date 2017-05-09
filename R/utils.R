@@ -6,5 +6,5 @@ nullfile <- function() {
 }
 
 is_nullfile <- function(file) {
-  normalizePath(file) == nullfile()
+  normalizePath(file, mustWork = FALSE) == nullfile()
 }
