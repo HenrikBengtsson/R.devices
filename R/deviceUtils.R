@@ -542,7 +542,7 @@ devAll <- local({
   # times either directly or indirectly by various functions.
   .devAll <- NULL
 
-  isFALSE <- function(x) identical(FALSE, unname(x))
+  isFALSE <- function(x) is.logical(x) && length(x) == 1L && !is.na(x) && !x
 
   base_capabilities <- local({
     res <- base::capabilities()
