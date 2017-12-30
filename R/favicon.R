@@ -80,11 +80,3 @@ favicon <- function(filename="favicon.png", width=32L, height=width, bg="transpa
   # Set graphical parameters
   par(par)
 } # favicon()
-
-
-############################################################################
-# HISTORY:
-# 2014-09-15
-# o Created.
-############################################################################
-

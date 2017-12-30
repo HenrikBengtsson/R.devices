@@ -30,12 +30,3 @@
 .onAttach <- function(libname, pkgname) {
   startupMessage(get(pkgname, envir=getNamespace(pkgname)));
 }
-
-
-############################################################################
-# HISTORY:
-# 2013-05-30
-# o Now registering RSP vignette engines.
-# 2010-11-05
-# o Created.
-############################################################################

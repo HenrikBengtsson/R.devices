@@ -461,23 +461,3 @@ setMethodS3("getData", "DevEvalFileProduct", function(this, mode=c("character", 
   }
   res
 }) # getData()
-
-
-############################################################################
-# HISTORY:
-# 2014-09-17
-# o Added view() and !() to DevEvalProduct.
-# 2014-09-15
-# o BUG FIX: Now getPathname(..., relative=FALSE) returns the absolute
-#   pathname.
-# 2014-09-02
-# o Added getData() to DevEvalFileProduct.
-# 2013-09-17
-# o ROBUSTNESS: Now getDataURI() throws an Exception is suggested
-#   package 'base64enc' is not installed.
-# 2013-08-29
-# o Now getPathname() returns the relative pathname, by default.
-# 2013-08-27
-# o Added the DevEvalProduct and DevEvalFileProduct classes.
-# o Created.
-############################################################################
