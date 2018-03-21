@@ -61,5 +61,5 @@ withPar <- function(expr, ..., args=list(), envir=parent.frame()) {
   on.exit(par(prev))
   if (length(new) > 0L) par(new)
 
-  eval(expr, envir=envir)
+  eval(expr, envir = envir, enclos = baseenv())
 } # withPar()

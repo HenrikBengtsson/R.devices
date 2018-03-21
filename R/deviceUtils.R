@@ -856,7 +856,9 @@ devAll <- local({
 
 .devTypeNameFromFunction <- function(fcn, knownTypes=R.devices:::devAll(), ...) {
   stopifnot(length(fcn) == 1, is.function(fcn))
-  knownFcns <- lapply(knownTypes, FUN=function(x) eval(parse(text=x[1])))
+  knownFcns <- lapply(knownTypes, FUN = function(x) {
+    eval(parse(text = x[1]), enclos = baseenv())
+  })
   name <- NULL
   for (name in names(knownFcns)) {
     if (identical(fcn, knownFcns[[name]])) return(name)

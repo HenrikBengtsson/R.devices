@@ -77,7 +77,7 @@ capturePlot <- function(expr, envir=parent.frame(), type=nulldev, ...) {
   on.exit(dev.off())
 
   dev.control("enable")
-  eval(expr, envir=envir)
+  eval(expr, envir = envir, enclos = baseenv())
   g <- recordPlot()
 
   ## Record details of machine's architecture (helps troubleshooting)

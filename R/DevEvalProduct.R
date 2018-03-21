@@ -91,7 +91,7 @@ setMethodS3("[[", "DevEvalProduct", function(x, name, ...) {
   fcn <- sprintf("get%s", capitalize(name));
   expr <- substitute(fcn(x), list(fcn=as.name(fcn)));
   res <- tryCatch({
-    eval(expr, ...);
+    eval(expr, ..., enclos = baseenv());
   }, error = function(ex) {
     ex;
   });

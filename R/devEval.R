@@ -110,7 +110,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     # Was the expression passed implicitly via 'name' instead?
     # In order to infer this, we have to inspect 'name' in the
     # parent frame:
-    nameClass <- eval(expression(class(substitute(name))), envir=parent.frame());
+    nameClass <- eval(expression(class(substitute(name))), envir = parent.frame(), enclos = baseenv());
     isExpr <- is.element(nameClass, c("call", "{", "("))
     if (isTRUE(isExpr)) {
       # This avoid the plot expression to be evaluated here.
@@ -147,7 +147,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     types <- type;
 
     # Evaluate 'initially' only once
-    eval(initially, envir=envir);
+    eval(initially, envir = envir, enclos = baseenv());
 
     if (hasExpr) {
       # Expression must be substitute():d to avoid the being evaluated here
@@ -166,7 +166,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     names(res) <- types;
 
     # Evaluate 'finally' only once
-    eval(finally, envir=envir);
+    eval(finally, envir = envir, enclos = baseenv());
 
     return(res);
   } # if (length(type) > 1L)
@@ -190,7 +190,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     errors <- list(); # Record any errors
 
     # Evaluate 'initially' only once
-    eval(initially, envir=envir);
+    eval(initially, envir = envir, enclos = baseenv());
 
     if (hasExpr) {
       # Expression must be substitute():d to avoid the being evaluated here
@@ -220,7 +220,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     } # if (hasExpr)
 
     # Evaluate 'finally' only once
-    eval(finally, envir=envir);
+    eval(finally, envir = envir, enclos = baseenv());
 
     # Successfully created output?
     if (!is.null(res)) {
@@ -402,9 +402,9 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
     } # if (isInteractive)
 
     # Evaluate 'initially', 'expr' and 'finally' (in that order)
-    eval(initially, envir=envir);
+    eval(initially, envir = envir, enclos = baseenv());
     if (hasExpr) {
-      eval(expr, envir=envir);
+      eval(expr, envir = envir, enclos = baseenv());
     } else {
       # Copy the device specified by argument 'which'.
       # Assert that device is interactive
@@ -423,7 +423,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
       devSet(which);
       dev.copy(which=devIdx);
     }
-    eval(finally, envir=envir);
+    eval(finally, envir = envir, enclos = baseenv());
 
     done <- TRUE;
   }
