@@ -32,7 +32,7 @@ as.architecture <- function(x, ostype=.Platform$OS.type, arch=R.version$arch, pt
 
 
 #' @export
-architecture.RecordedPlot <- function(x, ...) {
+setMethodS3("architecture", "RecordedPlot", function(x, ...) {
   system <- attr(x, "system")
   if (is.null(system)) return(NextMethod("architecture"))
 
@@ -61,11 +61,11 @@ architecture.RecordedPlot <- function(x, ...) {
   if (is.null(ptrsize)) endian <- NA_character_
 
   list(ostype=ostype, arch=arch, ptrsize=ptrsize, endian=endian)
-} ## architecture() for RecordedPlot
+}) ## architecture() for RecordedPlot
 
 
 #' @export
-architecture.recordedplot <- function(x, ...) {
+setMethodS3("architecture", "recordedplot", function(x, ...) {
   ## OS type is unknown by default
   ostype <- NA_character_
   
@@ -90,12 +90,12 @@ architecture.recordedplot <- function(x, ...) {
   endian <- NA_character_
 
   list(ostype=ostype, arch=arch, ptrsize=ptrsize, endian=endian)
-} ## architecture() for recordedplot
+}) ## architecture() for recordedplot
 
 
 
 #' @export
-as.architecture.recordedplot <- function(x, ostype=.Platform$OS.type, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
+setMethodS3("as.architecture", "recordedplot", function(x, ostype=.Platform$OS.type, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
   stopifnot(is.character(arch), length(arch) == 1)
   stopifnot(ptrsize %in% c(4L, 8L))
   stopifnot(is.character(endian), length(endian) == 1, (is.na(endian) || endian %in% c("little", "big")))
@@ -148,7 +148,7 @@ as.architecture.recordedplot <- function(x, ostype=.Platform$OS.type, arch=R.ver
   if (length(gpar) %in% known_sizes) gpar(x) <- gpar
 
   x
-} ## as.architecture() for recordedplot
+}) ## as.architecture() for recordedplot
 
 
 ## Internal gpar() and gpar<-() functions for recordedplot
@@ -172,7 +172,7 @@ gpar <- function(x) {
 } ## gpar<-()
 
 #' @export
-as.architecture.RecordedPlot <- function(x, ...) {
+setMethodS3("as.architecture", "RecordedPlot", function(x, ...) {
   y <- NextMethod("as.architecture")
   system <- attr(x, "system")
   if (is.null(system)) return(y)
@@ -186,4 +186,4 @@ as.architecture.RecordedPlot <- function(x, ...) {
   attr(y, "system") <- arch
   
   y
-}
+})

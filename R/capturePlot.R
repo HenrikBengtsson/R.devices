@@ -112,7 +112,7 @@ capturePlot <- function(expr, envir=parent.frame(), type=nulldev, ...) {
 #'
 #' @export
 #' @keywords internal
-print.RecordedPlot <- function(x, ...) {
+setMethodS3("print", "RecordedPlot", function(x, ...) {
   ## First, try without coercion
   res <- tryCatch({
     replayPlot(x)
@@ -125,4 +125,4 @@ print.RecordedPlot <- function(x, ...) {
   }
   
   invisible(x)
-}
+}, private = TRUE)
