@@ -172,7 +172,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   } # if (length(type) > 1L)
 
   # Sanity check
-  stopifnot(length(type) == 1L);
+  stop_if_not(length(type) == 1L);
 
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -243,7 +243,7 @@ devEval <- function(type=getOption("device"), expr, initially=NULL, finally=NULL
   # (d) Plot code expression and a single output type/device
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Sanity check
-  stopifnot(length(type) == 1L);
+  stop_if_not(length(type) == 1L);
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Validate arguments

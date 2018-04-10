@@ -125,7 +125,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     key <- optList[[type]];
 
     # Sanity check
-    stopifnot(length(key) == 1L);
+    stop_if_not(length(key) == 1L);
 
     # Does the nnn.function() already exists?
     envir <- getNamespace("grDevices");
@@ -209,7 +209,7 @@ devOptions <- function(type=NULL, custom=TRUE, special=TRUE, inherits=FALSE, dro
     oopts <- opts <- devOpts[[.type]];
     if (is.null(opts)) opts <- list();
     # Sanity check
-    stopifnot(is.list(opts));
+    stop_if_not(is.list(opts));
 ##    str(list(opts=opts));
     if (reset) {
       opts <- NULL;

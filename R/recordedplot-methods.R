@@ -96,9 +96,9 @@ setMethodS3("architecture", "recordedplot", function(x, ...) {
 
 #' @export
 setMethodS3("as.architecture", "recordedplot", function(x, ostype=.Platform$OS.type, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
-  stopifnot(is.character(arch), length(arch) == 1)
-  stopifnot(ptrsize %in% c(4L, 8L))
-  stopifnot(is.character(endian), length(endian) == 1, (is.na(endian) || endian %in% c("little", "big")))
+  stop_if_not(is.character(arch), length(arch) == 1)
+  stop_if_not(ptrsize %in% c(4L, 8L))
+  stop_if_not(is.character(endian), length(endian) == 1, (is.na(endian) || endian %in% c("little", "big")))
 
   ## Default pointer size is 8 bytes (64-bit)
   arch <- architecture(x)
@@ -153,20 +153,20 @@ setMethodS3("as.architecture", "recordedplot", function(x, ostype=.Platform$OS.t
 
 ## Internal gpar() and gpar<-() functions for recordedplot
 gpar <- function(x) {
-  stopifnot(inherits(x, "recordedplot"))
+  stop_if_not(inherits(x, "recordedplot"))
   idx <- which(sapply(x, FUN=function(x) identical(attr(x, "pkgName"), "graphics")))
-  stopifnot(length(idx) > 0)
+  stop_if_not(length(idx) > 0)
   raw <- x[[idx]]
-  stopifnot(is.raw(raw))
+  stop_if_not(is.raw(raw))
   raw
 } ## gpar()
 
 
 `gpar<-` <- function(x, value) {
-  stopifnot(is.raw(value))
-  stopifnot(inherits(x, "recordedplot"))
+  stop_if_not(is.raw(value))
+  stop_if_not(inherits(x, "recordedplot"))
   idx <- which(sapply(x, FUN=function(x) identical(attr(x, "pkgName"), "graphics")))
-  stopifnot(length(idx) > 0)
+  stop_if_not(length(idx) > 0)
   x[[idx]] <- value
   invisible(x)
 } ## gpar<-()

@@ -503,7 +503,7 @@ devIsInteractive <- function(types, ...) {
 
 
   # Sanity check
-  stopifnot(length(types) == 1L);
+  stop_if_not(length(types) == 1L);
 
   # Investigate one type below
   type0 <- type <- types;
@@ -855,7 +855,7 @@ devAll <- local({
 
 
 .devTypeNameFromFunction <- function(fcn, knownTypes=R.devices:::devAll(), ...) {
-  stopifnot(length(fcn) == 1, is.function(fcn))
+  stop_if_not(length(fcn) == 1, is.function(fcn))
   knownFcns <- lapply(knownTypes, FUN = function(x) {
     eval(parse(text = x[1]), enclos = baseenv())
   })
