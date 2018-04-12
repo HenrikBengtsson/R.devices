@@ -57,5 +57,5 @@
 #*/#########################################################################
 eps <- function(file="Rplot%03d.eps", width=7, height=7, horizontal=FALSE, paper="special", onefile=FALSE, ...) {
   onefile <- FALSE
-  postscript(file=file, width=width, height=height, horizontal=horizontal, paper=paper, onefile=onefile, ...);
+  postscript(file=file, width=width, height=height, horizontal=horizontal, paper=paper, onefile=onefile, ...)
 }

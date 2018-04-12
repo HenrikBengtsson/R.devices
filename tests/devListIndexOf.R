@@ -8,8 +8,8 @@ labels <- list(character(0L), "Device 1", c("Device 1", "Device 1"), c("Device 1
 for (label in labels) {
   res <- .devListIndexOf(label, error=FALSE)
   print(res)
-  stopifnot(is.integer(res));
-  stopifnot(is.character(names(res)));
+  stopifnot(is.integer(res))
+  stopifnot(is.character(names(res)))
 }
 
 message("*** devListIndexOf() ... DONE")
