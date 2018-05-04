@@ -1,7 +1,7 @@
 Package: R.devices
 ==================
 
-Version: 2.15.1-9000 [2017-05-07]
+Version: 2.15.1-9000 [2018-05-04]
 
 NEW FEATURES:
 
@@ -13,6 +13,8 @@ NEW FEATURES:
    and toNullDev(<expr>), which will evaluate the expression while at the same
    time drop any plot output.
 
+ o Added suppressGraphics().
+ 
 
 Version: 2.15.1 [2016-11-09]
  

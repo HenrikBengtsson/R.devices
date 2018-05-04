@@ -91,6 +91,8 @@ export("asDataURI")
 export("DevEvalProduct")
 export("DevEvalFileProduct")
 
+export("suppressGraphics")
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # DECLARATIONS

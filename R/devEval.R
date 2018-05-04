@@ -1,6 +1,7 @@
 ###########################################################################/**
 # @RdocFunction devEval
 # @alias devDump
+# @alias suppressGraphics
 #
 # @title "Opens a new graphics device, evaluate (graphing) code, and closes device"
 #
