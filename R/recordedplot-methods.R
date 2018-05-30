@@ -34,7 +34,7 @@ as.architecture <- function(x, ostype=.Platform$OS.type, arch=R.version$arch, pt
 #' @export
 setMethodS3("architecture", "RecordedPlot", function(x, ...) {
   system <- attr(x, "system")
-  if (is.null(system)) return(NextMethod("architecture"))
+  if (is.null(system)) return(NextMethod())
 
   ostype <- system$ostype
   if (is.null(ostype)) ostype <- NA_character_
@@ -173,7 +173,7 @@ gpar <- function(x) {
 
 #' @export
 setMethodS3("as.architecture", "RecordedPlot", function(x, ...) {
-  y <- NextMethod("as.architecture")
+  y <- NextMethod()
   system <- attr(x, "system")
   if (is.null(system)) return(y)
 
