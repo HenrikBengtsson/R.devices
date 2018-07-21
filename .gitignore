@@ -11,4 +11,6 @@
 .RData
 *.Rproj*
 *.swp
-.covr.rds
+revdep/data.sqlite
+revdep/checks/*
+revdep/library/*

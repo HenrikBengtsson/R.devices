@@ -1,34 +1,40 @@
-# Setup
+# aroma.affymetrix
 
-## Platform
+Version: 3.1.1
 
-|setting  |value                        |
-|:--------|:----------------------------|
-|version  |R version 3.3.2 (2016-10-31) |
-|system   |x86_64, linux-gnu            |
-|ui       |X11                          |
-|language |en                           |
-|collate  |en_US.UTF-8                  |
-|tz       |US/Pacific                   |
-|date     |2016-11-07                   |
+## In both
 
-## Packages
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.8Mb
+      sub-directories of 1Mb or more:
+        R             2.2Mb
+        help          1.1Mb
+        testScripts   1.3Mb
+    ```
 
-|package     |*  |version |date       |source         |
-|:-----------|:--|:-------|:----------|:--------------|
-|base64enc   |   |0.1-4   |2016-11-07 |cran (@0.1-4)  |
-|Cairo       |   |1.5-9   |2015-09-26 |cran (@1.5-9)  |
-|digest      |   |0.6.10  |2016-08-02 |cran (@0.6.10) |
-|R.devices   |   |2.14.0  |2016-03-09 |CRAN (R 3.3.1) |
-|R.methodsS3 |   |1.7.1   |2016-02-16 |CRAN (R 3.3.1) |
-|R.oo        |   |1.21.0  |2016-11-01 |cran (@1.21.0) |
-|R.rsp       |   |0.30.0  |2016-05-15 |CRAN (R 3.3.1) |
-|R.utils     |   |2.5.0   |2016-11-07 |cran (@2.5.0)  |
+# aroma.core
 
-# Check results
+Version: 3.1.3
 
-0 packages with problems
+## In both
 
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking:
+      ‘sfit’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
+    ```
 
+# matrixStats
 
+Version: 0.53.1
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  8.4Mb
+      sub-directories of 1Mb or more:
+        libs   7.6Mb
+    ```
 

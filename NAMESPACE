@@ -63,6 +63,7 @@ export("eps")
 export("favicon")
 export("jpeg2")
 export("png2")
+export("nulldev")
 
 export("toBMP")
 export("toEPS")
@@ -74,6 +75,7 @@ export("toTIFF")
 export("toWMF")
 ##export("toCairoPNG")
 export("toFavicon")
+export("toNullDev")
 
 export("toDefault")
 export("toQuartz")
@@ -82,11 +84,14 @@ export("toX11")
 export("toCairoWin")
 export("toCairoX11")
 ##export("toJavaGD")
+export("toRStudioGD")
 
 export("asDataURI")
 
 export("DevEvalProduct")
 export("DevEvalFileProduct")
+
+export("suppressGraphics")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -117,10 +122,10 @@ S3method("view", "DevEvalProduct")
 S3method("!", "DevEvalProduct")
 
 
-S3method(architecture,recordedplot)
-S3method(architecture,RecordedPlot)
-S3method(as.architecture,recordedplot)
-S3method(as.architecture,RecordedPlot)
-export(architecture)
-export(as.architecture)
-S3method(print,RecordedPlot)
+S3method("architecture", "recordedplot")
+S3method("architecture", "RecordedPlot")
+S3method("as.architecture", "recordedplot")
+S3method("as.architecture", "RecordedPlot")
+export("architecture")
+export("as.architecture")
+S3method("print", "RecordedPlot")

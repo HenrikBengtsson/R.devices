@@ -33,16 +33,16 @@
 #*/###########################################################################
 setConstructorS3("DevEvalProduct", function(name=NULL, tags=NULL, type=NULL, ...) {
   if (!is.null(name)) {
-    name <- Arguments$getCharacter(name);
-    tags <- Arguments$getCharacters(tags);
-    fullname <- paste(c(name, tags), collapse=",");
+    name <- Arguments$getCharacter(name)
+    tags <- Arguments$getCharacters(tags)
+    fullname <- paste(c(name, tags), collapse=",")
   } else {
-    fullname <- NA_character_;
+    fullname <- NA_character_
   }
 
   extend(BasicObject(fullname), "DevEvalProduct",
     type = type
-  );
+  )
 })
 
 ###########################################################################/**
@@ -73,7 +73,7 @@ setConstructorS3("DevEvalProduct", function(name=NULL, tags=NULL, type=NULL, ...
 # }
 #*/###########################################################################
 setMethodS3("as.character", "DevEvalProduct", function(x, ...) {
-  getFullname(x, ...);
+  getFullname(x, ...)
 }, private=TRUE)
 
 
@@ -87,23 +87,23 @@ setMethodS3("!", "DevEvalProduct", function(x) {
 # BEGIN: PATCH until `[[.BasicObject` finds methods in namespaces
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 setMethodS3("[[", "DevEvalProduct", function(x, name, ...) {
-  if (name == "*") return(x);
-  fcn <- sprintf("get%s", capitalize(name));
-  expr <- substitute(fcn(x), list(fcn=as.name(fcn)));
+  if (name == "*") return(x)
+  fcn <- sprintf("get%s", capitalize(name))
+  expr <- substitute(fcn(x), list(fcn=as.name(fcn)))
   res <- tryCatch({
-    eval(expr, ...);
+    eval(expr, ..., enclos = baseenv())
   }, error = function(ex) {
-    ex;
-  });
-  if (inherits(res, "Exception")) throw(res);
-  if (!inherits(res, "simpleError")) return(res);
-  NextMethod("[[");
+    ex
+  })
+  if (inherits(res, "Exception")) throw(res)
+  if (!inherits(res, "simpleError")) return(res)
+  NextMethod()
 }, private=TRUE)
 
 
 setMethodS3("$", "DevEvalProduct", function(x, name) {
-  name <- as.character(name);
-  x[[name]];
+  name <- as.character(name)
+  x[[name]]
 }, private=TRUE)
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # END: PATCH until `[[.BasicObject` finds methods in namespaces
@@ -147,25 +147,25 @@ setMethodS3("$", "DevEvalProduct", function(x, name) {
 # }
 #*/###########################################################################
 setMethodS3("getFullname", "DevEvalProduct", function(this, ...) {
-  as.character(unclass(this), ...);
+  as.character(unclass(this), ...)
 })
 
 
 setMethodS3("getName", "DevEvalProduct", function(this, ...) {
-  fullname <- getFullname(this, ...);
-  parts <- unlist(strsplit(fullname, split=","), use.names=FALSE);
-  name <- parts[1L];
-  name;
+  fullname <- getFullname(this, ...)
+  parts <- unlist(strsplit(fullname, split=","), use.names=FALSE)
+  name <- parts[1L]
+  name
 })
 
 setMethodS3("getTags", "DevEvalProduct", function(this, collapse=",", ...) {
-  fullname <- getFullname(this, ...);
-  parts <- unlist(strsplit(fullname, split=","), use.names=FALSE);
-  tags <- parts[-1L];
+  fullname <- getFullname(this, ...)
+  parts <- unlist(strsplit(fullname, split=","), use.names=FALSE)
+  tags <- parts[-1L]
   if (!is.null(collapse)) {
-    tags <- paste(tags, collapse=collapse);
+    tags <- paste(tags, collapse=collapse)
   }
-  tags;
+  tags
 })
 
 #########################################################################/**
@@ -195,7 +195,7 @@ setMethodS3("getTags", "DevEvalProduct", function(this, collapse=",", ...) {
 # }
 #*/#########################################################################
 setMethodS3("getType", "DevEvalProduct", function(this, ...) {
-  attr(this, "type");
+  attr(this, "type")
 })
 
 
@@ -246,34 +246,34 @@ setMethodS3("getType", "DevEvalProduct", function(this, ...) {
 #*/###########################################################################
 setConstructorS3("DevEvalFileProduct", function(filename=NULL, path=NULL, ...) {
   if (!is.null(filename)) {
-    pathname <- Arguments$getReadablePathname(filename, path=path, mustExist=FALSE);
-    path <- dirname(pathname);
-    filename <- basename(pathname);
+    pathname <- Arguments$getReadablePathname(filename, path=path, mustExist=FALSE)
+    path <- dirname(pathname)
+    filename <- basename(pathname)
   } else {
-    pathname <- NA_character_;
+    pathname <- NA_character_
   }
 
-  this <- extend(DevEvalProduct(pathname, ...), "DevEvalFileProduct");
+  this <- extend(DevEvalProduct(pathname, ...), "DevEvalFileProduct")
 
   # Infer 'type' from pathname?
-  type <- getType(this);
+  type <- getType(this)
   if (is.null(type) && !is.na(pathname)) {
-    ext <- getExtension(this);
-    type <- .devTypeName(ext);
-    attr(this, "type") <- type;
+    ext <- getExtension(this)
+    type <- .devTypeName(ext)
+    attr(this, "type") <- type
   }
 
-  this;
+  this
 })
 
 setMethodS3("as.character", "DevEvalFileProduct", function(x, ...) {
-  getPathname(x, ...);
+  getPathname(x, ...)
 }, private=TRUE)
 
 
 setMethodS3("getFullname", "DevEvalFileProduct", function(this, ...) {
-  filename <- getFilename(this, ...);
-  gsub("[.]([^.]*)$", "", filename);
+  filename <- getFilename(this, ...)
+  gsub("[.]([^.]*)$", "", filename)
 })
 
 
@@ -315,26 +315,27 @@ setMethodS3("getFullname", "DevEvalFileProduct", function(this, ...) {
 # }
 #*/###########################################################################
 setMethodS3("getPathname", "DevEvalFileProduct", function(this, relative=TRUE, ...) {
-  pathname <- as.character(unclass(this), ...);
+  pathname <- as.character(unclass(this), ...)
+  if (is_nullfile(pathname)) return(pathname)
   if (relative) {
-    pathname <- getRelativePath(pathname);
+    pathname <- getRelativePath(pathname)
   } else {
-    pathname <- getAbsolutePath(pathname);
+    pathname <- getAbsolutePath(pathname)
   }
-  pathname;
+  pathname
 })
 
 setMethodS3("getFilename", "DevEvalFileProduct", function(this, ...) {
-  basename(getPathname(this, ...));
+  basename(getPathname(this, ...))
 })
 
 setMethodS3("getPath", "DevEvalFileProduct", function(this, ...) {
-  dirname(getPathname(this, ...));
+  dirname(getPathname(this, ...))
 })
 
 setMethodS3("getExtension", "DevEvalFileProduct", function(this, ...) {
-  filename <- getFilename(this, ...);
-  gsub(".*[.]([^.]*)$", "\\1", filename);
+  filename <- getFilename(this, ...)
+  gsub(".*[.]([^.]*)$", "\\1", filename)
 }, private=TRUE)
 
 setMethodS3("view", "DevEvalFileProduct", function(object, ...) {
@@ -347,11 +348,11 @@ setMethodS3("view", "DevEvalFileProduct", function(object, ...) {
   # of the file, this works around this issue.
   # Borrowed from R.rsp. /HB 2014-09-19
   if (isFile(pathname)) {
-    path <- dirname(pathname);
-    pathname <- basename(pathname);
-    opwd <- getwd();
-    on.exit(setwd(opwd));
-    setwd(path);
+    path <- dirname(pathname)
+    pathname <- basename(pathname)
+    opwd <- getwd()
+    on.exit(setwd(opwd))
+    setwd(path)
   }
   browseURL(pathname, ...)
 
@@ -390,8 +391,8 @@ setMethodS3("view", "DevEvalFileProduct", function(object, ...) {
 # }
 #*/#########################################################################
 setMethodS3("getMimeType", "DevEvalFileProduct", function(this, default="", ...) {
-  ext <- getExtension(this, ...);
-  ext <- .devTypeName(ext);
+  ext <- getExtension(this, ...)
+  ext <- .devTypeName(ext)
   mimeTypes <- c(
     bmp="image/bmp",
     gif="image/gif",
@@ -403,13 +404,13 @@ setMethodS3("getMimeType", "DevEvalFileProduct", function(this, default="", ...)
     svg="image/svg+xml",
     tiff="image/tiff"
   )
-  mime <- mimeTypes[ext];
-  if (is.na(mime)) mime <- default;
-  mime;
+  mime <- mimeTypes[ext]
+  if (is.na(mime)) mime <- default
+  mime
 })
 
 setMethodS3("getMime", "DevEvalFileProduct", function(this, ...) {
-  getMimeType(this, ...);
+  getMimeType(this, ...)
 }, private=TRUE)
 
 
@@ -444,39 +445,19 @@ setMethodS3("getMime", "DevEvalFileProduct", function(this, ...) {
 # }
 #*/#########################################################################
 setMethodS3("getDataURI", "DevEvalFileProduct", function(this, mime=getMimeType(this), ...) {
-  dataURI(file=getPathname(this), mime=mime, encoding="base64");
+  dataURI(file=getPathname(this), mime=mime, encoding="base64")
 })
 
 setMethodS3("getData", "DevEvalFileProduct", function(this, mode=c("character", "raw"), ...) {
   # Argument 'mode':
-  mode <- match.arg(mode);
+  mode <- match.arg(mode)
 
-  pathname <- this;
-  size <- file.info(pathname)$size;
+  pathname <- this
+  size <- file.info(pathname)$size
   if (mode == "character") {
-    res <- readChar(con=pathname, nchars=size);
+    res <- readChar(con=pathname, nchars=size)
   } else if (mode == "raw") {
-    res <- readBin(con=pathname, what=raw(), n=size);
+    res <- readBin(con=pathname, what=raw(), n=size)
   }
   res
 }) # getData()
-
-
-############################################################################
-# HISTORY:
-# 2014-09-17
-# o Added view() and !() to DevEvalProduct.
-# 2014-09-15
-# o BUG FIX: Now getPathname(..., relative=FALSE) returns the absolute
-#   pathname.
-# 2014-09-02
-# o Added getData() to DevEvalFileProduct.
-# 2013-09-17
-# o ROBUSTNESS: Now getDataURI() throws an Exception is suggested
-#   package 'base64enc' is not installed.
-# 2013-08-29
-# o Now getPathname() returns the relative pathname, by default.
-# 2013-08-27
-# o Added the DevEvalProduct and DevEvalFileProduct classes.
-# o Created.
-############################################################################

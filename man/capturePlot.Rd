@@ -19,7 +19,7 @@
 }
 
 \usage{
-capturePlot(expr, envir=parent.frame(), type=pdf, ...)
+capturePlot(expr, envir=parent.frame(), type=nulldev, ...)
 }
 
 \arguments{
@@ -27,7 +27,8 @@ capturePlot(expr, envir=parent.frame(), type=pdf, ...)
   \item{envir}{The \code{\link[base]{environment}} where \code{expr} should be evaluated.}
   \item{type}{The type of graphics device used in the background.
    The choice should not matter since the result should be identical
-   regardless.}
+   regardless.  All graphics is captured but any output is also voided
+   by sending the output to a "null" file.}
  \item{...}{Additional arguments passed to the graphics device.}
 }
 

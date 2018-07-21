@@ -32,9 +32,9 @@ as.architecture <- function(x, ostype=.Platform$OS.type, arch=R.version$arch, pt
 
 
 #' @export
-architecture.RecordedPlot <- function(x, ...) {
+setMethodS3("architecture", "RecordedPlot", function(x, ...) {
   system <- attr(x, "system")
-  if (is.null(system)) return(NextMethod("architecture"))
+  if (is.null(system)) return(NextMethod())
 
   ostype <- system$ostype
   if (is.null(ostype)) ostype <- NA_character_
@@ -61,11 +61,11 @@ architecture.RecordedPlot <- function(x, ...) {
   if (is.null(ptrsize)) endian <- NA_character_
 
   list(ostype=ostype, arch=arch, ptrsize=ptrsize, endian=endian)
-} ## architecture() for RecordedPlot
+}) ## architecture() for RecordedPlot
 
 
 #' @export
-architecture.recordedplot <- function(x, ...) {
+setMethodS3("architecture", "recordedplot", function(x, ...) {
   ## OS type is unknown by default
   ostype <- NA_character_
   
@@ -90,15 +90,15 @@ architecture.recordedplot <- function(x, ...) {
   endian <- NA_character_
 
   list(ostype=ostype, arch=arch, ptrsize=ptrsize, endian=endian)
-} ## architecture() for recordedplot
+}) ## architecture() for recordedplot
 
 
 
 #' @export
-as.architecture.recordedplot <- function(x, ostype=.Platform$OS.type, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
-  stopifnot(is.character(arch), length(arch) == 1)
-  stopifnot(ptrsize %in% c(4L, 8L))
-  stopifnot(is.character(endian), length(endian) == 1, (is.na(endian) || endian %in% c("little", "big")))
+setMethodS3("as.architecture", "recordedplot", function(x, ostype=.Platform$OS.type, arch=R.version$arch, ptrsize=.Machine$sizeof.pointer, endian=.Platform$endian, ...) {
+  stop_if_not(is.character(arch), length(arch) == 1)
+  stop_if_not(ptrsize %in% c(4L, 8L))
+  stop_if_not(is.character(endian), length(endian) == 1, (is.na(endian) || endian %in% c("little", "big")))
 
   ## Default pointer size is 8 bytes (64-bit)
   arch <- architecture(x)
@@ -148,32 +148,32 @@ as.architecture.recordedplot <- function(x, ostype=.Platform$OS.type, arch=R.ver
   if (length(gpar) %in% known_sizes) gpar(x) <- gpar
 
   x
-} ## as.architecture() for recordedplot
+}) ## as.architecture() for recordedplot
 
 
 ## Internal gpar() and gpar<-() functions for recordedplot
 gpar <- function(x) {
-  stopifnot(inherits(x, "recordedplot"))
+  stop_if_not(inherits(x, "recordedplot"))
   idx <- which(sapply(x, FUN=function(x) identical(attr(x, "pkgName"), "graphics")))
-  stopifnot(length(idx) > 0)
+  stop_if_not(length(idx) > 0)
   raw <- x[[idx]]
-  stopifnot(is.raw(raw))
+  stop_if_not(is.raw(raw))
   raw
 } ## gpar()
 
 
 `gpar<-` <- function(x, value) {
-  stopifnot(is.raw(value))
-  stopifnot(inherits(x, "recordedplot"))
+  stop_if_not(is.raw(value))
+  stop_if_not(inherits(x, "recordedplot"))
   idx <- which(sapply(x, FUN=function(x) identical(attr(x, "pkgName"), "graphics")))
-  stopifnot(length(idx) > 0)
+  stop_if_not(length(idx) > 0)
   x[[idx]] <- value
   invisible(x)
 } ## gpar<-()
 
 #' @export
-as.architecture.RecordedPlot <- function(x, ...) {
-  y <- NextMethod("as.architecture")
+setMethodS3("as.architecture", "RecordedPlot", function(x, ...) {
+  y <- NextMethod()
   system <- attr(x, "system")
   if (is.null(system)) return(y)
 
@@ -186,4 +186,4 @@ as.architecture.RecordedPlot <- function(x, ...) {
   attr(y, "system") <- arch
   
   y
-}
+})

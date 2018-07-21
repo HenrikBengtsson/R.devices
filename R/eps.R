@@ -57,23 +57,5 @@
 #*/#########################################################################
 eps <- function(file="Rplot%03d.eps", width=7, height=7, horizontal=FALSE, paper="special", onefile=FALSE, ...) {
   onefile <- FALSE
-  postscript(file=file, width=width, height=height, horizontal=horizontal, paper=paper, onefile=onefile, ...);
+  postscript(file=file, width=width, height=height, horizontal=horizontal, paper=paper, onefile=onefile, ...)
 }
-
-
-############################################################################
-# HISTORY:
-# 2011-11-05
-# o Added default 'width' and 'height' values to eps().
-# 2010-01-22
-# o Added description to Rd argument 'paper'.
-# 2007-12-07
-# o The default EPS file had extension *.ps not *.eps.
-# 2005-01-16
-# o Corrected argument in example code from 'onepage' to 'onefile'.
-# 2004-02-01
-# o Added argument paper="special".
-# 2001-06-04
-# o Created.
-############################################################################
-

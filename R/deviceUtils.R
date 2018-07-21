@@ -29,18 +29,18 @@
 devIsOpen <- function(which=dev.cur(), ...) {
   # Nothing to do?
   if (length(which) == 0L) {
-    res <- logical(0L);
-    names(res) <- character(0L);
-    return(res);
+    res <- logical(0L)
+    names(res) <- character(0L)
+    return(res)
   }
 
-  devList <- .devList();
-  devs <- devList[which];
+  devList <- .devList()
+  devs <- devList[which]
 
-  labels <- names(devs);
-  isOpen <- sapply(devs, FUN=function(dev) !is.null(dev) && nzchar(dev));
-  isOpen <- isOpen & !is.na(labels);
-  isOpen;
+  labels <- names(devs)
+  isOpen <- sapply(devs, FUN=function(dev) !is.null(dev) && nzchar(dev))
+  isOpen <- isOpen & !is.na(labels)
+  isOpen
 } # devIsOpen()
 
 
@@ -80,26 +80,26 @@ devIsOpen <- function(which=dev.cur(), ...) {
 # @keyword utilities
 #*/###########################################################################
 devList <- function(interactiveOnly=FALSE, dropNull=TRUE, ...) {
-  devList <- .devList();
+  devList <- .devList()
 
   # Return only opened devices
-  isOpen <- sapply(devList, FUN=function(dev) (dev != ""));
-  names(isOpen) <- names(devList);
-  idxs <- which(isOpen);
+  isOpen <- sapply(devList, FUN=function(dev) (dev != ""))
+  names(isOpen) <- names(devList)
+  idxs <- which(isOpen)
 
   # Exclude the "null" device?
   if (dropNull) {
-    idxs <- idxs[-1L];
+    idxs <- idxs[-1L]
   }
 
   # Include only interactive devices?
   if (interactiveOnly) {
-    types <- unlist(devList[idxs]);
-    keep <- devIsInteractive(types);
-    idxs <- idxs[keep];
+    types <- unlist(devList[idxs])
+    keep <- devIsInteractive(types)
+    idxs <- idxs[keep]
   }
 
-  idxs;
+  idxs
 } # devList()
 
 
@@ -135,20 +135,20 @@ devList <- function(interactiveOnly=FALSE, dropNull=TRUE, ...) {
 # @keyword utilities
 #*/###########################################################################
 devGetLabel <- function(which=dev.cur(), ...) {
-  devList <- devList(dropNull=FALSE);
+  devList <- devList(dropNull=FALSE)
   if (is.numeric(which)) {
-    devs <- devList[match(which, devList)];
+    devs <- devList[match(which, devList)]
   } else {
-    devs <- devList[which];
+    devs <- devList[which]
   }
-  labels <- names(devs);
-  unknown <- which[is.na(labels)];
+  labels <- names(devs)
+  unknown <- which[is.na(labels)]
   if (length(unknown) > 0L) {
-    known <- names(devList(dropNull=FALSE));
-    if (length(known) == 0L) known <- "<none>";
-    throw(sprintf("Cannot get device label. No such device: %s (known devices: %s)", paste(sQuote(unknown), collapse=", "), paste(sQuote(known), collapse=", ")));
+    known <- names(devList(dropNull=FALSE))
+    if (length(known) == 0L) known <- "<none>"
+    throw(sprintf("Cannot get device label. No such device: %s (known devices: %s)", paste(sQuote(unknown), collapse=", "), paste(sQuote(known), collapse=", ")))
   }
-  labels;
+  labels
 } # devGetLabel()
 
 
@@ -186,29 +186,29 @@ devGetLabel <- function(which=dev.cur(), ...) {
 devSetLabel <- function(which=dev.cur(), label, ...) {
   # Argument 'which':
   if (length(which) != 1L) {
-    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
+    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "))
   }
 
-  devList <- .devList();
+  devList <- .devList()
   if (is.numeric(which)) {
-    idx <- which;
+    idx <- which
   } else {
-    idx <- .devListIndexOf(which);
+    idx <- .devListIndexOf(which)
   }
 
   # Unknown devices?
   if (devList[[idx]] == "") {
-    known <- names(devList(dropNull=FALSE));
-    if (length(known) == 0L) known <- "<none>";
-    throw(sprintf("Cannot set device label. No such device: %s (known devices: %s)", paste(sQuote(which), collapse=", "), paste(sQuote(known), collapse=", ")));
+    known <- names(devList(dropNull=FALSE))
+    if (length(known) == 0L) known <- "<none>"
+    throw(sprintf("Cannot set device label. No such device: %s (known devices: %s)", paste(sQuote(which), collapse=", "), paste(sQuote(known), collapse=", ")))
   }
 
   # Update the label
   if (is.null(label))
-    label <- "";
+    label <- ""
   names(devList)[idx] <- label
 
-  assign(".Devices", devList, envir=baseenv());
+  assign(".Devices", devList, envir=baseenv())
 }
 
 
@@ -248,14 +248,14 @@ devSetLabel <- function(which=dev.cur(), label, ...) {
 # @keyword utilities
 #*/###########################################################################
 devSet <- function(which=dev.next(), ...) {
-  args <- list(...);
+  args <- list(...)
 
   # Argument 'which':
   if (!is.numeric(which) || length(which) != 1L) {
     if (length(which) != 1L || !is.character(which)) {
       # To please R CMD check
-      requireNamespace("digest") || throw("Package not loaded: digest");
-      which <- digest::digest(which);
+      requireNamespace("digest") || throw("Package not loaded: digest")
+      which <- digest::digest(which)
     }
 
     if (is.character(which)) {
@@ -273,49 +273,49 @@ devSet <- function(which=dev.next(), ...) {
 
   # Argument 'which':
   if (length(which) != 1L) {
-    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "));
+    throw("Argument 'which' must be a scalar: ", paste(which, collapse=", "))
   }
 
   if (which < 2L || which > 63L) {
-    throw("Cannot set device: Argument 'which' is out of range [2,63]: ", which);
+    throw("Cannot set device: Argument 'which' is out of range [2,63]: ", which)
   }
 
   if (devIsOpen(which)) {
     # Active already existing device
-    return(dev.set(which));
+    return(dev.set(which))
   }
 
   # Identify set devices that needs to be opened inorder for
   # the next device to get the requested index
   if (which == 2L) {
-    toBeOpened <- c();
+    toBeOpened <- c()
   } else {
-    toBeOpened <- setdiff(2:(which-1L), dev.list());
+    toBeOpened <- setdiff(2:(which-1L), dev.list())
   }
 
-  len <- length(toBeOpened);
+  len <- length(toBeOpened)
   if (len > 0L) {
-    tempfiles <- sapply(toBeOpened, FUN=function(...) tempfile());
+    tempfiles <- sapply(toBeOpened, FUN=function(...) tempfile())
 
     # Make sure to close all temporary devices when exiting function
     on.exit({
       for (kk in seq_along(toBeOpened)) {
-        dev.set(toBeOpened[kk]);
-        dev.off();
-        if (file.exists(tempfiles[kk])) file.remove(tempfiles[kk]);
+        dev.set(toBeOpened[kk])
+        dev.off()
+        if (file.exists(tempfiles[kk])) file.remove(tempfiles[kk])
       }
-    }, add=TRUE);
+    }, add=TRUE)
 
     # Create a dummy temporary postscript device (which is non-visible)
     for (kk in seq_along(toBeOpened)) {
-      postscript(file=tempfiles[kk]);
+      postscript(file=tempfiles[kk])
     }
   }
 
   # Open the device
-  res <- do.call(devNew, args=args);
+  res <- do.call(devNew, args=args)
 
-  invisible(res);
+  invisible(res)
 } # devSet()
 
 
@@ -353,30 +353,30 @@ devSet <- function(which=dev.next(), ...) {
 #*/###########################################################################
 devOff <- function(which=dev.cur(), ...) {
   # Nothing to do?
-  if (length(which) == 0L) return(dev.cur());
+  if (length(which) == 0L) return(dev.cur())
 
   # Only close each device once
-  which <- unique(which);
+  which <- unique(which)
   if (length(which) > 1L) {
-    lapply(which, FUN=devOff);
-    return(dev.cur());
+    lapply(which, FUN=devOff)
+    return(dev.cur())
   }
 
   # Nothing to do?
   if (!devIsOpen(which)) {
-    return(dev.cur());
+    return(dev.cur())
   }
 
   # Identify device
-  which <- devSet(which);
+  which <- devSet(which)
 
   # Reset the label
-  devSetLabel(which, label=NULL);
+  devSetLabel(which, label=NULL)
 
   # Close device
-  dev.off(which);
+  dev.off(which)
 
-  return(dev.cur());
+  return(dev.cur())
 } # devOff()
 
 
@@ -414,38 +414,38 @@ devOff <- function(which=dev.cur(), ...) {
 #*/###########################################################################
 devDone <- function(which=dev.cur(), ...) {
   # Nothing to do?
-  if (length(which) == 0L) return(dev.cur());
+  if (length(which) == 0L) return(dev.cur())
 
   # Only close each device once
-  which <- unique(which);
+  which <- unique(which)
   if (length(which) > 1L) {
-    lapply(which, FUN=devDone);
-    return(dev.cur());
+    lapply(which, FUN=devDone)
+    return(dev.cur())
   }
 
   # Nothing to do?
   if (!devIsOpen(which)) {
-    return(invisible(dev.cur()));
+    return(invisible(dev.cur()))
   }
 
   # Do nothing?
   if (is.numeric(which) && length(which) == 1L && which <= 1L) {
-    return(invisible(dev.cur()));
+    return(invisible(dev.cur()))
   }
 
-  which <- devSet(which);
+  which <- devSet(which)
   if (which != 1L) {
-    type <- tolower(names(which));
-    type <- gsub(":.*", "", type);
+    type <- tolower(names(which))
+    type <- gsub(":.*", "", type)
 
-    knownInteractive <- deviceIsInteractive();
-    knownInteractive <- tolower(knownInteractive);
-    isOnScreen <- (is.element(type, knownInteractive));
+    knownInteractive <- deviceIsInteractive()
+    knownInteractive <- tolower(knownInteractive)
+    isOnScreen <- (is.element(type, knownInteractive))
     if (!isOnScreen)
-      devOff(which);
+      devOff(which)
   }
 
-  return(invisible(dev.cur()));
+  return(invisible(dev.cur()))
 } # devDone()
 
 
@@ -481,58 +481,58 @@ devDone <- function(which=dev.cur(), ...) {
 #*/###########################################################################
 devIsInteractive <- function(types, ...) {
   # Known interactive devices
-  knownInteractive <- grDevices::deviceIsInteractive();
-  knownInteractive <- c(knownInteractive, "CairoWin", "CairoX11");
-##  knownInteractive <- c(knownInteractive, "Cairo");
+  knownInteractive <- grDevices::deviceIsInteractive()
+  knownInteractive <- c(knownInteractive, "CairoWin", "CairoX11")
+##  knownInteractive <- c(knownInteractive, "Cairo")
 
   # Return all known?
-  if (missing(types)) return(knownInteractive);
+  if (missing(types)) return(knownInteractive)
 
   # Nothing to do?
   if (length(types) == 0L) {
-    res <- logical(0L);
-    names(res) <- character(0L);
-    return(res);
+    res <- logical(0L)
+    names(res) <- character(0L)
+    return(res)
   }
 
   if (length(types) > 1L) {
-    res <- sapply(types, FUN=devIsInteractive);
-    if (is.character(types)) names(res) <- types;
-    return(res);
+    res <- sapply(types, FUN=devIsInteractive)
+    if (is.character(types)) names(res) <- types
+    return(res)
   }
 
 
   # Sanity check
-  stopifnot(length(types) == 1L);
+  stop_if_not(length(types) == 1L)
 
   # Investigate one type below
-  type0 <- type <- types;
+  type0 <- type <- types
 
   if (is.function(type)) {
     for (name in knownInteractive) {
       if (exists(name, mode="function")) {
-        dev <- get(name, mode="function");
+        dev <- get(name, mode="function")
         if (identical(dev, type)) {
-          res <- TRUE;
-          names(res) <- name;
-          return(res);
+          res <- TRUE
+          names(res) <- name
+          return(res)
         }
       }
     }
-    res <- FALSE;
-    names(res) <- NA_character_;
+    res <- FALSE
+    names(res) <- NA_character_
   } else {
-    type <- as.character(type);
+    type <- as.character(type)
     # Device type aliases?
-    type <- .devTypeName(type);
-    type <- tolower(type);
+    type <- .devTypeName(type)
+    type <- tolower(type)
 
     # An known one?
-    res <- is.element(type, tolower(knownInteractive));
-    names(res) <- type0;
+    res <- is.element(type, tolower(knownInteractive))
+    names(res) <- type0
   }
 
-  res;
+  res
 } # devIsInteractive()
 
 
@@ -542,7 +542,7 @@ devAll <- local({
   # times either directly or indirectly by various functions.
   .devAll <- NULL
 
-  isFALSE <- function(x) identical(FALSE, unname(x))
+  isFALSE <- function(x) is.logical(x) && length(x) == 1L && !is.na(x) && !x
 
   base_capabilities <- local({
     res <- base::capabilities()
@@ -608,6 +608,8 @@ devAll <- local({
 
       # R.devices
       res <- c(res, list(
+        nulldev = c("R.devices::nulldev",
+                    "grDevices::png", "grDevices::postscript"),
         eps     = c("R.devices::eps",
                     "grDevices::postscript"),
         favicon = c("R.devices::favicon",
@@ -640,6 +642,12 @@ devAll <- local({
                       "grDevices::x11")
       ))
 
+      ## RStudio devices
+      res <- c(res, list(
+        RStudioGD  = c("tools:rstudio::RStudioGD",
+                       "grDevices::png")
+      ))
+      
       ## JavaGD
       ## JavaGD=c("JavaGD::JavaGD")
 
@@ -662,6 +670,14 @@ devAll <- local({
               break
             }
             next
+          } else if (pkg == "tools:rstudio") {
+            supported <- FALSE
+            pos <- match(pkg, search())
+            if (!is.na(pos)) {
+              env <- pos.to.env(pos)
+              supported <- exists("RStudioGD", envir=env, mode="function")
+            }
+            break
           }
 
           if (!isPackageInstalled(pkg)) {
@@ -710,46 +726,46 @@ devAll <- local({
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 .devList <- function() {
   if (exists(".Devices")) {
-    devList <- get(".Devices");
+    devList <- get(".Devices")
   } else {
-    devList <- list("null device");
+    devList <- list("null device")
   }
 
-  labels <- names(devList);
+  labels <- names(devList)
   if (is.null(labels)) {
-    labels <- paste("Device", seq_along(devList), sep=" ");
-    names(devList) <- labels;
-    assign(".Devices", devList, envir=baseenv());
+    labels <- paste("Device", seq_along(devList), sep=" ")
+    names(devList) <- labels
+    assign(".Devices", devList, envir=baseenv())
   } else {
     # Update the names
-    labels <- names(devList);
-    idxs <- which(nchar(labels) == 0L);
+    labels <- names(devList)
+    idxs <- which(nchar(labels) == 0L)
     if (length(idxs) > 0L) {
-      labels[idxs] <- paste("Device", idxs, sep=" ");
+      labels[idxs] <- paste("Device", idxs, sep=" ")
     }
-    names(devList) <- labels;
+    names(devList) <- labels
   }
 
-  devList;
+  devList
 } # .devList()
 
 ## Gets the devList() index of a device by label
 .devListIndexOf <- function(labels, error=TRUE) {
   # Nothing to do?
   if (length(labels) == 0L) {
-    res <- integer(0L);
-    names(res) <- character(0L);
-    return(res);
+    res <- integer(0L)
+    names(res) <- character(0L)
+    return(res)
   }
 
-  devList <- devList(dropNull=FALSE);
-  idxs <- match(labels, names(devList));
-  names(idxs) <- labels;
+  devList <- devList(dropNull=FALSE)
+  idxs <- match(labels, names(devList))
+  names(idxs) <- labels
 
   # Sanity check
   if (error) {
     if (any(is.na(idxs)))
-      throw("No such device: ", paste(labels[is.na(idxs)], collapse=", "));
+      throw("No such device: ", paste(labels[is.na(idxs)], collapse=", "))
   }
 
   idxs
@@ -758,54 +774,54 @@ devAll <- local({
 
 .devNextAvailable <- function() {
   # All open devices
-  devList <- dev.list();
+  devList <- dev.list()
 
   if (length(devList) == 0L)
-    return(2L);
+    return(2L)
 
-  devPossible <- seq(from=2L, to=max(devList)+1L);
-  devFree <- setdiff(devPossible, devList);
+  devPossible <- seq(from=2L, to=max(devList)+1L)
+  devFree <- setdiff(devPossible, devList)
 
-  devFree[1L];
+  devFree[1L]
 } # .devNextAvailable()
 
 
 .devTypeName <- function(types, pattern=FALSE, knownTypes=names(devAll()), ...) {
   # Nothing todo?
   if (!is.character(types)) {
-    return(types);
+    return(types)
   }
 
-  names <- names(types);
+  names <- names(types)
   if (is.null(names)) {
-    names(types) <- types;
+    names(types) <- types
   }
 
   # Match to known set of device types by regular expression?
   if (pattern) {
-    types <- as.list(types);
+    types <- as.list(types)
     for (kk in seq_along(types)) {
-      typeKK <- types[[kk]];
-      pattern <- sprintf("^%s$", typeKK);
-      idxs <- grep(pattern, knownTypes);
+      typeKK <- types[[kk]]
+      pattern <- sprintf("^%s$", typeKK)
+      idxs <- grep(pattern, knownTypes)
       if (length(idxs) > 0L) {
-        typesKK <- knownTypes[idxs];
-        names(typesKK) <- rep(typeKK, times=length(typesKK));
-        types[[kk]] <- typesKK;
+        typesKK <- knownTypes[idxs]
+        names(typesKK) <- rep(typeKK, times=length(typesKK))
+        types[[kk]] <- typesKK
       } else {
-        names(types[[kk]]) <- typeKK;
+        names(types[[kk]]) <- typeKK
       }
     } # for (kk ...)
-    types <- unlist(types, use.names=TRUE);
+    types <- unlist(types, use.names=TRUE)
   }
 
   # Common aliases
-  names <- names(types);
-  types[types == "jpg"] <- "jpeg";
-  types[types == "ps"] <- "postscript";
-  names(types) <- names;
+  names <- names(types)
+  types[types == "jpg"] <- "jpeg"
+  types[types == "ps"] <- "postscript"
+  names(types) <- names
 
-  types;
+  types
 } # .devTypeName()
 
 .devTypeExt <- function(types, ...) {
@@ -816,31 +832,33 @@ devAll <- local({
   exts <- types
 
   ## Cairo package
-  pattern <- "^Cairo(JPEG|PDF|PNG|PS|SVG|TIFF)$";
-  idxs <- grep(pattern, exts);
-  exts[idxs] <- tolower(gsub(pattern, "\\1", exts[idxs]));
+  pattern <- "^Cairo(JPEG|PDF|PNG|PS|SVG|TIFF)$"
+  idxs <- grep(pattern, exts)
+  exts[idxs] <- tolower(gsub(pattern, "\\1", exts[idxs]))
 
   ## cairo_* devices
-  pattern <- "^cairo_(pdf|ps)$";
-  exts <- gsub(pattern, "\\1", exts);
+  pattern <- "^cairo_(pdf|ps)$"
+  exts <- gsub(pattern, "\\1", exts)
 
   ## Recognize types of any case. Always return in lower case.
-  exts <- tolower(exts);
+  exts <- tolower(exts)
 
   # Common type-to-extension conversions
-  exts[exts == "win.metafile"] <- "wmf";
-  exts[exts == "png2"] <- "png";
-  exts[exts == "jpeg"] <- "jpg";
-  exts[exts == "jpeg2"] <- "jpg";
-  exts[exts == "postscript"] <- "ps";
+  exts[exts == "win.metafile"] <- "wmf"
+  exts[exts == "png2"] <- "png"
+  exts[exts == "jpeg"] <- "jpg"
+  exts[exts == "jpeg2"] <- "jpg"
+  exts[exts == "postscript"] <- "ps"
 
   exts
 } # .devTypeExt()
 
 
 .devTypeNameFromFunction <- function(fcn, knownTypes=R.devices:::devAll(), ...) {
-  stopifnot(length(fcn) == 1, is.function(fcn))
-  knownFcns <- lapply(knownTypes, FUN=function(x) eval(parse(text=x[1])))
+  stop_if_not(length(fcn) == 1, is.function(fcn))
+  knownFcns <- lapply(knownTypes, FUN = function(x) {
+    eval(parse(text = x[1]), enclos = baseenv())
+  })
   name <- NULL
   for (name in names(knownFcns)) {
     if (identical(fcn, knownFcns[[name]])) return(name)
@@ -851,27 +869,27 @@ devAll <- local({
 
 .devEqualTypes <- (function() {
    # Recorded known results
-   known <- list();
+   known <- list()
 
    function(type, other, args=list()) {
      # (a) Same types?
-     if (identical(unname(type), unname(other))) return(TRUE);
+     if (identical(unname(type), unname(other))) return(TRUE)
 
      # (b) A known equality?
      if (is.character(type) && is.character(other)) {
-       res <- known[[type]][other];
-       if (is.logical(res)) return(res);
+       res <- known[[type]][other]
+       if (is.logical(res)) return(res)
      }
 
      # (c) Comparing to a device function?
      if (is.function(type) && is.character(other)) {
-       if (!exists(other, mode="function")) return(FALSE);
-       otherT <- get(other, mode="function");
-       if (identical(unname(type), unname(otherT))) return(TRUE);
+       if (!exists(other, mode="function")) return(FALSE)
+       otherT <- get(other, mode="function")
+       if (identical(unname(type), unname(otherT))) return(TRUE)
      } else if (is.function(other) && is.character(type)) {
-       if (!exists(type, mode="function")) return(FALSE);
-       typeT <- get(type, mode="function");
-       if (identical(unname(typeT), unname(other))) return(TRUE);
+       if (!exists(type, mode="function")) return(FALSE)
+       typeT <- get(type, mode="function")
+       if (identical(unname(typeT), unname(other))) return(TRUE)
      }
 
      # (d) Check if temporarily opening the requested type actually
@@ -896,14 +914,14 @@ devAll <- local({
        if (identical(other, FALSE)) return(FALSE)
      }
 
-     res <- (typeT == other);
+     res <- (typeT == other)
 
      # Record result to avoid opening next?
      if (is.character(type) && is.character(other)) {
-       known[[type]][other] <<- res;
+       known[[type]][other] <<- res
      }
 
-     res;
+     res
   }
 })() # .devEqualTypes()
 
@@ -911,85 +929,3 @@ devAll <- local({
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # END: Local functions
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-############################################################################
-# HISTORY:
-# 2015-12-15
-# o CLARIFICATION: Renamed .devIndexOf() to .devListIndexOf().
-# 2014-10-17
-# o SPEEDUP: Made devAll() memoize base::capabilities() results, which
-#   gives a significant speedup when for instance an X11 server times out.
-# 2014-09-30
-# o BUG FIX: devDone() would close some devices despite them being
-#   on screen/interactive devices, e.g. an x11 device.
-# 2014-09-17
-# o Added devAll().
-# 2014-09-16
-# o Now devIsInteractive() without arguments returns all known
-#   interactive devices.
-# 2014-09-11
-# o Added .devTypeExt().
-# 2014-04-27
-# o Added .devEqualTypes().
-# 2013-10-29
-# o ROBUSTESS/BUG FIX: devSet(which) where 'which' is a very large number
-#   could leave lots of stray temporary devices open when error "too many
-#   open devices" occurred.  Now all temporary devices are guaranteed to
-#   be closed also when there is an error.
-# 2013-10-28
-# o BUG FIX: dev(Get|Set)Label(which) would not handle the case when
-#   the device specified by an numeric 'which' and there is a
-#   gap in the device list.
-# o Added argument 'interactiveOnly' to devList().
-# o ROBUSTNESS: Now devSet() is guaranteed to close all temporary
-#   devices it opens.
-# 2013-10-15
-# o BUG FIX: devSet(key), where 'key' is a non-integer object (which is
-#   coerced to a device label via digest()), stopped working due to a too
-#   conservative test.
-# 2013-09-24
-# o CONSISTENCY: Now devList() returns an empty integer vector
-#   (instead of NULL) if no open devices exists.
-# o Now devOff() and devDone() checks if device is opened before trying
-#   to close it.  This avoids opening and closing of non-opened devices.
-# o ROBUSTNESS: The device functions that are not vectorize do now
-#   throw an informative error if passed a vector.
-# o GENERALIZATION: Vectorized devIsOpen(), devGetLabel(), and
-#   devIsInteractive().
-# o Vectorized internal .devIndexOf().
-# o Added argument 'dropNull' to devList().
-# 2013-08-27
-# o Added devIsInteractive().
-# o Added .devTypeName().
-# 2012-11-18
-# o Replaced all stop() with throw().
-# 2012-04-30
-# o Moved devNew() to devNew.R.
-# o Moved devEval() to devEval.R.
-# 2011-11-05
-# o Now the default 'width' is inferred from devOptions() is 'height'
-#   is not given and aspectRatio != 1.
-# 2011-03-16
-# o Now R.archive:ing is only done if the R.archive package is loaded.
-# o DOCUMENTATION: The title of devDone() was incorrect.
-# 2008-10-26
-# o Now argument 'which' to devSet() can be any object.  If not a single
-#   numeric or a single character string, then a checksum character string
-#   is generated using digest::digest(which).
-# 2008-10-16
-# o Now devDone(which=1) does nothing.  Before it gave an error.
-# 2008-08-01
-# o Added devList() and removed devLabels().
-# o Added internal .devNextAvailable().
-# o Added argument 'error=TRUE' to internal .devIndexOf().
-# 2008-07-31
-# o Now devSet(idx) opens a new device with index 'idx' if not already
-#   opened.
-# 2008-07-29
-# o Using term 'label' instead of 'name' everywhere, e.g. devLabels().
-#   This was changed because the help pages on 'dev.list' etc. already
-#   use the term 'name' for a different purpose, e.g. 'windows'.
-# 2008-07-18
-# o Created.
-############################################################################

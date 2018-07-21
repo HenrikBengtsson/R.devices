@@ -16,7 +16,8 @@
 #   \item{envir}{The @environment where \code{expr} should be evaluated.}
 #   \item{type}{The type of graphics device used in the background.
 #    The choice should not matter since the result should be identical
-#    regardless.}
+#    regardless.  All graphics is captured but any output is also voided
+#    by sending the output to a "null" file.}
 #  \item{...}{Additional arguments passed to the graphics device.}
 # }
 #
@@ -64,7 +65,7 @@
 #
 # @keyword device
 #*/###########################################################################
-capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
+capturePlot <- function(expr, envir=parent.frame(), type=nulldev, ...) {
   if (getRversion() < "3.3.0") {
     throw("Insufficient R version. R.devices::capturePlot() requires R (>= 3.3.0): ", getRversion())
   }
@@ -76,7 +77,7 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
   on.exit(dev.off())
 
   dev.control("enable")
-  eval(expr, envir=envir)
+  eval(expr, envir = envir, enclos = baseenv())
   g <- recordPlot()
 
   ## Record details of machine's architecture (helps troubleshooting)
@@ -111,7 +112,7 @@ capturePlot <- function(expr, envir=parent.frame(), type=pdf, ...) {
 #'
 #' @export
 #' @keywords internal
-print.RecordedPlot <- function(x, ...) {
+setMethodS3("print", "RecordedPlot", function(x, ...) {
   ## First, try without coercion
   res <- tryCatch({
     replayPlot(x)
@@ -124,4 +125,4 @@ print.RecordedPlot <- function(x, ...) {
   }
   
   invisible(x)
-}
+}, private = TRUE)
