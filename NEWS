@@ -1,10 +1,18 @@
 Package: R.devices
 ==================
 
-Version: 2.16.0-9000 [2018-07-21]
+Version: 2.16.0-9000 [2019-03-29]
 
- o ...
- 
+BUG FIXES:
+
+ o as.architecture() for recordedplot would produce "Error in !is.na(arch) &&
+   !is.na(arch$arch) : 'length(x) = 4 > 1' in coercion to 'logical(1)'" with
+   environment variable _R_CHECK_LENGTH_1_LOGIC2_=true set.
+
+ o getDevOption() could produce "Error in is.character(type) && type != "*" : 
+  'length(x) = 3 > 1' in coercion to 'logical(1)'" with environment variable
+  _R_CHECK_LENGTH_1_LOGIC2_=true set.
+
 
 Version: 2.16.0 [2018-07-21]
 

@@ -101,31 +101,31 @@ setMethodS3("as.architecture", "recordedplot", function(x, ostype=.Platform$OS.t
   stop_if_not(is.character(endian), length(endian) == 1, (is.na(endian) || endian %in% c("little", "big")))
 
   ## Default pointer size is 8 bytes (64-bit)
-  arch <- architecture(x)
+  x_arch <- architecture(x)
 
   ## Nothing to do?
-  if (!is.na(arch) && !is.na(arch$arch) && arch == arch$arch) return(x)
+  if (!is.na(arch) && !is.na(x_arch$arch) && arch == x_arch$arch) return(x)
 
   ## SPECIAL: Source and target architectures are known
   ## to be compatible even though their ptrsizes differ
-  if (all(c(arch, arch$arch) %in% c("i386", "x86_64"))) {
+  if (all(c(arch, x_arch$arch) %in% c("i386", "x86_64"))) {
     # i386 (e.g. 32-bit Windows) <-> x86_64 (64-bit Linux)
     return(x)
   }
 
   ## Endianess?
-  if (is.na(endian) || is.na(arch$endian) || endian != arch$endian) {
-    stop(sprintf("NON-IMPLEMENTED FEATURE: Don't know how to coerce from %s to %s endianess", sQuote(arch$endian), sQuote(endian)))
+  if (is.na(endian) || is.na(x_arch$endian) || endian != x_arch$endian) {
+    stop(sprintf("NON-IMPLEMENTED FEATURE: Don't know how to coerce from %s to %s endianess", sQuote(x_arch$endian), sQuote(endian)))
   }
 
   ## Pointer size, i.e. 32-bit or 64-bit address space?
   known_sizes <- c("32 bit"=35956L, "64 bit"=35992L)
-  if (is.na(arch$ptrsize)) {
+  if (is.na(x_arch$ptrsize)) {
      stop(sprintf("Failed to infer architecture.  The size of the %s structure is not among the known ones (%s): %d bytes", sQuote("gpar"), paste(sprintf("%s: %s bytes", names(known_sizes), known_sizes), collapse=", "), length(gpar(x))))
   }
 
   ## Nothing to do?
-  if (ptrsize == arch$ptrsize && endian == arch$endian) return(x)
+  if (ptrsize == x_arch$ptrsize && endian == x_arch$endian) return(x)
 
   ## Coerce 'gpar' structure
   pad64pos <- c(cex=29, crt=53, lwd=325, ps=389, srt=405,
@@ -133,11 +133,11 @@ setMethodS3("as.architecture", "recordedplot", function(x, ostype=.Platform$OS.t
   gpar <- gpar(x)
   pkgName <- attr(gpar, "pkgName")
 
-  if (arch$ptrsize == 8L && ptrsize == 4L) {
+  if (x_arch$ptrsize == 8L && ptrsize == 4L) {
     ## 64-bit -> 32-bit
     drop <- rep(pad64pos, each=4L) + 0:3
     gpar <- gpar[-drop]
-  } else if (arch$ptrsize == 4L && ptrsize == 8L) {
+  } else if (x_arch$ptrsize == 4L && ptrsize == 8L) {
     ## 32-bit -> 64-bit
     for (pos in pad64pos) gpar <- append(gpar, raw(4L), after=pos-1L)
   }
