@@ -1,8 +1,13 @@
 Package: R.devices
 ==================
 
-Version: 2.16.0-9000 [2019-03-29]
+Version: 2.16.0-9000 [2019-10-18]
 
+CRAN POLICES:
+
+ o Package examples no longer outputs to figures/ folder in current working
+   directory.  Instead, it's outputting to a temporary folder.
+ 
 BUG FIXES:
 
  o as.architecture() for recordedplot would produce "Error in !is.na(arch) &&

@@ -17,7 +17,6 @@ Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
 Author: Henrik Bengtsson [aut, cre, cph]
 Maintainer: Henrik Bengtsson <henrikb@braju.com>
-Date: 2018-07-21
 Title: Unified Handling of Graphics Devices
 Description: Functions for creating plots and image files in a unified way
     regardless of output format (EPS, PDF, PNG, SVG, TIFF, WMF, etc.). Default
