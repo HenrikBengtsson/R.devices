@@ -539,7 +539,7 @@ getDevOption <- function(type, name, default=NULL, inherits=TRUE, ..., old=TRUE)
   }
 
   # Get options
-  if (is.character(type) && type != "*") {
+  if (is.character(type) && (length(type) != 1L || type != "*")) {
     value <- devOptions(type=type, ...)[[name]]
   } else {
     value <- NULL

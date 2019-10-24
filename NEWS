@@ -1,23 +1,41 @@
 Package: R.devices
 ==================
 
+Version: 2.16.1 [2019-10-22]
+
+CRAN POLICES:
+
+ * Package examples no longer outputs to figures/ folder in current working
+   directory.  Instead, it's outputting to a temporary folder.
+ 
+BUG FIXES:
+
+ * as.architecture() for recordedplot would produce "Error in !is.na(arch) &&
+   !is.na(arch$arch) : 'length(x) = 4 > 1' in coercion to 'logical(1)'" with
+   environment variable _R_CHECK_LENGTH_1_LOGIC2_=true set.
+
+ * getDevOption() could produce "Error in is.character(type) && type != "*" : 
+   'length(x) = 3 > 1' in coercion to 'logical(1)'" with environment variable
+   _R_CHECK_LENGTH_1_LOGIC2_=true set.
+
+
 Version: 2.16.0 [2018-07-21]
 
 NEW FEATURES:
 
- o Add support for RStudio's RStudioGD device, e.g. toRStudioGD() and devEval()
+ * Add support for RStudio's RStudioGD device, e.g. toRStudioGD() and devEval()
    with type = "RStudioGD".
 
- o Added a "null" graphics device, nulldev(), that voids all graphics output.
+ * Added a "null" graphics device, nulldev(), that voids all graphics output.
    It may also be opened by devNew("nulldev").  devEval("nulldev", <expr>),
    and toNullDev(<expr>), which will evaluate the expression while at the same
    time drop any plot output.
 
- o Added suppressGraphics().
+ * Added suppressGraphics().
  
 BUG FIXES:
 
- o Package did not install on R (< 3.0.0) because base64enc (>= 0.1-3) failed
+ * Package did not install on R (< 3.0.0) because base64enc (>= 0.1-3) failed
    to to install on those versions. Now require only base64env (>= 0.1-2).
 
 
@@ -25,11 +43,11 @@ Version: 2.15.1 [2016-11-09]
  
 BUG FIXES:
 
- o Calling devNew(type, ..., aspectRatio) with 'type' being a function and
+ * Calling devNew(type, ..., aspectRatio) with 'type' being a function and
    neither width nor height could be inferred from the devices type generated
    an error when trying to generate a warning.
  
- o TESTS: Don't test as.architecture() on recordedplot objects that require
+ * TESTS: Don't test as.architecture() on recordedplot objects that require
    coercion between endianess, which is yet not supported.
  
  
@@ -37,11 +55,11 @@ Version: 2.15.0 [2016-11-07]
 
 NEW FEATURES:
 
- o Printing a plot recorded by capturePlot() now automatically falls back to
+ * Printing a plot recorded by capturePlot() now automatically falls back to
    replaying it coerced to the current machine's architecture if the default
    replay fails.
  
- o Added as.architecture() for recordedplot objects to make it easy to coerce
+ * Added as.architecture() for recordedplot objects to make it easy to coerce
    between 32-bit and 64-bit versions of a serialized recorded plot (e.g. via
    capturePlot()) so that it can be replotted everywhere.
  
@@ -50,18 +68,18 @@ Version: 2.14.0 [2016-03-08]
 
 NEW FEATURES:
 
- o Added capturePlot() making it possible to capture low-level plot commands
+ * Added capturePlot() making it possible to capture low-level plot commands
    using grDevices::recordPlot() such that the plot can be displayed /
    regenerated elsewhere, e.g. in a different / future R session.  Requires
    R (>= 3.3.0).
 
 BUG FIXES:
 
- o devEval(pdf, ...) without explicit argument 'ext' would give an error.
+ * devEval(pdf, ...) without explicit argument 'ext' would give an error.
 
 SOFTWARE QUALITY:
 
- o Package test coverage is 91%.
+ * Package test coverage is 91%.
 
 
  
@@ -69,69 +87,69 @@ Version: 2.13.2 [2015-12-16]
 
 SIGNIFICANT CHANGES:
 
- o Package requires R (>= 2.14.0), because of requireNamespace().
+ * Package requires R (>= 2.14.0), because of requireNamespace().
 
 BUG FIXES:
 
- o devSetLabel(which, label) gave an error if `which` was a label.
+ * devSetLabel(which, label) gave an error if `which` was a label.
  
- o Closing devices by their labels gave an error if they where not opened in
+ * Closing devices by their labels gave an error if they where not opened in
    ordered.
 
 SOFTWARE QUALITY:
 
- o ROBUSTNESS: Increased package test coverage from 72% to 87%.
+ * ROBUSTNESS: Increased package test coverage from 72% to 87%.
  
  
 Version: 2.13.1 [2015-09-21]
 
 NEW FEATURES:
 
- o Add capabilitiesX11().
+ * Add capabilitiesX11().
 
 BUG FIXES:
 
- o toX11() gave error "Device type 'X11' is not known/supported".
+ * toX11() gave error "Device type 'X11' is not known/supported".
  
- o devOptions(grDevices::png) returned devOptions("favicon") - not
+ * devOptions(grDevices::png) returned devOptions("favicon") - not
    devOptions("png") as expected.
 
 CODE REFACTORING:
 
- o Explicit import of 'utils' and 'graphics' functions. 
+ * Explicit import of 'utils' and 'graphics' functions. 
 
  
 Version: 2.13.0 [2015-02-21]
 
 NEW FEATURES:
 
- o When calling devEval() on multiple devices then underlying graphics device
+ * When calling devEval() on multiple devices then underlying graphics device
    functions no longer gives an error of unknown arguments, which means it is
    now possible to pass device specific arguments also when in multi-device
    calls, e.g. devEval(c("x11", "png"), res = 100, { plot(1:10) }).
 
 BUG FIXES:
 
- o devNew("quartz", which = "foo") could set the label of device #1(!) when
+ * devNew("quartz", which = "foo") could set the label of device #1(!) when
    quartz devices was not supported.  This was because quartz() only gives a
    warning (and not an error) when it is not supported, so the internal code
    thought the devices was succesfully opened.
    
- o Renaming incomplete files gave an error if there were already files renamed
+ * Renaming incomplete files gave an error if there were already files renamed
    for similar reasons.  Added package test.
  
- o devEval(type, ...) gave 'Error in strsplit (type, split = "|", fixed = TRUE'
+ * devEval(type, ...) gave 'Error in strsplit (type, split = "|", fixed = TRUE'
    if type was a device function. Added package tests showing that it's
    possible to do devEval(type = grDevices::png, ext = "png", plot(1:10)) in
    addition to devEval(type = "png", ext = "png", plot(1:10)).
 
 SOFTWARE QUALITY:
 
- o TESTS: Package coverage 74% (was 64%).
+ * TESTS: Package coverage 74% (was 64%).
 
 CODE REFACTORING:
 
- o CLEANUP: Using requireNamespace() instead of require() internally.
+ * CLEANUP: Using requireNamespace() instead of require() internally.
 
 
  
@@ -139,41 +157,41 @@ Version: 2.12.0 [2014-09-17]
 
 NEW FEATURES:
 
- o DEVICES: Added support for all Cairo* devices of the Cairo package.
+ * DEVICES: Added support for all Cairo* devices of the Cairo package.
  
- o DEVICES: Added favicon() device, which is a wrapper for png() with bells and
+ * DEVICES: Added favicon() device, which is a wrapper for png() with bells and
    whistles.  It has its own device options.  Updated toFavicon() to use
    default argument field = "htmlscript", which generates an HTML script that
    dynamically sets the favicon.
  
- o Several functions now supports specifying device type names by regular
+ * Several functions now supports specifying device type names by regular
    expressions, e.g. devOptions("cairo_.*") and devEval("cairo_.*",
    name = "foo", { plot(1:10) }).  The latter will output one image file for
    each available cairo_.* device.
  
- o Added support for "global" device options to fall back on if no set for the
+ * Added support for "global" device options to fall back on if no set for the
    device type queried, e.g. devOptions("*", pointsize = 14).
  
- o Now arguments 'sep', 'path', 'field' and 'force' for devEval() and the
+ * Now arguments 'sep', 'path', 'field' and 'force' for devEval() and the
    various toNnn() functions now utilizes getDevOption(), which is still
    backward compatibilty with the old style R options.
  
- o Now devIsInteractive() without arguments returns all known interactive
+ * Now devIsInteractive() without arguments returns all known interactive
    devices.
 
- o ROBUSTNESS: Now package does a better job of checking whether a particular
+ * ROBUSTNESS: Now package does a better job of checking whether a particular
    device is supported on the current system, cf. capabilities() and
    Cairo::Cairo.capabilities().
 
 DEPRECATED AND DEFUNCT:
 
- o CLEANUP: Dropped argument 'field' for toNnn(), because the default is now
+ * CLEANUP: Dropped argument 'field' for toNnn(), because the default is now
    NULL which corresponds to returning a DevEvalProduct object. In turn, this
    object has the pathname as it's value, which was the previous default
    'field' value.  Also, as.character() on this object returns the (relative)
    pathname.
 
- o CLEANUP: All old-style R options (e.g. 'devEval/args/field') have been
+ * CLEANUP: All old-style R options (e.g. 'devEval/args/field') have been
    deprecated.  They will still work for a while but it is recommended to set
    them as devOptions("*", field = ...) instead.
  
@@ -182,14 +200,14 @@ Version: 2.11.5 [2014-09-30]
 
 NEW FEATURES:
 
- o Added view() and !() to DevEvalProduct.
+ * Added view() and !() to DevEvalProduct.
  
 BUG FIXES:
 
- o devDone() would close some devices despite them being on screen/interactive
+ * devDone() would close some devices despite them being on screen/interactive
    devices, e.g. an x11 device.
  
- o devNew(x11) on Unix/Linux where the default 'width' or 'height' failed to be
+ * devNew(x11) on Unix/Linux where the default 'width' or 'height' failed to be
    inferred would throw an error reporting on "cannot coerce type 'closure' to 
    vector of type 'character'".
  
@@ -198,15 +216,15 @@ Version: 2.11.4 [2014-09-16]
 
 NEW FEATURES:
 
- o ROBUSTNESS: Now withPar() also resets all the graphical parameters available
+ * ROBUSTNESS: Now withPar() also resets all the graphical parameters available
    upon entry even if no explicit ones were specified. This covers the case when
    'expr' changes the parameters, e.g. withPar({ par(cex = 2L); plot(1:10) }).
  
 BUG FIXES:
 
- o Now getPathname(..., relative = FALSE) returns the absolute pathname.
+ * Now getPathname(..., relative = FALSE) returns the absolute pathname.
  
- o devOptions() returned the incorrect options for device types "eps", "jpg2"
+ * devOptions() returned the incorrect options for device types "eps", "jpg2"
    and "png2" if package was not attached.
  
  
@@ -214,15 +232,15 @@ Version: 2.11.3 [2014-09-12]
 
 NEW FEATURES:
 
- o Added getDevOption().
+ * Added getDevOption().
  
 BUG FIXES:
 
- o On Windows, devOptions() assumed that the 'grDevices' package was attached.
+ * On Windows, devOptions() assumed that the 'grDevices' package was attached.
  
- o devOptions(type, name = NULL) did not assign the option NULL.
+ * devOptions(type, name = NULL) did not assign the option NULL.
  
- o devDump() fell back on option 'devDump/args/path', but that would never
+ * devDump() fell back on option 'devDump/args/path', but that would never
    happen.  Dropping that option.
  
  
@@ -230,27 +248,27 @@ Version: 2.11.2 [2014-09-11]
 
 BUG FIXES:
 
- o devEval("cairo_pdf", ...) for generate an image file with a *.cairo_pdf
+ * devEval("cairo_pdf", ...) for generate an image file with a *.cairo_pdf
    filename extension. Now devEval(..., ext = NULL) does a better job of
    inferring the default extension from the device type.
  
 SOFTWARE QUALITY:
 
- o ROBUSTNESS: Added explicit package tests for devOptions().
+ * ROBUSTNESS: Added explicit package tests for devOptions().
  
  
 Version: 2.11.1 [2014-09-02]
 
 NEW FEATURES:
 
- o Added getData() to DevEvalFileProduct.
+ * Added getData() to DevEvalFileProduct.
  
  
 Version: 2.11.0 [2014-08-29]
 
 NEW FEATURES:
 
- o Added support for devEval() to try multiple device types one-by-one until
+ * Added support for devEval() to try multiple device types one-by-one until
    success, e.g. devEval("png|jpg|bmp", ...).
  
  
@@ -258,14 +276,14 @@ Version: 2.10.0 [2014-08-29]
 
 SIGNIFICANT CHANGES:
 
- o Changed default argument 'field' for toNNN() from "fullname" to "pathname"
+ * Changed default argument 'field' for toNNN() from "fullname" to "pathname"
    as in getOption("devEval/args/field", "pathname"). This should work for most
    compilers including LaTeX, although for the latter it is preferred to use
    "fullname".  See the package vignette for details.
 
 DOCUMENTATION:
 
- o Update package vignette with information on how to output image files of
+ * Update package vignette with information on how to output image files of
    multiple formats in one call.
  
  
@@ -273,38 +291,38 @@ Version: 2.9.3 [2014-08-17]
 
 CODE REFACTORING:
 
- o CLEANUP: Removed false R CMD check NOTE.
+ * CLEANUP: Removed false R CMD check NOTE.
  
- o Bumped up the package dependencies.
+ * Bumped up the package dependencies.
  
  
 Version: 2.9.2 [2014-05-15]
 
 CODE REFACTORING:
 
- o Bumped up the package dependencies.
+ * Bumped up the package dependencies.
  
  
 Version: 2.9.1 [2014-05-01]
 
 NEW FEATURES:
 
- o Added withPar() for plotting with temporarily set graphical parameters.
+ * Added withPar() for plotting with temporarily set graphical parameters.
  
  
 Version: 2.9.0 [2014-04-28]
 
 NEW FEATURES:
 
- o Added toDefault() for plotting to the default device analogously to how the
+ * Added toDefault() for plotting to the default device analogously to how the
    other toNnn() device functions works.  Likewise, added toX11(), toWindows(),
    toQuartz(), toCairoWin(), toCairoX11(), and toJavaGD() for plotting to
    interactive/screen devices.
  
- o Now it's possible to use devEval() to open a new or activate an existing
+ * Now it's possible to use devEval() to open a new or activate an existing
    interactive/screen device.
  
- o Added support for (hidden) argument 'which' to devNew(), such that
+ * Added support for (hidden) argument 'which' to devNew(), such that
    devNew(type, which = which) avoids opening a new device iff an existing
    device of the same device type and index/label already is opened. For
    instance, calling devNew("X11", which = "foo") will open an X11 device and
@@ -312,20 +330,20 @@ NEW FEATURES:
 
 BUG FIXES:
 
- o Now devEval("windows", { plot(1:10) }) no longer gives "Error: Detected new
+ * Now devEval("windows", { plot(1:10) }) no longer gives "Error: Detected new
    graphics devices that was opened but not closed while executing devEval(): 
    '2' (windows)".
  
 CODE REFACTORING:
 
- o Bumped up package dependencies.
+ * Bumped up package dependencies.
 
  
 Version: 2.8.4 [2014-01-11]
 
 NEW FEATURES:
 
- o Added asDataURI() for converting an image file to an Base64-encoded data URI
+ * Added asDataURI() for converting an image file to an Base64-encoded data URI
    character string.
  
  
@@ -333,58 +351,58 @@ Version: 2.8.3 [2014-01-10]
 
 NEW FEATURES:
 
- o Added toFavicon() for outputting figures as HTML favicons.
+ * Added toFavicon() for outputting figures as HTML favicons.
  
  
 Version: 2.8.2 [2014-01-02]
 
 NEW FEATURES:
 
- o Now the timestamp of the default path for devDump() is in the local one.
+ * Now the timestamp of the default path for devDump() is in the local one.
  
  
 Version: 2.8.1 [2013-12-08]
 
 BUG FIXES:
 
- o devOptions(types) would drop all options for combinations of device types
+ * devOptions(types) would drop all options for combinations of device types
    that have identical sets of options, e.g. types = c("png", "png") or
    types = c("bmp", "png").
  
 CODE REFACTORING:
 
- o Bumped up package dependencies.
+ * Bumped up package dependencies.
 
- o No longer need for an ad hoc NAMESPACE import.
+ * No longer need for an ad hoc NAMESPACE import.
 
  
 Version: 2.8.0 [2013-10-29]
 
 NEW FEATURES:
 
- o Added devDump() which is short for calling devEval(c("png", "pdf"), ...,
+ * Added devDump() which is short for calling devEval(c("png", "pdf"), ...,
    which = devList(interactiveOnly = TRUE)), i.e. it copies the content of
    open interactive ("screen") devices.
  
- o Added argument 'interactiveOnly' to devList().
+ * Added argument 'interactiveOnly' to devList().
  
- o If 'expr' is missing, devEval() copies the current active device and
+ * If 'expr' is missing, devEval() copies the current active device and
    devEval(which = devList()) copies all open devices.  For example,
    plot(1:10); devEval(c("png", "jpg", "pdf"), name = "myfig").
 
 BUG FIXES:
 
- o devSet(which) where 'which' is a very large number could leave lots of stray
+ * devSet(which) where 'which' is a very large number could leave lots of stray
    temporary devices open when error "too many open devices" occurred.  Now all
    temporary devices are guaranteed to be closed also when there is an error.
  
- o devIsOpen(), dev(Get|Set)Label(which) would not handle the case when the
+ * devIsOpen(), dev(Get|Set)Label(which) would not handle the case when the
    device was specified by an numeric 'which' and there is a gap in the device
    list.
 
 CODE REFACTORING:
 
- o Now package imports (no longer suggests) the 'base64enc' package. This way
+ * Now package imports (no longer suggests) the 'base64enc' package. This way
    packages using 'R.devices' do not have to specify also 'base64enc' if they
    use dataURI-encoding of images.
 
@@ -393,18 +411,18 @@ Version: 2.7.3 [2013-10-28]
 
 NEW FEATURES:
 
- o ROBUSTNESS: Now devSet() guarantees to close all temporary devices it opens.
+ * ROBUSTNESS: Now devSet() guarantees to close all temporary devices it opens.
  
  
 Version: 2.7.2 [2013-10-15]
 
 SOFTWARE QUALITY:
 
- o ROBUSTNESS: Added package system tests for devSet().
+ * ROBUSTNESS: Added package system tests for devSet().
 
 CODE REFACTORING:
 
- o Now the package vignettes are in vignettes/ - and not in inst/doc/ which
+ * Now the package vignettes are in vignettes/ - and not in inst/doc/ which
    will not be supported by R (>= 3.1.0).
 
  
@@ -412,49 +430,49 @@ Version: 2.7.1 [2013-10-07]
 
 CODE REFACTORING:
 
- o CLEANUP: Now explicitly importing only what is needed in NAMESPACE.
+ * CLEANUP: Now explicitly importing only what is needed in NAMESPACE.
  
- o Bumped up package dependencies.
+ * Bumped up package dependencies.
  
  
 Version: 2.7.0 [2013-09-28]
 
 NEW FEATURES:
 
- o GENERALIZATION: Vectorized devEval(), e.g. it is now possible to do
+ * GENERALIZATION: Vectorized devEval(), e.g. it is now possible to do
    devEval(c("png", "pdf"), name = "MyPlot", { plot(1:10) }). Added arguments
    'initially' and 'finally' to devEval().  Contrary to 'expr' which is
    evaluated for each graphics type/device, these are evaluated only once per
    call.  This makes it possible to avoid repeating expensive computations.
  
- o GENERALIZATION: Vectorized devIsInteractive(), devIsOpen(), devGetLabel(),
+ * GENERALIZATION: Vectorized devIsInteractive(), devIsOpen(), devGetLabel(),
    devOff(), and devDone().
  
- o Now devOff() and devDone() checks if device is opened before trying to close
+ * Now devOff() and devDone() checks if device is opened before trying to close
    it.  This avoids opening and closing of non-opened devices.
  
- o Updated the formal defaults of several devEval() arguments to be NULL.
+ * Updated the formal defaults of several devEval() arguments to be NULL.
    Instead, NULL for such arguments are translated to default internally.
    This was necessary in order to vectorize devEval().
  
- o CONSISTENCY: Now devList() returns an empty integer vector (instead of NULL)
+ * CONSISTENCY: Now devList() returns an empty integer vector (instead of NULL)
    if no open devices exists.
  
- o ROBUSTNESS: The device functions that are not vectorize do now throw an
+ * ROBUSTNESS: The device functions that are not vectorize do now throw an
    informative error if passed a vector.
 
- o Now the 'R.devices' Package object is also available when the package is
+ * Now the 'R.devices' Package object is also available when the package is
    only loaded (but not attached).
  
 SOFTWARE QUALITY:
 
- o ROBUSTNESS: Added several more package system tests.
+ * ROBUSTNESS: Added several more package system tests.
 
 CODE REFACTORING:
 
- o ROBUSTNESS: Now declaring all S3 method in NAMESPACE.
+ * ROBUSTNESS: Now declaring all S3 method in NAMESPACE.
  
- o CLEANUP: Removed fall back attachments of 'R.utils' as these are no longer
+ * CLEANUP: Removed fall back attachments of 'R.utils' as these are no longer
    needed with R.oo (>= 1.15.1).
  
  
@@ -462,57 +480,57 @@ Version: 2.6.1 [2013-09-17]
 
 NEW FEATURES:
 
- o ROBUSTNESS: Now getDataURI() throws an Exception is suggested package
+ * ROBUSTNESS: Now getDataURI() throws an Exception is suggested package
    'base64enc' is not installed.
 
 BUG FIXES:
 
- o Some package examples and system tests assumed that the suggested package
+ * Some package examples and system tests assumed that the suggested package
    'base64enc' is installed.
 
- o Package vignette assumed that R.rsp and R.utils are attached.
+ * Package vignette assumed that R.rsp and R.utils are attached.
 
 SOFTWARE QUALITY:
 
- o Bumped up package dependencies.
+ * Bumped up package dependencies.
 
  
 Version: 2.6.0 [2013-08-29]
 
 NEW FEATURES:
 
- o Added support for retrieving a Base64-encoded data URI string from a
+ * Added support for retrieving a Base64-encoded data URI string from a
    DevEvalFile.
  
- o Added classes DevEvalProduct and DevEvalFileProduct, which are returned by
+ * Added classes DevEvalProduct and DevEvalFileProduct, which are returned by
    devEval().
 
 SOFTWARE QUALITY:
 
- o TESTS: Added package system tests.
+ * TESTS: Added package system tests.
  
  
 Version: 2.5.2 [2013-08-27]
 
 NEW FEATURES:
 
- o Added devIsInteractive().
+ * Added devIsInteractive().
 
 BUG FIXES:
 
- o Now devEval() no longer passes a pathname to devEval() for interactive
+ * Now devEval() no longer passes a pathname to devEval() for interactive
    devices, which in turn would generate warnings.
  
 CODE REFACTORING:
 
- o CLEANUP: Package no longer utilizes ':::'.
+ * CLEANUP: Package no longer utilizes ':::'.
  
  
 Version: 2.5.1 [2013-08-17]
  
 NEW FEATURES:
 
- o Argument 'ext' of devEval() can now be inferred from argument 'type' also
+ * Argument 'ext' of devEval() can now be inferred from argument 'type' also
    when 'type' is passed via a string variable.
  
  
@@ -520,27 +538,27 @@ Version: 2.5.0 [2013-07-30]
 
 NEW FEATURES:
 
- o Added support the 'win.metafile' (WMF) device type and added toWMF()
+ * Added support the 'win.metafile' (WMF) device type and added toWMF()
    creating (extended) WMF files.  Since the file format is *extended* WMF,
    which often has file extension *.emf, toEMF() was also added.  toEMF() uses
    the same device driver as toWMF() with the only difference that the file
    extension is *.emf instead of *.wmf.
  
- o Now devOptions() can query the options of multiple device types. Added
+ * Now devOptions() can query the options of multiple device types. Added
    arguments 'options' and 'drop' to devOptions().
  
- o Now devEval() returns a list of class 'DevEvalFile'.
+ * Now devEval() returns a list of class 'DevEvalFile'.
 
 DOCUMENTATION:
 
- o Hiding internal/legacy functions from the help index.
+ * Hiding internal/legacy functions from the help index.
  
  
 Version: 2.4.2 [2013-07-15]
 
 NEW FEATURES:
 
- o Added argument 'sep' to devEval() together with an option to set its default
+ * Added argument 'sep' to devEval() together with an option to set its default
    value.
  
  
@@ -548,31 +566,31 @@ Version: 2.4.1 [2013-07-12]
 
 CODE REFACTORING:
 
- o Updated how vignettes are built and included.
+ * Updated how vignettes are built and included.
  
  
 Version: 2.4.0 [2013-07-03]
 
 NEW FEATURES:
 
- o Now devNew() returns the index of the opened device.
+ * Now devNew() returns the index of the opened device.
  
- o Now devEval() and devNew(), and hence toPNG() and so on, can be called
+ * Now devEval() and devNew(), and hence toPNG() and so on, can be called
    without attaching the package, e.g. R.devices::toPNG().
 
 CODE REFACTORING:
 
- o CLEANUP: Now package only imports the R.utils.  However, it will attach
+ * CLEANUP: Now package only imports the R.utils.  However, it will attach
    ("load") R.utils as soon as devEval() or devNew() is called.
  
- o Bumped up package dependencies.
+ * Bumped up package dependencies.
  
  
 Version: 2.3.0 [2013-05-30]
 
 CODE REFACTORING:
 
- o Now the package vignette is built via the R (>= 3.0.0) vignette engines,
+ * Now the package vignette is built via the R (>= 3.0.0) vignette engines,
    if available.
  
  
@@ -580,14 +598,14 @@ Version: 2.2.4 [2013-05-20]
 
 DOCUMENTATION:
 
- o Now all Rd \usage{} lines are at most 90 characters long.
+ * Now all Rd \usage{} lines are at most 90 characters long.
  
  
 Version: 2.2.3 [2013-04-04]
 
 NEW FEATURES:
 
- o ROBUSTNESS: Now devEval() does a better job of making sure to close the same
+ * ROBUSTNESS: Now devEval() does a better job of making sure to close the same
    device as it opened.  Previously it would close the current active device,
    which would not be the correct one if for instance other devices had been
    open in the meanwhile/in parallel.
@@ -597,38 +615,38 @@ Version: 2.2.2 [2013-04-01]
 
 CODE REFACTORING:
 
- o Now package builds with both R.rsp (< 0.9.1) and R.rsp (>= 0.9.1).
+ * Now package builds with both R.rsp (< 0.9.1) and R.rsp (>= 0.9.1).
  
  
 Version: 2.2.1 [2013-03-28]
 
 CODE REFACTORING:
 
- o Bumped up package dependencies.
+ * Bumped up package dependencies.
  
- o Cleaned up the NAMESPACE file.
+ * Cleaned up the NAMESPACE file.
  
  
 Version: 2.2.0 [2013-03-07]
 
 DOCUMENTATION:
 
- o Preparing package vignettes for the upcoming R 3.0.0 support for non-Sweave
+ * Preparing package vignettes for the upcoming R 3.0.0 support for non-Sweave
    vignettes.
 
 CODE REFACTORING:
 
- o Bumped up package dependencies.
+ * Bumped up package dependencies.
  
  
 Version: 2.1.6 [2013-02-13]
 
 NEW FEATURES:
 
- o Changed default argument 'field' for devEval() from NULL to
+ * Changed default argument 'field' for devEval() from NULL to
    getOption("devEval/args/field", NULL).
  
- o Changed default argument 'field' for toNnn() from "fullname" to
+ * Changed default argument 'field' for toNnn() from "fullname" to
    getOption("devEval/args/field", "fullname").
  
  
@@ -636,71 +654,71 @@ Version: 2.1.5 [2013-02-13]
 
 CODE REFACTORING:
 
- o Specifying new DESCRIPTION field 'VignetteBuilder'.
+ * Specifying new DESCRIPTION field 'VignetteBuilder'.
  
  
 Version: 2.1.4 [2012-12-19]
 
 CODE REFACTORING:
 
- o Utilizing new startupMessage() of R.oo.
+ * Utilizing new startupMessage() of R.oo.
  
  
 Version: 2.1.3 [2012-11-19]
 
 DOCUMENTATION:
 
- o Minor corrections and clarifications in the vignette.
+ * Minor corrections and clarifications in the vignette.
 
 CODE REFACTORING:
 
- o CONSISTENCY: Now using throw() instead of stop() everywhere.
+ * CONSISTENCY: Now using throw() instead of stop() everywhere.
  
- o CLEANUP: Only importing what is necessary from R.methodsS3 and R.oo.
+ * CLEANUP: Only importing what is necessary from R.methodsS3 and R.oo.
  
- o CLEANUP: Made all integer constants truly integers.
+ * CLEANUP: Made all integer constants truly integers.
  
  
 Version: 2.1.2 [2012-08-21]
 
 DOCUMENTATION:
 
- o Fixed minor typo in the vignette.
+ * Fixed minor typo in the vignette.
  
- o In help(devEval) the link to help(devNew) was broken.
+ * In help(devEval) the link to help(devNew) was broken.
 
 CODE REFACTORING:
  
- o Updated versions of the package dependencies.
+ * Updated versions of the package dependencies.
  
  
 Version: 2.1.1 [2012-05-01]
 
 NEW FEATURES:
 
- o Now devOptions() returns options invisibly if some options were set,
+ * Now devOptions() returns options invisibly if some options were set,
    otherwise not, e.g. devOptions() versus devOptions("png", width = 1024).
 
 DOCUMENTATION:
 
- o Added a first draft of a package vignette.
+ * Added a first draft of a package vignette.
  
  
 Version: 2.1.0 [2012-04-27]
 
 CODE REFACTORING:
 
- o Merged updates from the R.utils v1.13.1.
+ * Merged updates from the R.utils v1.13.1.
  
  
 Version: 2.0.0 [2011-11-05]
 
 SIGNIFICANT CHANGES:
 
- o Created package by extracting all methods in R.utils v1.9.1 that are related
+ * Created package by extracting all methods in R.utils v1.9.1 that are related
    to graphical devices.
  
- o The below change log shows the changes to the device methods while they were
+ * The below change log shows the changes to the device methods while they were
    in R.utils.  For this reason, we choose to set the version of this package
    such that it starts where we left R.utils.
  
@@ -709,32 +727,32 @@ Version: 1.9.1 [2011-11-05]
 
 NEW FEATURES:
 
- o Added devOptions().
+ * Added devOptions().
  
- o Added default 'width' and 'height' values to eps().
+ * Added default 'width' and 'height' values to eps().
  
- o Turned png2() and jpeg2() into plain functions without a generic. This is
+ * Turned png2() and jpeg2() into plain functions without a generic. This is
    consistent with how eps() is defined.
  
- o Now the default 'width' is inferred from devOptions() if needed.
+ * Now the default 'width' is inferred from devOptions() if needed.
 
 DOCUMENTATION:
 
- o Added an example to help(devEval).
+ * Added an example to help(devEval).
  
  
 Version: 1.8.6 [2011-10-31]
 
 NEW FEATURES:
 
- o Added argument 'field' to devEval().
+ * Added argument 'field' to devEval().
  
  
 Version: 1.8.2 [2011-09-24]
 
 NEW FEATURES:
 
- o devNew() no longer gives a warning about argument 'aspectRatio' is specified
+ * devNew() no longer gives a warning about argument 'aspectRatio' is specified
    when both or neither of 'width' and 'height' are given, and aspectRatio == 1.
  
  
@@ -742,14 +760,14 @@ Version: 1.7.5 [2011-04-12]
 
 NEW FEATURES:
 
- o Now devEval("jpg", ...) is recognized as devEval("jpeg", ...).
+ * Now devEval("jpg", ...) is recognized as devEval("jpeg", ...).
  
  
 Version: 1.7.3 [2011-04-02]
 
 NEW FEATURES:
 
- o Now argument 'force' of devEval() defaults to
+ * Now argument 'force' of devEval() defaults to
    getOption("devEval/args/force", TRUE).
  
  
@@ -757,36 +775,36 @@ Version: 1.7.2 [2011-03-18]
 
 NEW FEATURES:
 
- o Now argument 'path' of devEval() defaults to getOption("devEval/args/path",
+ * Now argument 'path' of devEval() defaults to getOption("devEval/args/path",
    "figures/").
  
- o Now devEval() does a better job of "cleaning up" 'name' and 'tags'.
+ * Now devEval() does a better job of "cleaning up" 'name' and 'tags'.
  
  
 Version: 1.7.1 [2011-03-18]
 
 NEW FEATURES:
 
- o devNew() gained option 'devNew/args/par', which can be used to specify the
+ * devNew() gained option 'devNew/args/par', which can be used to specify the
    default graphical parameters for devNew().  Any additional parameters passed
    via argument 'par' will override such default ones, if both specifies the
    same parameter.
  
- o The automatic archiving of devEval() is not considered unless the R.archive
+ * The automatic archiving of devEval() is not considered unless the R.archive
    package is loaded, regardless of option settings.
 
 DOCUMENTATION:
 
- o The title of help(devDone) was incorrect.
+ * The title of help(devDone) was incorrect.
  
  
 Version: 1.7.0 [2011-03-10]
 
 NEW FEATURES:
 
- o Now argument 'aspectRatio' of devNew() defaults to 1 (not NULL).
+ * Now argument 'aspectRatio' of devNew() defaults to 1 (not NULL).
  
- o REPRODUCIBLE RESEARCH: Now devEval() archives any generated image files if
+ * REPRODUCIBLE RESEARCH: Now devEval() archives any generated image files if
    R.archive option 'devEval' is TRUE.
  
  
@@ -794,20 +812,20 @@ Version: 1.6.3 [2011-02-20]
 
 NEW FEATURES:
 
- o Added argument 'par' to devNew() for applying graphical parameters at the
+ * Added argument 'par' to devNew() for applying graphical parameters at the
    same time as the device is opened, which is especially useful when using
    devEval().
  
- o Changed argument 'force' of devEval() to default to TRUE.
+ * Changed argument 'force' of devEval() to default to TRUE.
  
  
 Version: 1.6.2 [2011-02-14]
 
 NEW FEATURES:
 
- o Added trial version of devEval() for simple creation of images.
+ * Added trial version of devEval() for simple creation of images.
  
- o Added argument 'aspectRatio' to devNew(), which updates/sets the 'height' or
+ * Added argument 'aspectRatio' to devNew(), which updates/sets the 'height' or
    the 'width', if the one of the other is not given.
  
  
@@ -815,7 +833,7 @@ Version: 1.5.5 [2010-10-26]
 
 NEW FEATURES:
 
- o Now argument 'which' to devSet() can be any object.  If not a single numeric
+ * Now argument 'which' to devSet() can be any object.  If not a single numeric
    or a single character string, then a checksum character string is generated
    using digest::digest(which).
  
@@ -824,18 +842,18 @@ Version: 1.0.8 [2008-10-16]
 
 NEW FEATURES:
 
- o Now devDone(which = 1) does nothing.  Before it gave an error.
+ * Now devDone(which = 1) does nothing.  Before it gave an error.
  
 BUG FIXES:
 
- o Argument 'type' of devNew() did not take function:s.
+ * Argument 'type' of devNew() did not take function:s.
  
  
 Version: 1.0.6 [2008-09-08]
 
 NEW FEATURES:
 
- o Now devNew() filters out arguments 'file' and 'filename' if the device is
+ * Now devNew() filters out arguments 'file' and 'filename' if the device is
    interactive.
  
  
@@ -843,7 +861,7 @@ Version: 1.0.4 [2008-08-01]
 
 NEW FEATURES:
 
- o Added several functions for extending the current functions dealing with
+ * Added several functions for extending the current functions dealing with
    devices.  All added functions can address a device by a label in addition to
    the standard device index.  The devGetLabel() and devSetLabel() gets and
    sets the label of a give device.  devList() lists the indices of existing
@@ -859,14 +877,14 @@ Version: 1.0.0 [2008-02-26]
 
 BUG FIXES:
 
- o The default filename for eps() had extension *.ps not *.eps.
+ * The default filename for eps() had extension *.ps not *.eps.
  
  
 Version: 0.7.6 [2006-02-15]
 
 NEW FEATURES:
 
- o Since the png2() and jpeg2() devices are in this package, the eps() device
+ * Since the png2() and jpeg2() devices are in this package, the eps() device
    from R.graphics has been moved here for consistency.
  
  
@@ -874,4 +892,4 @@ Version: 0.6.0 [2005-09-24]
 
 NEW FEATURES:
 
- o Added trial versions of jpeg2() and png2().
+ * Added trial versions of jpeg2() and png2().
