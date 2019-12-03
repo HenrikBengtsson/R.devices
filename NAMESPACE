@@ -1,13 +1,13 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # IMPORTS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-importFrom("R.methodsS3", "throw")
 importFrom("R.methodsS3", "setMethodS3")
 importFrom("R.methodsS3", "appendVarArgs")
 importFrom("R.oo", "setConstructorS3")
 importFrom("R.oo", "extend")
 importFrom("R.oo", "Package")
 importFrom("R.oo", "startupMessage")
+importFrom("R.oo", "throw")
 
 ## Import Class:es
 importFrom("R.oo", "BasicObject")
