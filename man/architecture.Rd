@@ -7,8 +7,14 @@
 \usage{
 architecture(x, ...)
 
-as.architecture(x, ostype = .Platform$OS.type, arch = R.version$arch,
-  ptrsize = .Machine$sizeof.pointer, endian = .Platform$endian, ...)
+as.architecture(
+  x,
+  ostype = .Platform$OS.type,
+  arch = R.version$arch,
+  ptrsize = .Machine$sizeof.pointer,
+  endian = .Platform$endian,
+  ...
+)
 }
 \arguments{
 \item{x}{The object to be coerced.}
@@ -35,4 +41,3 @@ as.architecture(x, ostype = .Platform$OS.type, arch = R.version$arch,
 \description{
 Get the architecture of an object or coerce it into another
 }
-

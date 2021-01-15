@@ -25,4 +25,3 @@ Internally, \code{\link{as.architecture}()} is used
 to coerce to the current architecture.
 }
 \keyword{internal}
-
