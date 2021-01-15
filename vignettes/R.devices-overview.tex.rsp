@@ -17,9 +17,11 @@ R.rsp <- R.oo::Package("R.rsp")
 withCapture <- R.utils::withCapture
 hpaste <- R.utils::hpaste
 
-if ("png" %in% rownames(devOptions())) {
-  devOptions("png", width=840)
-  devOptions("png", field="fullname") # Better for LaTeX
+for (type in c("png", "cairo_png", "CairoPNG", "png2")) {
+  if (type %in% rownames(devOptions())) {
+    devOptions(type, width=840)
+    devOptions(type, field="fullname") # Better for LaTeX
+  }
 }
 
 options(width=85)
@@ -135,14 +137,27 @@ devEval("pdf", name="GaussianDensity", aspectRatio=0.6, \{
 \end{rspVerbatim}
 creates a PDF file named \file{GaussianDensity.pdf} that is 7.0 inches wide and 4.2 inches tall (for default dimensions see Section~\ref{secOptions}), whereas
 \begin{rspVerbatim}
-devEval("png|png2|CairoPNG", name="GaussianDensity", aspectRatio=0.6, \{
+devEval("png", name="GaussianDensity", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-creates a PNG file named \file{GaussianDensity.png} using \code{grDevices::png()}, \code{R.devices::png2()}, or \code{Cairo::CairoPNG()} based on availability.  The created PNG has an height-to-width aspect ratio of 6:10 (Section~\ref{secOptions}).
+creates a PNG file named \file{GaussianDensity.png} using \code{grDevices::png()}.  The created PNG has an height-to-width aspect ratio of 6:10 (Section~\ref{secOptions}).
+Since the \code{png()} function might not be supported on all platforms, you can specify a set of \emph{alternatives} as:
+\begin{rspVerbatim}
+devEval("png|cairo_png|CairoPNG|png2", name="GaussianDensity", aspectRatio=0.6, \{
+  curve(dnorm, from=-5, to=+5)
+\})
+\end{rspVerbatim}
+which will the attempt each of them in order.  A shortcut for the above is to use the \emph{set} specification:
+\begin{rspVerbatim}
+devEval("{png}", name="GaussianDensity", aspectRatio=0.6, \{
+  curve(dnorm, from=-5, to=+5)
+\})
+\end{rspVerbatim}
+
 By specifying the \code{scale} argument, it is possible to create an image file with a smaller or a larger dimension relative to that of the default, e.g.
 \begin{rspVerbatim}
-devEval("png|png|CairoPNG", name="GaussianDensity,large", aspectRatio=0.6, scale=2, \{
+devEval("png", name="GaussianDensity,large", aspectRatio=0.6, scale=2, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
@@ -164,7 +179,7 @@ creates image files \file{GaussianDensity.pdf}, and \file{GaussianDensity.svg}. 
 \subsection{Creating one image file trying different device types}
 Some image formats, or more precisely some device types, are only supported on certain systems.  If that is the case, and it does not matter exactly which of many image formats is used, then \code{devEval()} can be used to generate an image file based on the first supported device type.  For instance,
 \begin{rspVerbatim}
-devEval("png|pdf|eps", name="GaussianDensity", aspectRatio=0.6, {
+devEval("png", name="GaussianDensity", aspectRatio=0.6, {
   curve(dnorm, from=-5, to=+5)
 })
 \end{rspVerbatim}
