@@ -706,6 +706,14 @@ devAll <- local({
 
 
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Drop devices based on 'R_R_DEVICES_TYPES_DROP'
+      # This is can be used to emulate 'R CMD check' on other OSes
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      drop <- Sys.getenv("R_R_DEVICES_TYPES_DROP", "")
+      drop <- unlist(strsplit(drop, split = ",", fixed = TRUE))
+      res <- res[setdiff(names(res), drop)]
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       # Order by name
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       o <- order(names(res))
