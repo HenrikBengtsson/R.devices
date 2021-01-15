@@ -805,16 +805,18 @@ devAll <- local({
     names(types) <- types
   }
 
-  # Device type sets
-  sets <- c(
+  # Device type aliases
+  aliases <- c(
     ## Aliases first
     "{ps}"           = "{postscript}",
     "{jpg}"          = "{jpeg}",
     "{win.metafile}" = "{wmf}",
-    ## Actual sets 
+    ## Actual aliases 
     "{bmp}"          = "bmp",
     "{eps}"          = "eps",
     "{emf}"          = "emf",
+    "{CairoWin}"     = "CairoWin",
+    "{CairoX11}"     = "CairoX11",
     "{favicon}"      = "favicon",
     "{jpeg}"         = "jpeg|CairoJPEG",
     "{nulldev}"      = "nulldev",
@@ -823,14 +825,16 @@ devAll <- local({
     "{pictex}"       = "pictex",
     "{png}"          = "png|cairo_png|CairoPNG|png2",
     "{postscript}"   = "postscript|cairo_ps|CairoPS",
+    "{RStudioGD}"    = "RStudioGD",
     "{svg}"          = "svg|CairoSVG",
     "{tiff}"         = "tiff|CairoTIFF",
+    "{windows}"      = "windows",
     "{wmf}"          = "wmf",
     "{x11}"          = "x11|X11|CairoX11",
     "{xfig}"         = "xfig"
   )
-  for (name in names(sets)) {  
-    types <- gsub(name, sets[[name]], types, fixed = TRUE)
+  for (name in names(aliases)) {  
+    types <- gsub(name, aliases[[name]], types, fixed = TRUE)
   }
 
   # Match to known set of device types by regular expression?

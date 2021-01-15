@@ -43,6 +43,7 @@ Rplots.pdf$
 ^[.]devel
 ^[.]test
 ^[.]check
+^[.]last
 ^.*[.]tar[.]gz$
 
 #----------------------------

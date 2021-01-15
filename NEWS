@@ -3,10 +3,16 @@ Package: R.devices
 
 Version: 2.16.1-9000 [2021-01-15]
 
+SIGNIFICANT CHANGES:
+
+ * All toNNN() functions now use the corresponding device type alias '{nnn}'
+   rather than the specific device 'nnn', e.g. toPNG() will attempt to produce
+   a PNG file using device alias "{png}", whereas it previously used "png".
+
 NEW FEATURES:
 
- * Added support for super set device types, which are aliases to alternative
-   devices types, e.g. '{png}' expands to 'png|cairo_png|CairoPNG|png2'.
+ * Added support for device alias types, e.g. '{png}' expands to
+   'png|cairo_png|CairoPNG|png2'.
 
 
 Version: 2.16.1 [2019-10-22]
