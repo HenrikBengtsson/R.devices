@@ -4,10 +4,6 @@ library("R.devices")
 library("R.utils")
 graphics.off()
 
-png <- grDevices::png
-jpeg <- grDevices::jpeg
-tiff <- grDevices::tiff
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Various types of single and multiple device outputs
@@ -16,11 +12,11 @@ message("*** devEval() - single and multiple device outputs ...")
 
 types <- list(
   character(0L),
-  "png",
-  "jpg",
+  "{png}",
+  "{jpg}",
   "nulldev",
-  c("png", "png", "jpeg"),
-  "png,nulldev,pdf"
+  c("{png}", "{png}", "{jpeg}"),
+  "{png},nulldev,pdf"
 )
 
 for (type in types) {
@@ -47,7 +43,7 @@ message("*** devEval() - single and multiple device outputs ... DONE")
 message("*** devEval() - initially and finally ...")
 
 devList0 <- devList()
-devEval(c("png", "jpg"), name="count", {
+devEval(c("{png}", "{jpg}"), name="count", {
   plot(1:10)
   count <- count + 1L
 }, initially = {
@@ -74,14 +70,15 @@ message("*** devEval() - initially and finally ... DONE")
 message("*** devEval() - first successful device ...")
 
 types <- list(
-  "png|jpg|pdf",               # PNG, JPG and then PDF
-  "dummy|png|jpg|pdf",         # "Non-existing", PNG, JPG and then PDF
-  "quartz|x11|windows",        # Any interactive device (depending on OS)
-  c("png|jpg", "x11|windows"), # PNG or JPG and then x11 or windows
-  "eps|postscript|pdf",        # EPS, Postscript or PDF
-  "jpeg2|jpeg",                # JPEG via bitmap() or via jpeg()
-  "png,jpg|x11|windows",       # == c("png", "jpg|x11|windows")
-  "nulldev|jpeg"               # NULL devices, otherwise jpeg
+  "png|jpg|pdf",                 # PNG, JPG, or PDF
+  "dummy|png|jpg|pdf",           # "Non-existing", PNG, JPG, or PDF
+  "quartz|x11|windows",          # Any interactive device (depending on OS)
+  c("{png}|jpg", "x11|windows"), # PNG or JPG and then x11 or windows
+  "eps|postscript|pdf",          # EPS, Postscript or PDF
+  "jpeg2|jpeg",                  # JPEG via bitmap() or via jpeg()
+  "{png},jpg|x11|windows",       # == c("{png}", "jpg|x11|windows")
+  "nulldev|jpeg",                # NULL devices, otherwise jpeg
+  "{png}"                        # Any PNG device
 )
 
 if (!capabilitiesX11()) {
@@ -120,7 +117,7 @@ message("*** devEval() - parsed expressions ...")
 
 expr <- substitute(plot(1:10))
 tryCatch({
-  res <- devEval("png|jpg", name="any", width=480L, height=480L, {
+  res <- devEval("png|jpg|pdf", name="any", width=480L, height=480L, {
     plot(100:1)
   })
   printf("Result: %s (%s)\n\n", sQuote(res), attr(res, "type"))
@@ -162,10 +159,12 @@ message("*** toDefault(<expr>) ... DONE")
 message("*** devEval(<fcn>) ...")
 
 types <- list(
-  png=grDevices::png,
-  jpg=grDevices::jpeg,
-  nulldev=R.devices::nulldev
+  png     = "grDevices::png",
+  jpg     = "grDevices::jpeg",
+  nulldev = "R.devices::nulldev"
 )
+types <- types[names(types) %in% rownames(devOptions())]
+types <- lapply(types, FUN = function(code) eval(parse(text = code)))
 
 for (name in names(types)) {
   cat("Device types: ", paste(sQuote(name), collapse=", "), "\n", sep="")

@@ -1,55 +1,67 @@
 message("*** devOptions() ...")
 
+known <- rownames(R.devices::devOptions())
+
 # Without attaching package
 opts0 <- R.devices::devOptions()
 print(opts0)
 
-opts0eps <- R.devices::devOptions("eps")
-str(opts0eps)
+if ("eps" %in% known) {
+  opts0eps <- R.devices::devOptions("eps")
+  str(opts0eps)
+}
 
-opts <- R.devices::devOptions("png")
-print(opts)
+if ("png" %in% known) {
+  opts <- R.devices::devOptions("png")
+  print(opts)
+}
 
 # With attaching package
 library("R.devices")
 opts1 <- R.devices::devOptions()
 print(opts1)
 
-opts1eps <- R.devices::devOptions("eps")
-str(opts1eps)
-
-stopifnot(identical(opts1eps, opts0eps))
-stopifnot(identical(opts1, opts0))
-
+if ("eps" %in% known) {
+  opts1eps <- R.devices::devOptions("eps")
+  str(opts1eps)
+  stopifnot(identical(opts1eps, opts0eps))
+  stopifnot(identical(opts1, opts0))
+}
 
 # Options for the PNG device
-opts <- devOptions("png")
-print(opts)
+if ("png" %in% known) {
+  opts <- devOptions("png")
+  print(opts)
+}
 
 # Options for the postscript device
-opts <- devOptions("postscript")
-print(opts)
+if ("postscript" %in% known) {
+  opts <- devOptions("postscript")
+  print(opts)
 
-# Same using alias
-opts2 <- devOptions("ps")
-print(opts2)
-stopifnot(identical(opts2, opts))
+  # Same using alias
+  opts2 <- devOptions("ps")
+  print(opts2)
+  stopifnot(identical(opts2, opts))
+}
 
 # Options for all known devices
 opts <- devOptions()
 print(opts)
 
 # Setting a custom option
-devOptions("png", foo=list(a=1, b=pi))
-str(devOptions("png")$foo)
+if ("png" %in% known) {
+  devOptions("png", foo=list(a=1, b=pi))
+  str(devOptions("png")$foo)
 
-# Setting option to NULL, i.e. drop it
-devOptions("png", foo=NULL)
-str(devOptions("png")$foo)
-str(devOptions("png"))
+  # Setting option to NULL, i.e. drop it
+  devOptions("png", foo=NULL)
+  str(devOptions("png")$foo)
+  str(devOptions("png"))
 
-# Get individual device options
-print(getDevOption("png", "width"))
+  # Get individual device options
+  print(getDevOption("png", "width"))
+}
 
 opts1 <- R.devices::devOptions()
 print(opts1)
@@ -88,15 +100,17 @@ message("*** devOptions() for each type ... DONE")
 
 message("*** devOptions(drop=FALSE) ...")
 
-opts <- devOptions("png", drop=TRUE)
-str(opts)
-stopifnot(is.list(opts))
-stopifnot(is.null(dim(opts)))
+if ("png" %in% known) {
+  opts <- devOptions("png", drop=TRUE)
+  str(opts)
+  stopifnot(is.list(opts))
+  stopifnot(is.null(dim(opts)))
 
-opts <- devOptions("png", drop=FALSE)
-str(opts)
-stopifnot(is.list(opts))
-stopifnot(!is.null(dim(opts)))
+  opts <- devOptions("png", drop=FALSE)
+  str(opts)
+  stopifnot(is.list(opts))
+  stopifnot(!is.null(dim(opts)))
+}
 
 message("*** devOptions(drop=FALSE) ... DONE")
 
@@ -109,20 +123,22 @@ opts0 <- devOptions(reset=TRUE)
 print(opts0)
 
 ## Reset one device
-opts <- devOptions("png")
-width <- getDevOption("png", "width")
-devOptions("png", width=2*width)
-stopifnot(getDevOption("png", "width") == 2*width)
-devOptions("png", reset=TRUE)
-stopifnot(getDevOption("png", "width") == width)
+if ("png" %in% known) {
+  opts <- devOptions("png")
+  width <- getDevOption("png", "width")
+  devOptions("png", width=2*width)
+  stopifnot(getDevOption("png", "width") == 2*width)
+  devOptions("png", reset=TRUE)
+  stopifnot(getDevOption("png", "width") == width)
 
-## Reset "*"
-opts <- devOptions("*")
-path <- getDevOption("*", "path")
-devOptions("*", path="foo")
-stopifnot(getDevOption("*", "path") == "foo")
-devOptions("*", reset=TRUE)
-stopifnot(getDevOption("*", "path") == path)
+  ## Reset "*"
+  opts <- devOptions("*")
+  path <- getDevOption("*", "path")
+  devOptions("*", path="foo")
+  stopifnot(getDevOption("*", "path") == "foo")
+  devOptions("*", reset=TRUE)
+  stopifnot(getDevOption("*", "path") == path)
+}
 
 
 message("*** devOptions(reset=TRUE) ... DONE")

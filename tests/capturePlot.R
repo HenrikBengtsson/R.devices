@@ -84,7 +84,7 @@ if (getRversion() >= "3.3.0") {
 
   message("- devEval()")
   ## Redraw to many output formats
-  devEval(c("png", "eps", "pdf"), aspectRatio=2/3, print(g))
+  devEval(c("{png}", "{eps}", "{pdf}"), aspectRatio=2/3, print(g))
 
 } ## if (getRversion() >= "3.3.0")
 
