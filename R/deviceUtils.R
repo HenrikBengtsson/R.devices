@@ -817,10 +817,13 @@ devAll <- local({
         names(typesKK) <- rep(typeKK, times=length(typesKK))
         types[[kk]] <- typesKK
       } else {
+        names(typeKK) <- typeKK
         names(types[[kk]]) <- typeKK
       }
     } # for (kk ...)
-    types <- unlist(types, use.names=TRUE)
+    names <- unlist(lapply(types, FUN = base::names), use.names = FALSE)
+    types <- unlist(types, use.names = FALSE)
+    names(types) <- names
   }
 
   # Common aliases
