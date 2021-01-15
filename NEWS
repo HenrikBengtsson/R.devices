@@ -1,9 +1,12 @@
 Package: R.devices
 ==================
 
-Version: 2.16.1-9000 [2019-10-23]
+Version: 2.16.1-9000 [2021-01-15]
 
- * ...
+NEW FEATURES:
+
+ * Added support for super set device types, which are aliases to alternative
+   devices types, e.g. '{png}' expands to 'png|cairo_png|CairoPNG|png2'.
 
 
 Version: 2.16.1 [2019-10-22]
