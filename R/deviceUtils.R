@@ -808,16 +808,26 @@ devAll <- local({
   # Device type sets
   sets <- c(
     ## Aliases first
-    "{ps}"         = "{postscript}",
-    "{jpg}"        = "{jpeg}",
-    ## Actual sets
-    "{jpeg}"       = "jpeg|CairoJPEG",
-    "{pdf}"        = "pdf|cairo_pdf|CairoPDF",
-    "{png}"        = "png|cairo_png|CairoPNG|png2",
-    "{postscript}" = "postscript|cairo_ps|CairoPS",
-    "{svg}"        = "svg|CairoSVG",
-    "{tiff}"       = "tiff|CairoTIFF",
-    "{x11}"        = "x11|CairoX11"
+    "{ps}"          = "{postscript}",
+    "{jpg}"         = "{jpeg}",
+    "{win.metafile} = "{wmf}",
+    ## Actual sets 
+    "{bmp}"         = "bmp",
+    "{eps}"         = "eps",
+    "{emf}"         = "emf",
+    "{favicon}"     = "favicon",
+    "{jpeg}"        = "jpeg|CairoJPEG",
+    "{nulldev}"     = "nulldev",
+    "{quartz}"      = "quartz",
+    "{pdf}"         = "pdf|cairo_pdf|CairoPDF",
+    "{pictex}"      = "pictex",
+    "{png}"         = "png|cairo_png|CairoPNG|png2",
+    "{postscript}"  = "postscript|cairo_ps|CairoPS",
+    "{svg}"         = "svg|CairoSVG",
+    "{tiff}"        = "tiff|CairoTIFF",
+    "{wmf}"         = "wmf",
+    "{x11}"         = "x11|X11|CairoX11",
+    "{xfig}"        = "xfig"
   )
   for (name in names(sets)) {  
     types <- gsub(name, sets[[name]], types, fixed = TRUE)

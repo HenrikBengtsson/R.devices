@@ -12,7 +12,7 @@ print(g)
 toDefault(aspectRatio=2/3, { print(g) })
 
 ## Redraw to many output formats
-devEval(c("png", "eps", "pdf"), aspectRatio=2/3, print(g))
+devEval(c("{png}", "eps", "{pdf}"), aspectRatio=2/3, print(g))
 
 R.devices::devOptions("*", path=oopts$path)
 } ## if (getRversion() >= "3.3.0")
