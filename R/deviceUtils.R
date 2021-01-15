@@ -794,7 +794,7 @@ devAll <- local({
 } # .devNextAvailable()
 
 
-.devTypeName <- function(types, pattern=FALSE, knownTypes=names(devAll()), ...) {
+.devTypeName <- function(types, pattern=FALSE, knownTypes=names(devAll()), mustWork=TRUE, ...) {
   # Nothing todo?
   if (!is.character(types)) {
     return(types)
@@ -838,6 +838,19 @@ devAll <- local({
     option <- sprintf("R.devices.alias.%s", gsub("[{}]", "", name))
     alias <- getOption(option, alias)
     types <- gsub(name, alias, types, fixed = TRUE)
+  }
+
+  # Select a working device type out of alternatives, e.g. "png|png2"
+  idxs <- grep("|", types, fixed = TRUE)
+  for (idx in idxs) {
+    type <- types[[idx]]
+    alts <- unlist(strsplit(type, split = "|", fixed = TRUE))
+    alts <- alts[alts %in% knownTypes]
+    if (length(alts) == 0L && mustWork) {
+      stop("None of the alternative device types are supported: ", sQuote(type))
+    }
+    if (length(alts) > 1L) alts <- alts[1]
+    types[[idx]] <- alts
   }
 
   # Match to known set of device types by regular expression?

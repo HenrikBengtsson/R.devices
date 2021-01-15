@@ -11,8 +11,12 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
- * Added support for device alias types, e.g. '{png}' expands to
-   'png|cairo_png|CairoPNG|png2'.
+ * Added support for specifying alternative device types, e.g. "png|cairo_png"
+   will use the "png" type if available, otherwise the "cairo_png" type.  If
+   neither are available, an informative error message is produced.
+   
+ * Added support for device alias types, e.g. "{png}" expands to
+   "png|cairo_png|CairoPNG|png2".
 
 
 Version: 2.16.1 [2019-10-22]
