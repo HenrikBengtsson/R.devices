@@ -833,8 +833,11 @@ devAll <- local({
     "{x11}"          = "x11|X11|CairoX11",
     "{xfig}"         = "xfig"
   )
-  for (name in names(aliases)) {  
-    types <- gsub(name, aliases[[name]], types, fixed = TRUE)
+  for (name in names(aliases)) {
+    alias <- aliases[[name]]
+    option <- sprintf("R.devices.alias.%s", gsub("[{}]", "", name))
+    alias <- getOption(option, alias)
+    types <- gsub(name, alias, types, fixed = TRUE)
   }
 
   # Match to known set of device types by regular expression?
