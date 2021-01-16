@@ -8,7 +8,7 @@ jobs:
 
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) [without=${{ matrix.config.without }}]
 
     strategy:
       fail-fast: false
@@ -17,9 +17,9 @@ jobs:
           - {os: windows-latest, r: 'devel'}
           - {os: windows-latest, r: 'release'}
           - {os: macOS-latest,   r: 'release'}
-          - {os: macOS-latest,   r: 'release', types_drop: 'png,jpeg'}
+          - {os: macOS-latest,   r: 'release', without: 'png,jpeg'}
           - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-20.04,   r: 'release', types_drop: 'png,jpeg', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-20.04,   r: 'release', without: 'png,jpeg', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
           - {os: ubuntu-20.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
           - {os: ubuntu-20.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
           - {os: ubuntu-20.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
@@ -29,7 +29,7 @@ jobs:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_R_DEVICES_TYPES_DROP: ${{ matrix.config.types_drop }}
+      R_R_DEVICES_TYPES_DROP: ${{ matrix.config.without }}
 
     steps:
       - uses: actions/checkout@v2
