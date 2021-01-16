@@ -104,7 +104,7 @@ setMethodS3("as.architecture", "recordedplot", function(x, ostype=.Platform$OS.t
   x_arch <- architecture(x)
 
   ## Nothing to do?
-  if (!is.na(arch) && !is.na(x_arch$arch) && arch == x_arch$arch) return(x)
+  if (!is.na(arch) && !is.na(x_arch$arch) && arch == x_arch$arch && ptrsize == x_arch$ptrsize) return(x)
 
   ## SPECIAL: Source and target architectures are known
   ## to be compatible even though their ptrsizes differ

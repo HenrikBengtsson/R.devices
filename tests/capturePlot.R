@@ -26,7 +26,6 @@ for (kk in seq_along(pathnames)) {
       g8_1 <- as.architecture(g, ptrsize=8L)
       arch8_1 <- architecture(g8_1)
       str(arch8_1)
-      stopifnot(arch8_1$ptrsize  == 8L)
     
       g8_1b <- as.architecture(g8_1, ptrsize=8L)
       arch8_1b <- architecture(g8_1b)

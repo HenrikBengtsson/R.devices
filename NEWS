@@ -18,6 +18,10 @@ NEW FEATURES:
  * Added support for device alias types, e.g. "{png}" expands to
    "png|cairo_png|CairoPNG|png2".
 
+BUG FIXES:
+
+ * as.architecture() did not always return the expected 'arch'.
+ 
 
 Version: 2.16.1 [2019-10-22]
 
