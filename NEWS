@@ -155,7 +155,7 @@ BUG FIXES:
  * devNew("quartz", which = "foo") could set the label of device #1(!) when
    quartz devices was not supported.  This was because quartz() only gives a
    warning (and not an error) when it is not supported, so the internal code
-   thought the devices was succesfully opened.
+   thought the devices was successfully opened.
    
  * Renaming incomplete files gave an error if there were already files renamed
    for similar reasons.  Added package test.
@@ -196,7 +196,7 @@ NEW FEATURES:
  
  * Now arguments 'sep', 'path', 'field' and 'force' for devEval() and the
    various toNnn() functions now utilizes getDevOption(), which is still
-   backward compatibilty with the old style R options.
+   backward compatibility with the old style R options.
  
  * Now devIsInteractive() without arguments returns all known interactive
    devices.

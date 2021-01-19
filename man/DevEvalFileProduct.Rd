@@ -33,7 +33,7 @@ extends \link[R.devices]{DevEvalProduct}\cr
 
 
 
- A DevEvalFileProduct is a \code{\link{DevEvalProduct}} refering to a image
+ A DevEvalFileProduct is a \code{\link{DevEvalProduct}} referring to a image
  file created by \code{\link{devEval}}().
 }
 

@@ -80,7 +80,7 @@
  \section{Windows Metafile Format}{
    Both \code{toEMF()} and \code{toWMF()} use the exact same graphics
    device (\code{win.metafile()}) and settings.  They only differ by
-   filename exension.  The \code{win.metafile()} device function exists
+   filename extension.  The \code{win.metafile()} device function exists
    on Windows only; see the \pkg{grDevices} package for more details.
  }
 

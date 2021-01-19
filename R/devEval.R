@@ -51,7 +51,7 @@
 #
 # \section{Generated image file}{
 #   If created, the generated image file is saved in the directory
-#   specfied by argument \code{path} with a filename consisting of
+#   specified by argument \code{path} with a filename consisting of
 #   the \code{name} followed by optional comma-separated \code{tags}
 #   and a filename extension given by argument \code{ext}.
 #

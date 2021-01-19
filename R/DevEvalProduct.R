@@ -209,7 +209,7 @@ setMethodS3("getType", "DevEvalProduct", function(this, ...) {
 # \description{
 #  @classhierarchy
 #
-#  A DevEvalFileProduct is a @see "DevEvalProduct" refering to a image
+#  A DevEvalFileProduct is a @see "DevEvalProduct" referring to a image
 #  file created by @see "devEval".
 # }
 #
