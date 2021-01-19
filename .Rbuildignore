@@ -3,6 +3,7 @@
 #----------------------------
 ^.svn
 ^.git
+^.github
 ^.make
 INSTALL[.]md
 OVERVIEW[.]md
@@ -42,6 +43,7 @@ Rplots.pdf$
 ^[.]devel
 ^[.]test
 ^[.]check
+^[.]last
 ^.*[.]tar[.]gz$
 
 #----------------------------

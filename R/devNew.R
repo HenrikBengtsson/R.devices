@@ -33,7 +33,7 @@
 #
 # \section{Width and heights}{
 #   The default width and height of the generated image is specific to
-#   the type of device used.  There is not straightforward programatical
+#   the type of device used.  There is not straightforward programmatic
 #   way to infer these defaults; here we use @see "devOptions", which
 #   in most cases returns the correct defaults.
 # }

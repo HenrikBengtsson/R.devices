@@ -1,6 +1,29 @@
 Package: R.devices
 ==================
 
+Version: 2.17.0 [2021-01-19]
+
+SIGNIFICANT CHANGES:
+
+ * All toNNN() functions now use the corresponding device type alias '{nnn}'
+   rather than the specific device 'nnn', e.g. toPNG() will attempt to produce
+   a PNG file using the set of device types that alias "{png}" specifies,
+   whereas in the past toPNG() used only "png".
+
+NEW FEATURES:
+
+ * Added support for specifying alternative device types, e.g. "png|cairo_png"
+   will use the "png" type if available, otherwise the "cairo_png" type.  If
+   neither are available, an informative error message is produced.
+   
+ * Added support for device alias types, e.g. "{png}" expands to
+   "png|cairo_png|CairoPNG|png2".
+
+BUG FIXES:
+
+ * as.architecture() did not always return the expected 'arch'.
+ 
+
 Version: 2.16.1 [2019-10-22]
 
 CRAN POLICES:
@@ -133,7 +156,7 @@ BUG FIXES:
  * devNew("quartz", which = "foo") could set the label of device #1(!) when
    quartz devices was not supported.  This was because quartz() only gives a
    warning (and not an error) when it is not supported, so the internal code
-   thought the devices was succesfully opened.
+   thought the devices was successfully opened.
    
  * Renaming incomplete files gave an error if there were already files renamed
    for similar reasons.  Added package test.
@@ -174,7 +197,7 @@ NEW FEATURES:
  
  * Now arguments 'sep', 'path', 'field' and 'force' for devEval() and the
    various toNnn() functions now utilizes getDevOption(), which is still
-   backward compatibilty with the old style R options.
+   backward compatibility with the old style R options.
  
  * Now devIsInteractive() without arguments returns all known interactive
    devices.

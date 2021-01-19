@@ -55,7 +55,7 @@ capturePlot(expr, envir=parent.frame(), type=nulldev, ...)
  The \code{\link{as.architecture}()} function of this package tries
  to coerce between different architectures, such that one can replay
  across architectures using \code{replayPlot(as.architectures(g))}.
- For convenience, the recored plot returned by \code{capturePlot()}
+ For convenience, the recorded plot returned by \code{capturePlot()}
  is automatically coerced when \code{print()}:ed.
 }
 
@@ -73,8 +73,9 @@ print(g)
 ## Display with a 2/3 height-to-width aspect ratio
 toDefault(aspectRatio=2/3, { print(g) })
 
-## Redraw to many output formats
-devEval(c("png", "eps", "pdf"), aspectRatio=2/3, print(g))
+## Redraw to many output formats using whatever PNG, EPS, and PDF
+## device outputs available
+devEval(c("{png}", "{eps}", "{pdf}"), aspectRatio=2/3, print(g))
 
 R.devices::devOptions("*", path=oopts$path)
 } ## if (getRversion() >= "3.3.0")

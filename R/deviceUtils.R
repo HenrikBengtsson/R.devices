@@ -706,6 +706,14 @@ devAll <- local({
 
 
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      # Drop devices based on 'R_R_DEVICES_TYPES_DROP'
+      # This is can be used to emulate 'R CMD check' on other OSes
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      drop <- Sys.getenv("R_R_DEVICES_TYPES_DROP", "")
+      drop <- unlist(strsplit(drop, split = ",", fixed = TRUE))
+      res <- res[setdiff(names(res), drop)]
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       # Order by name
       # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       o <- order(names(res))
@@ -786,7 +794,7 @@ devAll <- local({
 } # .devNextAvailable()
 
 
-.devTypeName <- function(types, pattern=FALSE, knownTypes=names(devAll()), ...) {
+.devTypeName <- function(types, pattern=FALSE, knownTypes=names(devAll()), mustWork=TRUE, ...) {
   # Nothing todo?
   if (!is.character(types)) {
     return(types)
@@ -795,6 +803,54 @@ devAll <- local({
   names <- names(types)
   if (is.null(names)) {
     names(types) <- types
+  }
+
+  # Device type aliases
+  aliases <- c(
+    ## Aliases first
+    "{ps}"           = "{postscript}",
+    "{jpg}"          = "{jpeg}",
+    "{win.metafile}" = "{wmf}",
+    ## Actual aliases 
+    "{bmp}"          = "bmp",
+    "{eps}"          = "eps",
+    "{emf}"          = "emf",
+    "{CairoWin}"     = "CairoWin",
+    "{CairoX11}"     = "CairoX11",
+    "{favicon}"      = "favicon",
+    "{jpeg}"         = "jpeg|CairoJPEG",
+    "{nulldev}"      = "nulldev",
+    "{quartz}"       = "quartz",
+    "{pdf}"          = "pdf|cairo_pdf|CairoPDF",
+    "{pictex}"       = "pictex",
+    "{png}"          = "png|cairo_png|CairoPNG|png2",
+    "{postscript}"   = "postscript|cairo_ps|CairoPS",
+    "{RStudioGD}"    = "RStudioGD",
+    "{svg}"          = "svg|CairoSVG",
+    "{tiff}"         = "tiff|CairoTIFF",
+    "{windows}"      = "windows",
+    "{wmf}"          = "wmf",
+    "{x11}"          = "x11|X11|CairoX11",
+    "{xfig}"         = "xfig"
+  )
+  for (name in names(aliases)) {
+    alias <- aliases[[name]]
+    option <- sprintf("R.devices.alias.%s", gsub("[{}]", "", name))
+    alias <- getOption(option, alias)
+    types <- gsub(name, alias, types, fixed = TRUE)
+  }
+
+  # Select a working device type out of alternatives, e.g. "png|png2"
+  idxs <- grep("|", types, fixed = TRUE)
+  for (idx in idxs) {
+    type <- types[[idx]]
+    alts <- unlist(strsplit(type, split = "|", fixed = TRUE))
+    alts <- alts[alts %in% knownTypes]
+    if (length(alts) == 0L && mustWork) {
+      stop("None of the alternative device types are supported: ", sQuote(type))
+    }
+    if (length(alts) > 1L) alts <- alts[1]
+    types[[idx]] <- alts
   }
 
   # Match to known set of device types by regular expression?
@@ -809,10 +865,13 @@ devAll <- local({
         names(typesKK) <- rep(typeKK, times=length(typesKK))
         types[[kk]] <- typesKK
       } else {
+        names(typeKK) <- typeKK
         names(types[[kk]]) <- typeKK
       }
     } # for (kk ...)
-    types <- unlist(types, use.names=TRUE)
+    names <- unlist(lapply(types, FUN = base::names), use.names = FALSE)
+    types <- unlist(types, use.names = FALSE)
+    names(types) <- names
   }
 
   # Common aliases

@@ -19,31 +19,37 @@ for (kk in seq_along(pathnames)) {
   arch <- architecture(g)
   str(arch)
 
-  ## Current as.architecture() cannot coerce endianess
+  ## Currently, as.architecture() cannot coerce endianess
   if (arch$endian == .Platform$endian) {
-    g8_1 <- as.architecture(g, ptrsize=8L)
-    arch8_1 <- architecture(g8_1)
-    str(arch8_1)
-  
-    g8_1b <- as.architecture(g8_1, ptrsize=8L)
-    stopifnot(identical(g8_1b, g8_1))
-  
-    g4_1 <- as.architecture(g8_1, ptrsize=4L)
-    arch4_1 <- architecture(g4_1)
-    str(arch4_1)
-  
-    g8_2 <- as.architecture(g4_1, ptrsize=8L)
-    arch8_2 <- architecture(g8_2)
-    str(arch8_2)
-    stopifnot(identical(g8_2, g8_1))
-  
-    g_2 <- as.architecture(g)
-    arch_2 <- architecture(g_2)
-    str(arch_2)
-  
-    if (getRversion() >= "3.3.0") {
-      try(replayPlot(g_2))
-    }
+    ## Currently, as.architecture() cannot change pointer size
+#   if (arch$ptrsize == .Machine$sizeof.pointer) {
+      g8_1 <- as.architecture(g, ptrsize=8L)
+      arch8_1 <- architecture(g8_1)
+      str(arch8_1)
+    
+      g8_1b <- as.architecture(g8_1, ptrsize=8L)
+      arch8_1b <- architecture(g8_1b)
+      str(arch8_1b)
+      stopifnot(identical(arch8_1b, arch8_1))
+      stopifnot(identical(g8_1b, g8_1))
+    
+      g4_1 <- as.architecture(g8_1, ptrsize=4L)
+      arch4_1 <- architecture(g4_1)
+      str(arch4_1)
+    
+      g8_2 <- as.architecture(g4_1, ptrsize=8L)
+      arch8_2 <- architecture(g8_2)
+      str(arch8_2)
+      stopifnot(identical(g8_2, g8_1))
+    
+      g_2 <- as.architecture(g)
+      arch_2 <- architecture(g_2)
+      str(arch_2)
+    
+      if (getRversion() >= "3.3.0") {
+        try(replayPlot(g_2))
+      }
+#   } ## if (arch$ptrsize == .Machine$sizeof.pointer)
   } ## if (arch$endian == .Platform$endian)
 } ## for (kk ...)
 
@@ -84,7 +90,7 @@ if (getRversion() >= "3.3.0") {
 
   message("- devEval()")
   ## Redraw to many output formats
-  devEval(c("png", "eps", "pdf"), aspectRatio=2/3, print(g))
+  devEval(c("{png}", "{eps}", "{pdf}"), aspectRatio=2/3, print(g))
 
 } ## if (getRversion() >= "3.3.0")
 

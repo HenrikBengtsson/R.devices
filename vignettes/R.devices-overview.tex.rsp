@@ -17,8 +17,13 @@ R.rsp <- R.oo::Package("R.rsp")
 withCapture <- R.utils::withCapture
 hpaste <- R.utils::hpaste
 
-devOptions("png", width=840)
-devOptions("png", field="fullname") # Better for LaTeX
+for (type in c("png", "cairo_png", "CairoPNG", "png2")) {
+  if (type %in% rownames(devOptions())) {
+    devOptions(type, width=840)
+    devOptions(type, field="fullname") # Better for LaTeX
+  }
+}
+
 options(width=85)
 options(digits=3)
 options(str=strOptions(strict.width="cut"))
@@ -136,14 +141,27 @@ devEval("png", name="GaussianDensity", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-creates a PNG file named \file{GaussianDensity.png} that is 480 pixels wide and 288 pixels tall (Section~\ref{secOptions}).
+creates a PNG file named \file{GaussianDensity.png} using \code{grDevices::png()}.  The created PNG has an height-to-width aspect ratio of 6:10 (Section~\ref{secOptions}).
+Since the \code{png()} function might not be supported on all platforms, you can specify a set of \emph{alternatives} as:
+\begin{rspVerbatim}
+devEval("png|cairo_png|CairoPNG|png2", name="GaussianDensity", aspectRatio=0.6, \{
+  curve(dnorm, from=-5, to=+5)
+\})
+\end{rspVerbatim}
+which will the attempt each of them in order.  A shortcut for the above is to use the \emph{alias} specification:
+\begin{rspVerbatim}
+devEval("\{png\}", name="GaussianDensity", aspectRatio=0.6, \{
+  curve(dnorm, from=-5, to=+5)
+\})
+\end{rspVerbatim}
+
 By specifying the \code{scale} argument, it is possible to create an image file with a smaller or a larger dimension relative to that of the default, e.g.
 \begin{rspVerbatim}
 devEval("png", name="GaussianDensity,large", aspectRatio=0.6, scale=2, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-creates a PNG file named \file{GaussianDensity,large.png} that is 960 pixels wide and 576 pixels tall.
+creates a PNG file named \file{GaussianDensity,large.png} that is twice as tall and twice as wide as the previous PNG image.
 Note also how in none of the above examples there is a need for closing the device via \code{dev.off()}, which is sometimes forgotten, particularly by newcomers to R.  The graphical device opened is also guaranteed to be closed by \code{devEval()} regardless of errors or interrupts (Section~\ref{secRobust}).
 
 
@@ -151,17 +169,17 @@ Note also how in none of the above examples there is a need for closing the devi
 \subsection{Creating multiple image files of different formats in one call}
 The \code{devEval()} function can also be used to generate image files or different formats in one call.  For instance,
 \begin{rspVerbatim}
-devEval(c("pdf", "png", "svg"), name="GaussianDensity", aspectRatio=0.6, {
+devEval(c("pdf", "svg"), name="GaussianDensity", aspectRatio=0.6, {
   curve(dnorm, from=-5, to=+5)
 })
 \end{rspVerbatim}
-creates image files \file{GaussianDensity.pdf}, \file{GaussianDensity.png}, and \file{GaussianDensity.svg}.  To adjust the default image dimensions for each format, see Section~\ref{secOptions}.
+creates image files \file{GaussianDensity.pdf}, and \file{GaussianDensity.svg}.  To adjust the default image dimensions for each format, see Section~\ref{secOptions}.
 
 
 \subsection{Creating one image file trying different device types}
 Some image formats, or more precisely some device types, are only supported on certain systems.  If that is the case, and it does not matter exactly which of many image formats is used, then \code{devEval()} can be used to generate an image file based on the first supported device type.  For instance,
 \begin{rspVerbatim}
-devEval("png|pdf|eps", name="GaussianDensity", aspectRatio=0.6, {
+devEval("png", name="GaussianDensity", aspectRatio=0.6, {
   curve(dnorm, from=-5, to=+5)
 })
 \end{rspVerbatim}
@@ -169,9 +187,9 @@ will first try to create a PNG file and if that does not work it will try to cre
 
 
 \subsection{toEPS(), toPDF(), toPNG() etc.}
-For conveniency, there exists a set of \code{toNNN()} functions that basically are wrappers for \code{devEval()}.  For instance, instead of calling \code{devEval("png", ...)} one can use \code{toPNG(...)} as
+For conveniency, there exists a set of \code{toNNN()} functions that basically are wrappers for \code{devEval()}.  For instance, instead of calling \code{devEval("pdf", ...)} one can use \code{toPDF(...)} as
 \begin{rspVerbatim}
-toPNG("GaussianDensity,large", aspectRatio=0.6, scale=2, \{
+toPDF("GaussianDensity,large", aspectRatio=0.6, scale=2, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
@@ -218,7 +236,7 @@ Note that whenever a figure is skipped this way, it also means that none of the 
 \subsection{No more incomplete image files}
 \label{secRobust}
 The \code{devEval()/toNNN()} functions create image files atomically.
-When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{png(...); \{...\}; dev.off()}), there is a risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
+When creating image files by opening a device, calling a set of plot functions and then closing the device (\code{pdf(...); \{...\}; dev.off()}), there is a risk of creating an incomplete file whenever an error or an interrupt occurs while plotting.
 By contrast, \code{devEval()/toNNN()} is fault tolerant and guarantees that the image file created is complete; if an error or an interrupt occurs, then the default is to remove the incomplete image.  For instance, the following will not result in an image file:
 \begin{rspVerbatim}
 toPDF("GaussianDensity", \{
@@ -257,25 +275,25 @@ For more details on RSP, see the vignettes of the \pkg{R.rsp} package (available
 \label{secOptions}
 \subsection{devOptions()}
 The \code{devOptions()} function provides a unified interface to getting and settings common options for the various graphical devices available in R.
-When using one of the \code{toNNN()} functions, \code{devEval()} or \code{devNew()}, the device options used are given by \code{devOptions()}.  For example, to see the current settings used by PNG device, do:
+When using one of the \code{toNNN()} functions, \code{devEval()} or \code{devNew()}, the device options used are given by \code{devOptions()}.  For example, to see the current settings used by PDF device, do:
 \begin{rspVerbatim}
-<% devOptions("png", reset=TRUE) %>
+<% devOptions("pdf", reset=TRUE) %>
 <%=withCapture({
-devOptions("png")
+str(devOptions("pdf"))
 })%>
 \end{rspVerbatim}
 
 To change one or several options, do:
 \begin{rspVerbatim}
 <%=withCapture({
-devOptions("png", width=1024, bg="lightblue")
+devOptions("pdf", width=5, bg="lightblue")
 })%>
 \end{rspVerbatim}
 
 To reset the options back to the built-in defaults, do:
 \begin{rspVerbatim}
 <%=withCapture({
-devOptions("png", reset=TRUE)
+devOptions("pdf", reset=TRUE)
 })%>
 \end{rspVerbatim}
 

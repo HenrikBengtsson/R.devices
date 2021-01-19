@@ -4,16 +4,15 @@ library("R.devices")
 hpaste <- R.utils::hpaste
 graphics.off()
 
-path <- getDevOption("png", "path")
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Error handling: Incomplete image file is removed
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-path <- getDevOption("png", "path")
+path <- getDevOption("pdf", "path")
 files0 <- dir(path=path)
 
 tryCatch({
-  res <- devEval(type="png", name="error", {
+  res <- devEval(type="pdf", name="error", {
     plot(1:10)
     v <- log("0")
     abline(v=v)
@@ -34,13 +33,13 @@ if (length(new) > 0L) {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Error handling: Incomplete image file is renamed
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-path <- getDevOption("png", "path")
+path <- getDevOption("pdf", "path")
 
 ## Try many times to test unique renaming of files.
 for (kk in 1:5) {
   files0 <- dir(path=path)
   tryCatch({
-    res <- devEval(type="png", name="error", {
+    res <- devEval(type="pdf", name="error", {
       plot(1:10)
       v <- log("0")
       abline(v=v)

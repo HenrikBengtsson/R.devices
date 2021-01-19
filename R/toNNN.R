@@ -71,7 +71,7 @@
 # \section{Windows Metafile Format}{
 #   Both \code{toEMF()} and \code{toWMF()} use the exact same graphics
 #   device (\code{win.metafile()}) and settings.  They only differ by
-#   filename exension.  The \code{win.metafile()} device function exists
+#   filename extension.  The \code{win.metafile()} device function exists
 #   on Windows only; see the \pkg{grDevices} package for more details.
 # }
 #
@@ -87,41 +87,41 @@
 # @keyword utilities
 #*/###########################################################################
 toBMP <- function(name, ...) {
-  devEval(type="bmp", name=name, ...);
+  devEval(type="{bmp}", name=name, ...);
 }
 
 toEMF <- function(name, ..., ext="emf") {
-  devEval(type="win.metafile", name=name, ..., ext=ext);
+  devEval(type="{win.metafile}", name=name, ..., ext=ext);
 }
 
 toWMF <- function(name, ..., ext="wmf") {
-  devEval(type="win.metafile", name=name, ..., ext=ext);
+  devEval(type="{win.metafile}", name=name, ..., ext=ext);
 }
 
 toEPS <- function(name, ...) {
-  devEval(type="eps", name=name, ...);
+  devEval(type="{eps}", name=name, ...);
 }
 
 toPDF <- function(name, ...) {
-  devEval(type="pdf", name=name, ...);
+  devEval(type="{pdf}", name=name, ...);
 }
 
 toPNG <- function(name, ...) {
-  devEval(type="png", name=name, ...);
+  devEval(type="{png}", name=name, ...);
 }
 
 toSVG <- function(name, ...) {
-  devEval(type="svg", name=name, ...);
+  devEval(type="{svg}", name=name, ...);
 }
 
 toTIFF <- function(name, ...) {
-  devEval(type="tiff", name=name, ...);
+  devEval(type="{tiff}", name=name, ...);
 }
 
 toFavicon <- function(..., name="favicon", ext="png", field=getDevOption("favicon", "field", default="htmlscript")) {
   # Output as "<script>...</script>"?
   if (identical(field, "htmlscript")) {
-    uri <- devEval(type="favicon", name=name, ext=ext, field="dataURI", ...);
+    uri <- devEval(type="{favicon}", name=name, ext=ext, field="dataURI", ...);
     script <- c(
       "<script>",
       " var link = document.createElement('link');",
@@ -138,7 +138,7 @@ toFavicon <- function(..., name="favicon", ext="png", field=getDevOption("favico
 } # toFavicon()
 
 toNullDev <- function(name, ...) {
-  devEval(type = "nulldev", name = name, ...)
+  devEval(type = "{nulldev}", name = name, ...)
 }
 
 asDataURI <- function(..., mime=NULL) {
@@ -155,23 +155,23 @@ toDefault <- function(name, ...) {
 }
 
 toQuartz <- function(name, ...) {
-  devEval(type="quartz", name=name, ...);
+  devEval(type="{quartz}", name=name, ...);
 }
 
 toWindows <- function(name, ...) {
-  devEval(type="windows", name=name, ...);
+  devEval(type="{windows}", name=name, ...);
 }
 
 toX11 <- function(name, ...) {
-  devEval(type="x11", name=name, ...);
+  devEval(type="{x11}", name=name, ...);
 }
 
 toCairoWin <- function(name, ...) {
-  devEval(type="CairoWin", name=name, ...);
+  devEval(type="{CairoWin}", name=name, ...);
 }
 
 toCairoX11 <- function(name, ...) {
-  devEval(type="CairoX11", name=name, ...);
+  devEval(type="{CairoX11}", name=name, ...);
 }
 
 toRStudioGD <- function(name, ..., .allowUnknownArgs = TRUE) {
@@ -188,7 +188,7 @@ toRStudioGD <- function(name, ..., .allowUnknownArgs = TRUE) {
   ## (a) RStudioGD is not opened
   idx <- which("RStudioGD" == names(dev.list())) + 1L
   if (length(idx) == 0) {
-    return(devEval(type = "RStudioGD", name = name, ...,
+    return(devEval(type = "{RStudioGD}", name = name, ...,
                    .allowUnknownArgs = .allowUnknownArgs))
   }
 
@@ -220,5 +220,5 @@ toRStudioGD <- function(name, ..., .allowUnknownArgs = TRUE) {
 }
 
 ## toJavaGD <- function(name, ...) {
-##   devEval(type="JavaGD", name=name, ...);
+##   devEval(type="{JavaGD}", name=name, ...);
 ## }
