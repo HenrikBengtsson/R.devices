@@ -1,44 +1,27 @@
-# CRAN submission R.devices 2.16.1
+# CRAN submission R.devices 2.17.0
 
-on 2019-10-22
+on 2021-01-19
 
-I've verified that this submission causes no issues for any of the 10 reverse package dependencies available on CRAN.
+This submission addresses the problem where some systems might not have working bmp(), jpeg(), png(), svg(), or tiff() device functions.  This package will now pass 'R CMD check' on also such systems.
 
-Thanks in advance
+I've verified this submission have no negative impact on any of the 10 reverse package dependencies available on CRAN and Bioconductor.
+
+Thank you
 
 
 ## Notes not sent to CRAN
 
-### R CMD check --as-cran validation
+### R CMD check validation
 
 The package has been verified using `R CMD check --as-cran` on:
 
-* Platform x86_64-apple-darwin15.6.0 (64-bit) [Travis CI]:
-  - R version 3.5.3 (2019-03-11)
-  - R version 3.6.1 (2019-07-05)
+| R version | GitHub Actions | Travis CI | AppVeyor CI | Rhub | Win-builder |
+| --------- | -------------- | --------- | ----------- | ---- | ----------- |
+| 3.3.x     | L              |           |             |      |             |
+| 3.4.x     | L              |           |             |      |             |
+| 3.5.x     | L              |           |             | L    |             |
+| 3.6.x     | L              | L M       |             | L    |             |
+| 4.0.x     | L M W          | L M       | W           |   S  | W           |
+| devel     |       W        | L         | W (32 & 64) | L    | W           |
 
-* Platform x86_64-unknown-linux-gnu (64-bit) [Travis CI]:
-  - R version 3.5.3 (2017-01-27) [sic!]
-  - R version 3.6.1 (2017-01-27) [sic!]
-  - R Under development (unstable) (2019-10-22 r77325)
-
-* Platform x86_64-pc-linux-gnu (64-bit) [r-hub]:
-  - R version 3.6.1 (2019-07-05)
-  - R Under development (unstable) (2019-10-20 r77320)
-
-* Platform x86_64-pc-linux-gnu (64-bit):
-  - R version 2.14.0 (2011-10-31)
-  - R version 3.0.0 (2013-04-03)
-  - R version 3.3.0 (2016-05-03)
-  - R version 3.5.0 (2018-04-23)
-  - R version 3.6.1 Patched (2019-09-12 r77183)
-
-* Platform x86_64-w64-mingw32 (64-bit) [r-hub]:
-  - R Under development (unstable) (2019-10-19 r77318)
-
-* Platform x86_64-w64-mingw32/x64 (64-bit) [AppVeyor CI]:
-  - R version 3.6.1 (2019-07-05)
-
-* Platform x86_64-w64-mingw32/x64 (64-bit) [win-builder]:
-  - R version 3.6.1 (2019-07-05)
-  - R Under development (unstable) (2019-10-22 r77324)
+*Legend: OS: L = Linux, S = Solaris, M = macOS, W = Windows*
