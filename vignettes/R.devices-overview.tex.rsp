@@ -148,9 +148,9 @@ devEval("png|cairo_png|CairoPNG|png2", name="GaussianDensity", aspectRatio=0.6, 
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
-which will the attempt each of them in order.  A shortcut for the above is to use the \emph{set} specification:
+which will the attempt each of them in order.  A shortcut for the above is to use the \emph{alias} specification:
 \begin{rspVerbatim}
-devEval("{png}", name="GaussianDensity", aspectRatio=0.6, \{
+devEval("\{png\}", name="GaussianDensity", aspectRatio=0.6, \{
   curve(dnorm, from=-5, to=+5)
 \})
 \end{rspVerbatim}
