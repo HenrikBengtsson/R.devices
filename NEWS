@@ -1,9 +1,12 @@
 Package: R.devices
 ==================
 
-Version: 2.17.0-9000 [2021-01-19]
+Version: 2.17.0-9000 [2021-10-05]
 
- * ...
+CLEANUP:
+
+ * Package no longer import R.utils::inherits(), which is deprecated and
+   will eventually be removed.
  
 
 Version: 2.17.0 [2021-01-19]
