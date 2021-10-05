@@ -23,7 +23,6 @@ importFrom("R.utils", "setOption")
 importFrom("R.utils", "getAbsolutePath")
 importFrom("R.utils", "getRelativePath")
 importFrom("R.utils", "hpaste")
-importFrom("R.utils", "inherits") ## Multi-sources: R.utils, base
 importFrom("R.utils", "isFile")
 importFrom("R.utils", "isPackageInstalled")
 importFrom("R.utils", "isPackageLoaded")
