@@ -91,6 +91,7 @@ jobs:
           options(width = 100)
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
+          capabilities()
         shell: Rscript {0}
 
       - name: Check
