@@ -81,7 +81,7 @@ jobs:
 
       - name: Install R package system dependencies (macOS)
         if: runner.os == 'macOS'
-         run: |
+        run: |
           brew install cairo
           brew install xquartz
 
