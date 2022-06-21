@@ -6,7 +6,7 @@
 * GitHub: https://github.com/Mu-Sigma/analysis-pipelines
 * Source code: https://github.com/cran/analysisPipelines
 * Date/Publication: 2020-06-12 08:00:02 UTC
-* Number of recursive dependencies: 138
+* Number of recursive dependencies: 125
 
 Run `revdep_details(, "analysisPipelines")` for more info
 
@@ -20,6 +20,11 @@ Run `revdep_details(, "analysisPipelines")` for more info
       'SparkR', 'reticulate'
     ```
 
+*   checking LazyData ... NOTE
+    ```
+      'LazyData' is specified without a 'data' directory
+    ```
+
 # aroma.core
 
 <details>
@@ -28,7 +33,7 @@ Run `revdep_details(, "analysisPipelines")` for more info
 * GitHub: https://github.com/HenrikBengtsson/aroma.core
 * Source code: https://github.com/cran/aroma.core
 * Date/Publication: 2021-01-05 05:10:12 UTC
-* Number of recursive dependencies: 47
+* Number of recursive dependencies: 48
 
 Run `revdep_details(, "aroma.core")` for more info
 
@@ -42,6 +47,27 @@ Run `revdep_details(, "aroma.core")` for more info
       'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
 
+# eoffice
+
+<details>
+
+* Version: 0.2.1
+* GitHub: NA
+* Source code: https://github.com/cran/eoffice
+* Date/Publication: 2020-11-18 21:40:02 UTC
+* Number of recursive dependencies: 89
+
+Run `revdep_details(, "eoffice")` for more info
+
+</details>
+
+## In both
+
+*   checking LazyData ... NOTE
+    ```
+      'LazyData' is specified without a 'data' directory
+    ```
+
 # inpdfr
 
 <details>
@@ -50,7 +76,7 @@ Run `revdep_details(, "aroma.core")` for more info
 * GitHub: https://github.com/frareb/inpdfr
 * Source code: https://github.com/cran/inpdfr
 * Date/Publication: 2020-01-16 12:00:02 UTC
-* Number of recursive dependencies: 138
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "inpdfr")` for more info
 
@@ -64,26 +90,29 @@ Run `revdep_details(, "inpdfr")` for more info
       All declared Imports should be used.
     ```
 
-# matrixStats
+# PointedSDMs
 
 <details>
 
-* Version: 0.57.0
-* GitHub: https://github.com/HenrikBengtsson/matrixStats
-* Source code: https://github.com/cran/matrixStats
-* Date/Publication: 2020-09-25 22:00:02 UTC
-* Number of recursive dependencies: 65
+* Version: 1.0.6
+* GitHub: https://github.com/PhilipMostert/PointedSDMs
+* Source code: https://github.com/cran/PointedSDMs
+* Date/Publication: 2022-06-15 08:20:12 UTC
+* Number of recursive dependencies: 131
 
-Run `revdep_details(, "matrixStats")` for more info
+Run `revdep_details(, "PointedSDMs")` for more info
 
 </details>
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... NOTE
     ```
-      installed size is  9.4Mb
-      sub-directories of 1Mb or more:
-        libs   8.9Mb
+    Package suggested but not available for checking: ‘INLA’
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘INLA’
     ```
 
