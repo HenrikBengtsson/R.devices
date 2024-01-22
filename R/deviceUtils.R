@@ -913,7 +913,7 @@ devAll <- local({
 } # .devTypeExt()
 
 
-.devTypeNameFromFunction <- function(fcn, knownTypes=R.devices:::devAll(), ...) {
+.devTypeNameFromFunction <- function(fcn, knownTypes = devAll(), ...) {
   stop_if_not(length(fcn) == 1, is.function(fcn))
   knownFcns <- lapply(knownTypes, FUN = function(x) {
     eval(parse(text = x[1]), enclos = baseenv())
