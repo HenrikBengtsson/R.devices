@@ -25,7 +25,7 @@ favicon(filename="favicon.png", width=32L, height=width, bg="transparent",
 }
 
 \arguments{
-  \item{file}{Default file name (pattern).}
+  \item{filename}{Default file name (pattern).}
   \item{width, height}{The width and height of the figure.}
   \item{par}{A named \code{\link[base]{list}} of graphical parameters to use.}
   \item{...}{Other arguments accepted by \code{png()}.}

@@ -13,7 +13,7 @@
 # @synopsis
 #
 # \arguments{
-#   \item{file}{Default file name (pattern).}
+#   \item{filename}{Default file name (pattern).}
 #   \item{width, height}{The width and height of the figure.}
 #   \item{par}{A named @list of graphical parameters to use.}
 #   \item{...}{Other arguments accepted by \code{png()}.}
