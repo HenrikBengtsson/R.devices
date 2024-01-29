@@ -3,7 +3,10 @@
 ## Documentation
 
  * Fix minor help-page mistake.
- 
+
+ * LaTeX vignettes failed with `Undefined control
+   sequence. \pdfsuppressptexinfo` with old LaTeX versions.
+
 
 # Version 2.17.1 [2022-06-21]
 

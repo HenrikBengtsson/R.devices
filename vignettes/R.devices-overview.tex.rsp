@@ -83,7 +83,11 @@ options(str=strOptions(strict.width="cut"))
 \author{<%@meta name="author"%>}
 \date{<%=format(as.Date(R.devices$date), format="%B %d, %Y")%>}
 
-\pdfsuppressptexinfo=-1
+% Drop PTEX metadata (for reproducbility)
+\ifdefined\pdfsuppressptexinfo
+  \pdfsuppressptexinfo=-1
+\fi
+
  
 \begin{document}
 
