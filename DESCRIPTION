@@ -1,5 +1,5 @@
 Package: R.devices
-Version: 2.17.1-9003
+Version: 2.17.2
 Depends:
     R (>= 2.14.0)
 Imports:

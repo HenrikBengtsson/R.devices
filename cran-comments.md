@@ -13,14 +13,13 @@ Thanks in advance
 
 The package has been verified using `R CMD check --as-cran` on:
 
-| R version     | GitHub | R-hub    | mac/win-builder |
-| ------------- | ------ | -------- | --------------- |
-| 3.4.x         | L      |          |                 |
-| 3.5.x         | L      |          |                 |
-| 3.6.x         | L      |          |                 |
-| 4.1.x         | L      |          |                 |
-| 4.2.x         | L M W  | L M M1 W | M1 W            |
-| devel         | L   W  | L        |    W            |
+| R version     | GitHub | R-hub | mac/win-builder |
+| ------------- | ------ | ----- | --------------- |
+| 3.5.x         | L      |       |                 |
+| 4.1.x         | L      |       |                 |
+| 4.2.x         | L      |       |                 |
+| 4.3.x         | L M W  | . . . | M1 W            |
+| devel         | L   W  | .     |    W            |
 
 *Legend: OS: L = Linux, M = macOS, M1 = macOS M1, W = Windows*
 
