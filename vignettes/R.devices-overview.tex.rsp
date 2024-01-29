@@ -83,7 +83,11 @@ options(str=strOptions(strict.width="cut"))
 \author{<%@meta name="author"%>}
 \date{<%=format(as.Date(R.devices$date), format="%B %d, %Y")%>}
 
-\pdfsuppressptexinfo=-1
+% Drop PTEX metadata (for reproducbility)
+\ifdefined\pdfsuppressptexinfo
+  \pdfsuppressptexinfo=-1
+\fi
+
  
 \begin{document}
 
@@ -321,6 +325,5 @@ This is why we recommend to always use \code{devNew()} in place of \code{dev.new
 \subsection*{Session information}
 <%=toLatex(sessionInfo())%>
 This report was automatically generated using \code{rfile()} of the R.rsp package.
-Total processing time after RSP-to-R translation was <%=dt <- round(Sys.time()-t0, digits=2)%> <%=attr(dt, "units")%>.
 
 \end{document}
