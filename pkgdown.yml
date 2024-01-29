@@ -1,7 +1,7 @@
-pandoc: '2.18'
-pkgdown: 2.0.5
+pandoc: 3.1.9
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   R.devices-overview: R.devices-overview.html
-last_built: 2022-06-27T18:41Z
+last_built: 2024-01-29T16:56Z
 
