@@ -99,7 +99,7 @@ The \pkg{R.devices} package provides functions for creating plots and image file
 \keywords{<%@meta name="keywords"%>}
 
 \begin{center}
-\emph{This vignette is distributed as part of the \pkg{R.devices} package, which is available on CRAN (\href{http://cran.r-project.org/}{http://cran.r-project.org/}).
+\emph{This vignette is distributed as part of the \pkg{R.devices} package, which is available on CRAN (\href{https://cran.r-project.org/}{https://cran.r-project.org/}).
 Feedback is very much appreciated.}
 \end{center}
 
