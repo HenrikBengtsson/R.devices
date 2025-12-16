@@ -273,7 +273,7 @@ By using RSP markup, image files can be included in for instance LaTeX, Sweave a
  \caption{This graph was generated using \code{toPDF()} and then include into the LaTeX document using RSP.}
  \label{fig:MyGaussianDensity}
 \end{figure}
-For more details on RSP, see the vignettes of the \pkg{R.rsp} package (available on \href{cran.r-project.org/package=R.rsp}{CRAN}).
+For more details on RSP, see the vignettes of the \pkg{R.rsp} package (available on \href{https://cran.r-project.org/package=R.rsp}{CRAN}).
 
 
 

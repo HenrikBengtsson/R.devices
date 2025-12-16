@@ -1,6 +1,8 @@
-# Version (development version)
+# Version 2.17.3 [2025-12-16]
 
- * ...
+## Documentation
+
+ * Update URL in vignette to use HTTPS.
 
 
 # Version 2.17.2 [2024-01-28]
