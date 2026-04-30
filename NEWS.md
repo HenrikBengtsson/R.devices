@@ -1,6 +1,8 @@
 # Version (development version)
 
- * ...
+## Bug Fixes
+
+ * Fix `R CMD check` error in R-devel.
 
 
 # Version 2.17.2 [2024-01-28]

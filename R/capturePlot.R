@@ -119,7 +119,7 @@ setMethodS3("print", "RecordedPlot", function(x, ...) {
   }, error = identity)
 
   ## If that didn't work, then try to coerce
-  if (inherits(res, "simpleError")) {
+  if (inherits(res, "error")) {
     x <- as.architecture(x)
     replayPlot(x)
   }

@@ -96,7 +96,7 @@ setMethodS3("[[", "DevEvalProduct", function(x, name, ...) {
     ex
   })
   if (inherits(res, "Exception")) throw(res)
-  if (!inherits(res, "simpleError")) return(res)
+  if (!inherits(res, "error")) return(res)
   NextMethod()
 }, private=TRUE)
 
