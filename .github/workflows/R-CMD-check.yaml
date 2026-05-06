@@ -10,17 +10,18 @@ jobs:
 
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) ${{ matrix.config.label }}
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
       matrix:
         config:
+          - {os: windows-latest, r: 'devel'    }
           - {os: windows-latest, r: 'release'  }
           - {os: windows-latest, r: 'oldrel'   }
           - {os: macOS-latest,   r: 'release'  }
           - {os: ubuntu-latest,  r: 'devel'    }
-          - {os: ubuntu-latest,  r: 'release', label: '' }
+          - {os: ubuntu-latest,  r: 'release'  }
           - {os: ubuntu-latest,  r: 'oldrel'   }
           - {os: ubuntu-latest,  r: '4.1'      }
  
