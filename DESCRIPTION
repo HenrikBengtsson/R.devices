@@ -29,4 +29,4 @@ License: LGPL (>= 2.1)
 URL: https://henrikbengtsson.github.io/R.devices/, https://github.com/HenrikBengtsson/R.devices
 BugReports: https://github.com/HenrikBengtsson/R.devices/issues
 LazyLoad: TRUE
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.0.0
