@@ -99,7 +99,7 @@ The \pkg{R.devices} package provides functions for creating plots and image file
 \keywords{<%@meta name="keywords"%>}
 
 \begin{center}
-\emph{This vignette is distributed as part of the \pkg{R.devices} package, which is available on CRAN (\href{http://cran.r-project.org/}{http://cran.r-project.org/}).
+\emph{This vignette is distributed as part of the \pkg{R.devices} package, which is available on CRAN (\href{https://cran.r-project.org/}{https://cran.r-project.org/}).
 Feedback is very much appreciated.}
 \end{center}
 
@@ -273,7 +273,7 @@ By using RSP markup, image files can be included in for instance LaTeX, Sweave a
  \caption{This graph was generated using \code{toPDF()} and then include into the LaTeX document using RSP.}
  \label{fig:MyGaussianDensity}
 \end{figure}
-For more details on RSP, see the vignettes of the \pkg{R.rsp} package (available on \href{cran.r-project.org/package=R.rsp}{CRAN}).
+For more details on RSP, see the vignettes of the \pkg{R.rsp} package (available on \href{https://cran.r-project.org/package=R.rsp}{CRAN}).
 
 
 
