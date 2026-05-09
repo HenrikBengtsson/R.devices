@@ -1,4 +1,4 @@
-# Version (development version)
+# Version 2.17.3 [2026-05-06]
 
 ## Bug Fixes
 
