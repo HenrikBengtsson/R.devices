@@ -67,7 +67,7 @@ _R_CHECK_CRAN_INCOMING_ = $(shell $(R_SCRIPT) -e "cat(Sys.getenv('_R_CHECK_CRAN_
 _R_CHECK_XREFS_REPOSITORIES_ = $(shell if test "$(_R_CHECK_CRAN_INCOMING_)" = "TRUE"; then echo ""; else echo "invalidURL"; fi)
 _R_CHECK_FULL_ = $(shell $(R_SCRIPT) -e "cat(Sys.getenv('_R_CHECK_FULL_', ''))")
 R_CHECK_OPTS = --as-cran --timings $(shell if test "$(_R_CHECK_USE_VALGRIND_)" = "TRUE"; then echo "--use-valgrind"; fi)
-R_RD4PDF = $(shell $(R_SCRIPT) -e "if (getRversion() < 3) cat('times,hyper')")
+R_RD4PDF = $(shell $(R_SCRIPT) -e "if (getRversion() < '3') cat('times,hyper')")
 R_CRAN_OUTDIR := $(R_OUTDIR)/$(PKG_NAME)_$(PKG_VERSION).CRAN
 
 HAS_ASPELL := $(shell $(R_SCRIPT) -e "cat(Sys.getenv('HAS_ASPELL', !inherits(try(aspell('DESCRIPTION', control=c('--master=en_US', '--add-extra-dicts=en_GB'), dictionaries='en_stats', program='aspell'), silent=TRUE), 'try-error')))")

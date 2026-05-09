@@ -1,3 +1,17 @@
+# Version 2.17.3 [2026-05-06]
+
+## Bug Fixes
+
+ * Fix `R CMD check` error in R-devel.
+
+
+# Version 2.17.3 [2025-12-16]
+
+## Documentation
+
+ * Update URL in vignette to use HTTPS.
+
+
 # Version 2.17.2 [2024-01-28]
 
 ## Documentation

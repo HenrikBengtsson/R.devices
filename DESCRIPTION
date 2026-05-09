@@ -1,5 +1,5 @@
 Package: R.devices
-Version: 2.17.2
+Version: 2.17.4
 Depends:
     R (>= 2.14.0)
 Imports:
@@ -29,3 +29,4 @@ License: LGPL (>= 2.1)
 URL: https://henrikbengtsson.github.io/R.devices/, https://github.com/HenrikBengtsson/R.devices
 BugReports: https://github.com/HenrikBengtsson/R.devices/issues
 LazyLoad: TRUE
+Config/roxygen2/version: 8.0.0
