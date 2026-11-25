@@ -858,8 +858,13 @@ devAll <- local({
     types <- as.list(types)
     for (kk in seq_along(types)) {
       typeKK <- types[[kk]]
-      pattern <- sprintf("^%s$", typeKK)
-      idxs <- grep(pattern, knownTypes)
+      ## Exact names first; "*" would give "^*$", which is not a valid
+      ## regular expression
+      idxs <- which(knownTypes == typeKK)
+      if (length(idxs) == 0L) {
+        pattern <- sprintf("^%s$", typeKK)
+        idxs <- grep(pattern, knownTypes)
+      }
       if (length(idxs) > 0L) {
         typesKK <- knownTypes[idxs]
         names(typesKK) <- rep(typeKK, times=length(typesKK))
