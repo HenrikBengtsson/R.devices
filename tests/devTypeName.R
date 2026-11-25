@@ -39,4 +39,11 @@ for (name in names(types)) {
 ## Special case: Default device
 type <- getOption("device")
 
+## Special case: "*" matches itself, not every known type
+known <- c("*", "png", "pdf")
+res <- .devTypeName("*", pattern=TRUE, knownTypes=known)
+stopifnot(identical(res, c("*"="*")))
+res <- .devTypeName("p.*", pattern=TRUE, knownTypes=known)
+stopifnot(identical(unname(res), c("png", "pdf")))
+
 message("*** devTypeName() ... DONE")
